@@ -1,0 +1,16 @@
+*, ::before, ::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: 'Manrope';
+  font-weight: 500;
+}

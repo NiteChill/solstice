@@ -1,0 +1,10 @@
+.navbar {
+  display: flex;
+  padding: 0.75rem 0.75rem 0.75rem 0.875rem;
+  align-items: center;
+  width: 100%;
+  & > h1 {
+    flex: 1;
+    color: var(--on-surface-variant);
+  }
+}
