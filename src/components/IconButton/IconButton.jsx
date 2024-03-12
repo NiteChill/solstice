@@ -3,6 +3,7 @@ import styles from './IconButton.module.scss';
 export default function IconButton({
   style = 'standard',
   icon = 'settings',
+  avatar = false,
   overridePadding = false,
   highContrast = false,
 }) {
@@ -20,8 +21,10 @@ export default function IconButton({
     >
       <div>
         <div>
-          <div></div>
-          <span className='material-symbols-outlined'>{icon}</span>
+          <div
+            style={{ background: style && `url(${avatar}) no-repeat center/cover`,}}
+          ></div>
+          {!avatar && (<span className='material-symbols-outlined'>{icon}</span>)}
         </div>
       </div>
     </div>
