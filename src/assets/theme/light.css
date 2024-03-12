@@ -1,4 +1,14 @@
 .light {
+  /* brand */
+  --brand-gradient: linear-gradient(
+    137deg,
+    #ba07f9 -2.5%,
+    #8f07f9 -2.49%,
+    #922ac3 18.79%,
+    #548ae9 74.96%,
+    #41afff 98.89%
+  );
+
   /* transition */
   --transition: cubic-bezier(0.2, 0, 0, 1);
 

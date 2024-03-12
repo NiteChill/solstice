@@ -1,0 +1,28 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  border-radius: 100rem;
+  cursor: pointer;
+  user-select: none;
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1rem;
+    border-radius: inherit;
+    & > p {
+      color: var(--on-primary);
+    }
+  }
+}
+
+.button {
+  &:hover > div {
+    background: var(--state-layer-on-primary-008);
+  }
+  &:active > div {
+    background: var(--state-layer-on-primary-012);
+  }
+}
