@@ -1,7 +1,6 @@
 import IconButton from '../IconButton/IconButton';
 import styles from './Navbar.module.scss';
 import defaultAvatar from '../../assets/img/default_avatar.png';
-import logo from '../../assets/img/logo.svg';
 import Button from '../Button/Button';
 
 export default function Navbar({login = false}) {
@@ -10,7 +9,7 @@ export default function Navbar({login = false}) {
       {!login && (
         <div className={styles.logo}>
           <div
-            style={{ background: `url(${logo}) no-repeat center/cover` }}
+            style={{ background: `url('./src/assets/img/logo.svg') no-repeat center/cover` }}
           ></div>
         </div>
       )}
