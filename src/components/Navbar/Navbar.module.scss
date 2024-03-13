@@ -17,6 +17,12 @@
       background: url('../../assets/img/logo.svg') no-repeat center/cover;
     }
   }
+  & > div.button {
+    display: flex;
+    padding: 0.25rem;
+    align-items: center;
+    justify-content: center;
+  }
   & > h1 {
     flex: 1;
     color: var(--on-surface-variant);

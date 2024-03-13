@@ -18,17 +18,23 @@ function App() {
     setTheme('light');
 
     async function isAuthenticated() {
-      const response = await axios.get('http://localhost:3000/login');
+      const response = await axios.post('http://localhost:3000/login', {
+        name: 'Achille',
+        password: '1234'
+      },
+        {
+          headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       setData(response.data);
-      // if (data) navigate("/yes");
-      // else navigate("/oui");
     }
     isAuthenticated();
   }, []);
   return (
     <div className={`App ${theme}`}>
       <Navbar />
-      <p>{data ? data.authenticated : 'loading...'}</p>
+      <p>{data ? data.message : 'loading...'}</p>
       <div>
         <Outlet />
       </div>

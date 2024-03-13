@@ -27,8 +27,11 @@ app.use(
 );
 
 // routes
-app.get('/login', (req, res) => {
-  res.json({ authenticated: 'false' });
+app.post('/login', (req, res) => {
+  const name = req.body.name,
+    password = req.body.password;
+  console.log(name, password);
+  res.json({message: 'information received'})
 });
 
 app.listen(port, () => {

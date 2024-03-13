@@ -16,7 +16,11 @@ export default function Navbar({login = false}) {
       {login && <IconButton icon='add' style='filled_small' />}
       <IconButton icon='search' />
       {login && <IconButton avatar={defaultAvatar} />}
-      {!login && <Button label='Sign in' />}
+      {!login && (
+        <div className={styles.button}>
+          <Button label='Sign in' />
+        </div>
+      )}
     </div>
   );
 }
