@@ -2,27 +2,43 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary);
   border-radius: 100rem;
   cursor: pointer;
   user-select: none;
+  width: fit-content;
   & > div {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0.625rem 1rem;
     border-radius: inherit;
-    & > p {
-      color: var(--on-primary);
-    }
   }
 }
 
-.button {
+.standard {
+  background: var(--primary);
+  & > div > p {
+    color: var(--on-primary);
+  }
   &:hover > div {
     background: var(--state-layer-on-primary-008);
   }
   &:active > div {
     background: var(--state-layer-on-primary-012);
+  }
+}
+
+.text {
+  & > div {
+    padding: 0.625rem 0.75rem;
+    & > p {
+      color: var(--primary);
+    }
+  }
+  &:hover > div {
+    background: var(--state-layer-primary-008);
+  }
+  &:active > div {
+    background: var(--state-layer-primary-012);
   }
 }

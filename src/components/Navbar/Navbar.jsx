@@ -2,23 +2,36 @@ import IconButton from '../IconButton/IconButton';
 import styles from './Navbar.module.scss';
 import defaultAvatar from '../../assets/img/default_avatar.png';
 import Button from '../Button/Button';
+import { useNavigate } from 'react-router-dom';
 
-export default function Navbar({login = false}) {
+export default function Navbar({ loggedIn = false, location }) {
+  const navigate = useNavigate();
+  console.log(location);
   return (
     <div className={styles.navbar}>
-      {!login && (
+      {!loggedIn && location === '/' && (
         <div className={styles.logo}>
           <div></div>
         </div>
       )}
-      {login && <IconButton icon='menu' overridePadding highContrast />}
-      <h1 className='title-large'>Solstice</h1>
-      {login && <IconButton icon='add' style='filled_small' />}
-      <IconButton icon='search' />
-      {login && <IconButton avatar={defaultAvatar} />}
-      {!login && (
+      {loggedIn ||
+        (location === '/login' && (
+          <IconButton
+            icon={location === '/' ? 'menu' : 'arrow_back'}
+            overridePadding
+            highContrast
+            onClick={() => navigate('/')}
+          />
+        ))}
+      <h1 className='title-large'>
+        {location === '/' ? 'Solstice' : 'Log in'}
+      </h1>
+      {loggedIn && <IconButton icon='add' style='filled_small' />}
+      {location !== '/login' && <IconButton icon='search' />}
+      {loggedIn && <IconButton avatar={defaultAvatar} />}
+      {!loggedIn && location !== '/login' && (
         <div className={styles.button}>
-          <Button label='Sign in' />
+          <Button label='Log in' onClick={() => navigate('/login')} />
         </div>
       )}
     </div>
