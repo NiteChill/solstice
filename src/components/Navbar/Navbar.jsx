@@ -2,7 +2,7 @@ import IconButton from '../IconButton/IconButton';
 import styles from './Navbar.module.scss';
 import defaultAvatar from '../../assets/img/default_avatar.png';
 import logo from '../../assets/img/logo.svg';
-import Button from '../button/Button';
+import Button from '../Button/Button';
 
 export default function Navbar({login = false}) {
   return (
