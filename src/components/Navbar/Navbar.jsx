@@ -8,9 +8,7 @@ export default function Navbar({login = false}) {
     <div className={styles.navbar}>
       {!login && (
         <div className={styles.logo}>
-          <div
-            style={{ background: `url('./src/assets/img/logo.svg') no-repeat center/cover` }}
-          ></div>
+          <div></div>
         </div>
       )}
       {login && <IconButton icon='menu' overridePadding highContrast />}
