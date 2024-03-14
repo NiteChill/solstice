@@ -33,7 +33,7 @@ app.use(
 app.post('/login', (req, res) => {
   const email = req.body.email,
     password = req.body.password;
-  console.log(name, password);
+  console.log(email, password);
   res.json({message: 'information received'})
 });
 
