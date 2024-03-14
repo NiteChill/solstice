@@ -32,7 +32,7 @@ app.post('/login', (req, res) => {
   const email = req.body.email,
     password = req.body.password;
   console.log(email, password);
-  res.json({ message: 'information received' });
+  res.json({ message: email + password });
 });
 
 app.listen(port, () => {
