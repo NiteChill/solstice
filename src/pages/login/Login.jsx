@@ -1,9 +1,18 @@
 import { useEffect, useState } from 'react';
 import Button from '../../components/Button/Button';
 import styles from './Login.module.scss';
+import axios from 'axios';
 
 export default function Login() {
   const [body, setBody] = useState();
+  async function handleSubmit() {
+    const response = await axios.post('http://localhost:3000/login', body, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(response.data.message);
+  }
   useEffect(() => {
     console.log(body);
   }, [body]);
@@ -40,7 +49,7 @@ export default function Login() {
         </div>
         <div className={styles.container_btn}>
           <Button style='text' label='Sign up' />
-          <Button label='Log in' />
+          <Button label='Log in' onClick={handleSubmit} />
         </div>
       </main>
     </div>

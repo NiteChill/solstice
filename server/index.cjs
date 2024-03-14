@@ -23,15 +23,16 @@ app.use(
     secret: 'not so secret key',
     resave: false,
     saveUninitialized: false,
+    cookie: { maxAge: 14*24*60*60*1000}
   })
 );
 
 // routes
 app.post('/login', (req, res) => {
-  const name = req.body.name,
+  const email = req.body.email,
     password = req.body.password;
-  console.log(name, password);
-  res.json({message: 'information received'})
+  console.log(email, password);
+  res.json({ message: 'information received' });
 });
 
 app.listen(port, () => {
