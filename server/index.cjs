@@ -31,10 +31,20 @@ app.use(
 
 // routes
 app.post('/login', (req, res) => {
-  const email = req.body.email,
-    password = req.body.password;
-  console.log(email, password);
-  res.json({message: 'information received'})
+  async function compare() {
+    try {
+      const user = await User.find({ email: req.body.email });
+      if (user[0].password) {
+        bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+          if (result) res.json({ message: 'connected' });
+          else res.json({ message: 'wrong info' });
+        });
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  compare();
 });
 
 app.listen(port, () => {
