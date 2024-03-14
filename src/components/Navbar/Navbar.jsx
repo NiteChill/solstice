@@ -14,15 +14,14 @@ export default function Navbar({ loggedIn = false, location }) {
           <div></div>
         </div>
       )}
-      {loggedIn ||
-        (location === '/login' && (
-          <IconButton
-            icon={location === '/' ? 'menu' : 'arrow_back'}
-            overridePadding
-            highContrast
-            onClick={() => navigate('/')}
-          />
-        ))}
+      {(loggedIn || location === '/login') && (
+        <IconButton
+          icon={location === '/' ? 'menu' : 'arrow_back'}
+          overridePadding
+          highContrast
+          onClick={() => navigate('/')}
+        />
+      )}
       <h1 className='title-large'>
         {location === '/' ? 'Solstice' : 'Log in'}
       </h1>

@@ -6,7 +6,7 @@ export default function IconButton({
   avatar = false,
   overridePadding = false,
   highContrast = false,
-  onClick
+  onClick,
 }) {
   return (
     <div
@@ -18,7 +18,7 @@ export default function IconButton({
           : styles.standard
       } ${overridePadding && styles.override_padding} ${
         style === 'standard' && highContrast && styles.high_contrast
-        }`}
+      }`}
       onClick={onClick}
     >
       <div>

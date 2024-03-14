@@ -1,3 +1,3 @@
 export default function Discover() {
-  return <p>Discover</p>;
+  return <p></p>;
 }

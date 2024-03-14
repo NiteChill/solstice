@@ -10,10 +10,14 @@ export default function Login() {
   return (
     <div className={styles.login}>
       <div>
-        <h1 className='display-medium'>Log in to your account</h1>
+        <div>
+          <div></div>
+          <p className='headline-medium'>Solstice</p>
+        </div>
+        <h1 className='title-large'>Log in to your account</h1>
+        <h2 className='body-large'>Select your identifiers</h2>
       </div>
       <main>
-        <h2 className='title-large'>Select your identifiers</h2>
         <div className={styles.container}>
           <input
             type='email'
