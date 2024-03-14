@@ -6,7 +6,9 @@ const express = require('express'),
   app = express(),
   port = process.env.PORT || 3000,
   User = require('../models/user.cjs'),
-  session = require('express-session');
+  session = require('express-session'),
+  bcrypt = require('bcrypt'),
+  saltRounds = 10;
 
 // connection
 mongoose.connect(process.env.ATLAS_URI);
@@ -31,9 +33,18 @@ app.post('/login', (req, res) => {
   const name = req.body.name,
     password = req.body.password;
   console.log(name, password);
-  res.json({message: 'information received'})
+  res.json({ message: 'information received' });
 });
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
+
+// hash password
+// bcrypt.hash('1234', saltRounds, (err, hash) => {
+//   async function hi() {
+//     const user = await User.findOneAndUpdate({email: 'puissantachille@gmail.com'}, {password : hash});
+//     console.log(user);
+//   }
+//   hi();
+// });
