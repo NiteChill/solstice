@@ -18,22 +18,22 @@ function App() {
       setTheme('dark');
     setTheme('light');
 
-    async function isAuthenticated() {
-      const response = await axios.post(
-        'http://localhost:3000/login',
-        {
-          name: 'Achille',
-          password: '1234',
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      setData(response.data);
-    }
-    isAuthenticated();
+    // async function isAuthenticated() {
+    //   const response = await axios.post(
+    //     'http://localhost:3000/login',
+    //     {
+    //       name: 'Achille',
+    //       password: '1234',
+    //     },
+    //     {
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     }
+    //   );
+    //   setData(response.data);
+    // }
+    // isAuthenticated();
   }, []);
   return (
     <div className={`App ${theme}`}>
