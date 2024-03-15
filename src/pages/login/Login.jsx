@@ -12,11 +12,10 @@ export default function Login() {
       },
     });
     console.log(response.data.error);
-    console.log(response.data.message);
+    console.log(response.data.user);
   }
   useEffect(() => {
-    console.log(body);
-  }, [body]);
+  }, []);
   return (
     <div className={styles.login}>
       <div>
@@ -49,7 +48,7 @@ export default function Login() {
           />
         </div>
         <div className={styles.container_btn}>
-          <Button style='text' label='Sign up' />
+          <Button style='text' label='Sign up' onClick={()=> axios.get('http://localhost:3000/oui')} />
           <Button label='Log in' onClick={handleSubmit} />
         </div>
       </main>

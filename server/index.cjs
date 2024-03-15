@@ -18,18 +18,35 @@ connection.once('open', () => {
 });
 
 // app init
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(
   session({
     secret: 'not so secret key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 14 * 24 * 60 * 60 * 1000,
+      sameSite: false,
+    },
   })
 );
 
 // routes
+app.get('/', (req, res) => {
+  // console.log(req);
+  // req.session.user = 'hi';
+  console.log(req.session);
+  if (req.session.user) {
+    res.json({ user: req.session.cookie });
+  }
+});
+
 app.post('/login', async (req, res) => {
   let errors = [];
   if (typeof req.body.email === 'undefined' || req.body.email === '')
@@ -43,18 +60,27 @@ app.post('/login', async (req, res) => {
   }
 
   try {
-    const user = await User.find({ email: req.body.email });
-    console.log(user[0]);
-    if (!user[0]) {
+    const user = await User.findOne({ email: req.body.email });
+    console.log(user);
+    if (!user) {
       res.json({ error: 'EMAIL_NOT_FOUND' });
       return;
     }
 
-    bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+    bcrypt.compare(req.body.password, user.password, (err, result) => {
       if (!err) {
         if (result) {
-          // connection <<<<<<<<<----------
-          res.json({ message: 'connected' });
+          // connection <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+          const userData = {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            age: user.age,
+            createdAt: user.createdAt,
+          };
+          req.session.user = userData;
+          console.log(req.session);
+          res.send({ user: userData });
         } else {
           res.json({ error: 'UNMATCHING_PASSWORD' });
           return;
@@ -65,6 +91,10 @@ app.post('/login', async (req, res) => {
     res.json({ error: error });
     return;
   }
+});
+
+app.get('/oui', (req, res) => {
+  console.log(req.session);
 });
 
 app.listen(port, () => {
