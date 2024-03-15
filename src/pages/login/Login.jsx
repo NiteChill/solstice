@@ -11,6 +11,7 @@ export default function Login() {
         'Content-Type': 'application/json',
       },
     });
+    console.log(response.data.error);
     console.log(response.data.message);
   }
   useEffect(() => {

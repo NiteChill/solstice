@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Navbar({ loggedIn = false, location }) {
   const navigate = useNavigate();
-  console.log(location);
   return (
     <div className={styles.navbar}>
       {!loggedIn && location === '/' && (

@@ -25,26 +25,46 @@ app.use(
     secret: 'not so secret key',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 14*24*60*60*1000}
+    cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },
   })
 );
 
 // routes
-app.post('/login', (req, res) => {
-  async function compare() {
-    try {
-      const user = await User.find({ email: req.body.email });
-      if (user[0].password) {
-        bcrypt.compare(req.body.password, user[0].password, (err, result) => {
-          if (result) res.json({ message: 'connected' });
-          else res.json({ message: 'wrong info' });
-        });
-      }
-    } catch (error) {
-      throw new Error(error);
-    }
+app.post('/login', async (req, res) => {
+  let errors = [];
+  if (typeof req.body.email === 'undefined' || req.body.email === '')
+    errors = [...errors, 'EMPTY_EMAIL'];
+  if (typeof req.body.password === 'undefined' || req.body.password === '')
+    errors = [...errors, 'EMPTY_PASSWORD'];
+
+  if (errors.length !== 0) {
+    res.json({ error: errors });
+    return;
   }
-  compare();
+
+  try {
+    const user = await User.find({ email: req.body.email });
+    console.log(user[0]);
+    if (!user[0]) {
+      res.json({ error: 'EMAIL_NOT_FOUND' });
+      return;
+    }
+
+    bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+      if (!err) {
+        if (result) {
+          // connection <<<<<<<<<----------
+          res.json({ message: 'connected' });
+        } else {
+          res.json({ error: 'UNMATCHING_PASSWORD' });
+          return;
+        }
+      } else res.json({ error: err });
+    });
+  } catch (error) {
+    res.json({ error: error });
+    return;
+  }
 });
 
 app.listen(port, () => {
