@@ -34,19 +34,14 @@ app.use(
     cookie: {
       maxAge: 14 * 24 * 60 * 60 * 1000,
       sameSite: false,
-      // secure: true,
     },
   })
 );
 
 // routes
 app.get('/', (req, res) => {
-  // console.log(req);
-  // req.session.user = 'hi';
-  console.log(req.session);
-  if (req.session.user) {
-    res.json({ user: req.session.cookie });
-  }
+  if (req.session.user) res.json({ user: req.session.user });
+  else res.json({ user: null });
 });
 
 app.post('/login', async (req, res) => {
@@ -81,7 +76,6 @@ app.post('/login', async (req, res) => {
             createdAt: user.createdAt,
           };
           req.session.user = userData;
-          console.log(req.session);
           res.send({ user: userData });
         } else {
           res.json({ error: 'UNMATCHING_PASSWORD' });
@@ -93,10 +87,6 @@ app.post('/login', async (req, res) => {
     res.json({ error: error });
     return;
   }
-});
-
-app.get('/oui', (req, res) => {
-  console.log(req.session);
 });
 
 app.listen(port, () => {

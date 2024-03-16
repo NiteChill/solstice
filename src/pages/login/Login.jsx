@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import Button from '../../components/Button/Button';
 import styles from './Login.module.scss';
 import axios from 'axios';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 export default function Login() {
-  const [body, setBody] = useState();
+  const [body, setBody] = useState(),
+    [user, setUser] = useOutletContext(),
+    navigate = useNavigate();
   async function handleSubmit() {
     const response = await axios.post('http://localhost:3000/login', body, {
       headers: {
@@ -12,11 +15,11 @@ export default function Login() {
       },
       withCredentials: true,
     });
-    console.log(response.data.error);
-    console.log(response.data.user);
+    setUser(response.data.user);
   }
   useEffect(() => {
-  }, []);
+    if (user) navigate('/');
+  }, [user]);
   return (
     <div className={styles.login}>
       <div>

@@ -3,12 +3,12 @@ import './default.scss';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import axios from 'axios';
+import LoadingElement from './components/LoadingElement/LoadingElement';
 
-function App() {
-  const [data, setData] = useState(''),
-    [theme, setTheme] = useState('light'),
+export default function App() {
+  const [theme, setTheme] = useState('light'),
     location = useLocation().pathname,
-    navigate = useNavigate();
+    [user, setUser] = useState('loading');
 
   useEffect(() => {
     if (
@@ -19,18 +19,19 @@ function App() {
     setTheme('light');
 
     async function getCookie() {
-      const response = await axios.get('http://localhost:3000', {withCredentials: true});
-      // setData(response.user);
-      console.log(response);
+      const response = await axios.get('http://localhost:3000', { withCredentials: true });
+      setUser(response.data.user);
     }
     getCookie();
   }, []);
   return (
     <div className={`App ${theme}`}>
-      <Navbar location={location} />
-      <Outlet />
+      {user === 'loading' ? <LoadingElement /> : (
+        <>
+          <Navbar location={location} loggedIn={user && true} />
+          <Outlet context={[user, setUser]} />
+        </>
+      )}
     </div>
   );
 }
-
-export default App;

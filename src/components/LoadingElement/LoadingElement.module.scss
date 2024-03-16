@@ -1,0 +1,19 @@
+.loading_element {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  & > div {
+    width: 3.25rem;
+    height: 3.25rem;
+    background: url('../../assets/img/logo.svg') no-repeat center/cover;
+  }
+  & > h1 {
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+  }
+}
