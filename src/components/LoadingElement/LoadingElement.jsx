@@ -4,10 +4,9 @@ import styles from './LoadingElement.module.scss';
 export default function LoadingElement() {
   const [display, setDisplay] = useState(false);
   useEffect(() => {
-    const time = setTimeout(() => {
+    setTimeout(() => {
       setDisplay(true);
     }, 200);
-    clearTimeout(time);
   }, []);
   return (
     <div className={styles.loading_element}>
