@@ -10,6 +10,7 @@ export default function Login() {
       headers: {
         'Content-Type': 'application/json',
       },
+      withCredentials: true,
     });
     console.log(response.data.error);
     console.log(response.data.user);
@@ -48,7 +49,7 @@ export default function Login() {
           />
         </div>
         <div className={styles.container_btn}>
-          <Button style='text' label='Sign up' onClick={()=> axios.get('http://localhost:3000/oui')} />
+          <Button style='text' label='Sign up' onClick={() => axios.get('http://localhost:3000/oui', { withCredentials: true })} />
           <Button label='Log in' onClick={handleSubmit} />
         </div>
       </main>
