@@ -52,7 +52,7 @@ app.post('/login', async (req, res) => {
     errors = [...errors, 'EMPTY_PASSWORD'];
 
   if (errors.length !== 0) {
-    res.json({ error: errors });
+    res.json({ errors: errors });
     return;
   }
 
@@ -60,7 +60,7 @@ app.post('/login', async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     console.log(user);
     if (!user) {
-      res.json({ error: 'EMAIL_NOT_FOUND' });
+      res.json({ errors: ['EMAIL_NOT_FOUND'] });
       return;
     }
 
@@ -78,13 +78,13 @@ app.post('/login', async (req, res) => {
           req.session.user = userData;
           res.send({ user: userData });
         } else {
-          res.json({ error: 'UNMATCHING_PASSWORD' });
+          res.json({ errors: ['UNMATCHING_PASSWORD'] });
           return;
         }
-      } else res.json({ error: err });
+      } else res.json({ errors: [err] });
     });
   } catch (error) {
-    res.json({ error: error });
+    res.json({ errors: [error] });
     return;
   }
 });
