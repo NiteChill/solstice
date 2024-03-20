@@ -10,7 +10,7 @@ export default function Login() {
     [errors, setErrors] = useState([]),
     navigate = useNavigate();
   async function handleSubmit() {
-    const response = await axios.post('http://localhost:3000/login', body, {
+    const response = await axios.post('http://localhost:3000/api/login', body, {
       headers: {
         'Content-Type': 'application/json',
       },

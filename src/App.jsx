@@ -19,7 +19,7 @@ export default function App() {
     setTheme('light');
 
     async function getCookie() {
-      const response = await axios.get('http://localhost:3000', { withCredentials: true });
+      const response = await axios.get('http://localhost:3000/api', { withCredentials: true });
       setUser(response.data.user);
     }
     getCookie();
