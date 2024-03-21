@@ -19,14 +19,18 @@ export default function App() {
     setTheme('light');
 
     async function getCookie() {
-      const response = await axios.get('http://localhost:3000/api', { withCredentials: true });
+      const response = await axios.get('http://localhost:3000/api', {
+        withCredentials: true,
+      });
       setUser(response.data.user);
     }
     getCookie();
   }, []);
   return (
     <div className={`App ${theme}`}>
-      {user === 'loading' ? <LoadingElement /> : (
+      {user === 'loading' ? (
+        <LoadingElement />
+      ) : (
         <>
           <Navbar location={location} loggedIn={user && true} />
           <Outlet context={[user, setUser]} />
