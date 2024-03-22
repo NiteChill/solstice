@@ -24,9 +24,9 @@ const UserSchema = new mongoose.Schema(
     },
     profilePicture: {
       type: Object,
-    }
+    },
   },
   { collection: 'users', versionKey: false }
 );
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model('User', UserSchema);
