@@ -36,6 +36,7 @@ const loginUser = async (req, res) => {
             email: user.email,
             age: user.age,
             createdAt: user.createdAt,
+            profilePicture: user.profilePicture,
           };
           req.session.user = userData;
           res.send({ user: userData });

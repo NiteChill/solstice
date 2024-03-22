@@ -23,15 +23,21 @@ export default function IconButton({
     >
       <div>
         <div>
-          {(style === 'filled_small' || avatar) && (
+          {style === 'filled_small' ? (
             <div
               style={{
-                background: avatar
-                  ? `url(${avatar}) no-repeat center/cover`
-                  : 'var(--surface-container-high)',
+                background: 'var(--surface-container-high)',
               }}
             ></div>
+          ) : (
+            avatar && (
+              <img
+                src={avatar}
+                alt='profilePicture'
+              />
+            )
           )}
+
           {!avatar && <span className='material-symbols-outlined'>{icon}</span>}
         </div>
       </div>

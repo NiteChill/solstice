@@ -4,7 +4,7 @@ import defaultAvatar from '../../assets/img/default_avatar.png';
 import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
 
-export default function Navbar({ loggedIn = false, location }) {
+export default function Navbar({ loggedIn = false, location, avatar = defaultAvatar }) {
   const navigate = useNavigate();
   return (
     <div className={styles.navbar}>
@@ -26,7 +26,7 @@ export default function Navbar({ loggedIn = false, location }) {
       </h1>
       {loggedIn && <IconButton icon='add' style='filled_small' />}
       {location !== '/login' && <IconButton icon='search' />}
-      {loggedIn && <IconButton avatar={defaultAvatar} />}
+      {loggedIn && <IconButton avatar={avatar} />}
       {!loggedIn && location !== '/login' && (
         <div className={styles.button}>
           <Button label='Log in' onClick={() => navigate('/login')} />

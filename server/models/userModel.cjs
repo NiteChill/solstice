@@ -22,6 +22,9 @@ const UserSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    profilePicture: {
+      type: Object,
+    }
   },
   { collection: 'users', versionKey: false }
 );

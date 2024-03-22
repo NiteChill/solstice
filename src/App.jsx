@@ -9,7 +9,6 @@ export default function App() {
   const [theme, setTheme] = useState('light'),
     location = useLocation().pathname,
     [user, setUser] = useState('loading');
-
   useEffect(() => {
     if (
       window.matchMedia &&
@@ -32,7 +31,12 @@ export default function App() {
         <LoadingElement />
       ) : (
         <>
-          <Navbar location={location} loggedIn={user && true} />
+          <Navbar
+            location={location}
+            loggedIn={user && true}
+            avatar={`data:${user.profilePicture.contentType};base64,
+                    ${user.profilePicture.data.toString('base64')}`}
+          />
           <Outlet context={[user, setUser]} />
         </>
       )}
