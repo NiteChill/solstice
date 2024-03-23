@@ -3,12 +3,15 @@ import styles from './SignUp.module.scss';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import axios from 'axios';
+import IconButton from '../../components/IconButton/IconButton';
+import { set } from 'mongoose';
 
 export default function SignUp() {
   const [body, setBody] = useState(),
     [user, setUser] = useOutletContext(),
     [errors, setErrors] = useState([]),
     [step, setStep] = useState(0),
+    [visibility, setVisibility] = useState(false),
     navigate = useNavigate();
   async function handleSubmit(e) {
     e.preventDefault();
@@ -36,6 +39,9 @@ export default function SignUp() {
   useEffect(() => {
     console.log(body);
   }, [body]);
+  useEffect(() => {
+    setVisibility(false);
+  }, [step]);
   return (
     <div className={styles.sign_up}>
       <div>
@@ -131,9 +137,11 @@ export default function SignUp() {
               (step === 2 || step === 3) && (
                 <div>
                   <input
-                    type='password'
+                    type={visibility ? 'text' : 'password'}
                     className='body-large'
-                    name={step === 2 ? 'password' : step === 3 && 'password_confirm'}
+                    name={
+                      step === 2 ? 'password' : step === 3 && 'password_confirm'
+                    }
                     placeholder={
                       step === 2 ? 'Password' : step === 3 && 'Confirm password'
                     }
@@ -142,6 +150,7 @@ export default function SignUp() {
                       setBody({ ...body, [e.target.name]: e.target.value })
                     }
                   />
+                  <IconButton icon={visibility ? 'visibility_off' : 'visibility'} onClick={() => setVisibility(!visibility)} />
                 </div>
               )
             )}
