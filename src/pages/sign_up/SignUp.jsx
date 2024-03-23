@@ -12,20 +12,23 @@ export default function SignUp() {
     navigate = useNavigate();
   async function handleSubmit(e) {
     e.preventDefault();
-    const response = await axios.post(
-      'http://localhost:3000/api/sign_up',
-      body,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      }
-    );
-    response.data.user && setUser(response.data.user);
-    response.data.errors && setErrors(response.data.errors);
-    console.log(errors);
-    errors.find((el) => el === 'EMPTY_EMAIL');
+    if (body.password === body.password_confirm) {
+      console.log('hi');
+      // const response = await axios.post(
+      //   'http://localhost:3000/api/sign_up',
+      //   body,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     withCredentials: true,
+      //   }
+      // );
+      // response.data.user && setUser(response.data.user);
+      // response.data.errors && setErrors(response.data.errors);
+      // console.log(errors);
+      // errors.find((el) => el === 'EMPTY_EMAIL');
+    }
   }
   useEffect(() => {
     if (user) navigate('/');
@@ -113,17 +116,34 @@ export default function SignUp() {
             </div>
           )}
           <div>
-            {step === 0 && (
+            {step === 0 || step === 1 ? (
               <input
-                type='text'
+                type={step === 0 ? 'text' : step === 1 && 'number'}
                 className='body-large'
-                name='last_name'
-                placeholder='Last name'
-                autoComplete='family-name'
+                name={step === 0 ? 'last_name' : step === 1 && 'age'}
+                placeholder={step === 0 ? 'Last name' : step === 1 && 'Age'}
+                autoComplete={step === 0 ? 'family-name' : step === 1 && 'on'}
                 onInput={(e) =>
                   setBody({ ...body, [e.target.name]: e.target.value })
                 }
               />
+            ) : (
+              (step === 2 || step === 3) && (
+                <div>
+                  <input
+                    type='password'
+                    className='body-large'
+                    name={step === 2 ? 'password' : step === 3 && 'password_confirm'}
+                    placeholder={
+                      step === 2 ? 'Password' : step === 3 && 'Confirm password'
+                    }
+                    autoComplete='off'
+                    onInput={(e) =>
+                      setBody({ ...body, [e.target.name]: e.target.value })
+                    }
+                  />
+                </div>
+              )
             )}
             {errors.find((el) => el === 'EMPTY_PASSWORD') ? (
               <p className='body-small'>Please register your password</p>
