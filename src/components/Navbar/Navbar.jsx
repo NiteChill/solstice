@@ -13,21 +13,21 @@ export default function Navbar({ loggedIn = false, location, avatar = defaultAva
           <div></div>
         </div>
       )}
-      {(loggedIn || location === '/login') && (
+      {(loggedIn || location === '/login' || location === '/sign_up') && (
         <IconButton
           icon={location === '/' ? 'menu' : 'arrow_back'}
           overridePadding
           highContrast
-          onClick={() => navigate('/')}
+          onClick={() => navigate(-1)}
         />
       )}
       <h1 className='title-large'>
-        {location === '/' ? 'Solstice' : 'Log in'}
+        {location === '/' ? 'Solstice' : location === '/login' ? 'Log in' : location === '/sign_up' && 'Sign up'}
       </h1>
       {loggedIn && <IconButton icon='add' style='filled_small' />}
-      {location !== '/login' && <IconButton icon='search' />}
+      {(location !== '/login' && location !== '/sign_up')  && <IconButton icon='search' />}
       {loggedIn && <IconButton avatar={avatar} />}
-      {!loggedIn && location !== '/login' && (
+      {(!loggedIn && location !== '/login' && location !== '/sign_up') && (
         <div className={styles.button}>
           <Button label='Log in' onClick={() => navigate('/login')} />
         </div>

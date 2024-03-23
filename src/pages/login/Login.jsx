@@ -9,7 +9,8 @@ export default function Login() {
     [user, setUser] = useOutletContext(),
     [errors, setErrors] = useState([]),
     navigate = useNavigate();
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
     const response = await axios.post('http://localhost:3000/api/login', body, {
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +35,7 @@ export default function Login() {
         <h1 className='title-large'>Log in to your account</h1>
         <h2 className='body-large'>Select your identifiers</h2>
       </div>
-      <main>
+      <form onSubmit={handleSubmit}>
         <div
           className={styles.container}
           style={
@@ -50,6 +51,7 @@ export default function Login() {
               className='body-large'
               name='email'
               placeholder='Email'
+              autoComplete='email'
               onInput={(e) =>
                 setBody({ ...body, [e.target.name]: e.target.value })
               }
@@ -68,6 +70,7 @@ export default function Login() {
               className='body-large'
               name='password'
               placeholder='Password'
+              autoComplete='current-password'
               onInput={(e) =>
                 setBody({ ...body, [e.target.name]: e.target.value })
               }
@@ -82,10 +85,12 @@ export default function Login() {
           </div>
         </div>
         <div className={styles.container_btn}>
-          <Button style='text' label='Sign up' />
-          <Button label='Log in' onClick={handleSubmit} />
+          <Button style='text' label='Sign up' onClick={() => navigate('/sign_up')} />
+          <button type='submit'>
+            <Button label='Log in' />
+          </button>
         </div>
-      </main>
+      </form>
     </div>
   );
 }

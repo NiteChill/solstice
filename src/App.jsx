@@ -22,7 +22,6 @@ export default function App() {
         withCredentials: true,
       });
       setUser(response.data.user);
-      console.log(response.data.user.profilePicture.data);
     }
     getCookie();
   }, []);

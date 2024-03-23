@@ -6,6 +6,16 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+button {
+  border: none;
+  outline: none;
+  background: none;
+  padding: none;
+  margin: none;
+  width: fit-content;
+  height: fit-content;
+}
+
 .App {
   display: flex;
   flex-direction: column;
