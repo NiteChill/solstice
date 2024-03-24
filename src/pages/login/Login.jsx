@@ -57,10 +57,10 @@ export default function Login() {
               }
             />
             {errors.find((el) => el === 'EMPTY_EMAIL') ? (
-              <p className='body-small'>Please register your email</p>
+              <p className='body-small'>Please select your email</p>
             ) : (
               errors.find((el) => el === 'EMAIL_NOT_FOUND') && (
-                <p className='body-small'>Please register a valid email</p>
+                <p className='body-small'>Please select a valid email</p>
               )
             )}
           </div>
@@ -76,7 +76,7 @@ export default function Login() {
               }
             />
             {errors.find((el) => el === 'EMPTY_PASSWORD') ? (
-              <p className='body-small'>Please register your password</p>
+              <p className='body-small'>Please select your password</p>
             ) : (
               errors.find((el) => el === 'UNMATCHING_PASSWORD') && (
                 <p className='body-small'>Wrong password</p>
