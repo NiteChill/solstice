@@ -1,21 +1,28 @@
 import { useEffect, useState } from 'react';
 import styles from './SignUp.module.scss';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import IconButton from '../../components/IconButton/IconButton';
 import { useHandleEventSignUp } from '../../hooks/useHandleEventSignUp';
 
 export default function SignUp() {
-  const [user, setUser] = useOutletContext(),
-    [visibility, setVisibility] = useState(false),
+  const [visibility, setVisibility] = useState(false),
     navigate = useNavigate(),
-    [handleClick, handleSubmit, errors, setErrors, step, setStep, body, setBody] = useHandleEventSignUp();
+    [
+      handleClick,
+      handleSubmit,
+      errors,
+      setErrors,
+      step,
+      setStep,
+      body,
+      setBody,
+      user,
+      setUser,
+    ] = useHandleEventSignUp();
   useEffect(() => {
     if (user) navigate('/');
   }, [user]);
-  useEffect(() => {
-    console.log(body);
-  }, [body]);
   useEffect(() => {
     setVisibility(false);
   }, [step]);
@@ -52,7 +59,8 @@ export default function SignUp() {
             gap:
               (errors.find((el) => el === 'EMPTY_FIRST_NAME') && step === 0) ||
               (errors.find((el) => el === 'EMPTY_USERNAME') && step === 1) ||
-              (errors.find((el) => el === 'EMPTY_EMAIL') && step === 2)
+              (errors.find((el) => el === 'EMPTY_EMAIL') && step === 2) ||
+              (errors.find((el) => el === 'EMAIL_ALREADY_USED') && step === 2)
                 ? '1.5rem'
                 : '1rem',
           }}
@@ -102,10 +110,12 @@ export default function SignUp() {
                 <p className='body-small'>Please select your first name</p>
               ) : errors.find((el) => el === 'EMPTY_USERNAME') && step === 1 ? (
                 <p className='body-small'>Please select a username</p>
+              ) : errors.find((el) => el === 'EMPTY_EMAIL') && step === 2 ? (
+                <p className='body-small'>Please select your email</p>
               ) : (
-                errors.find((el) => el === 'EMPTY_EMAIL') &&
+                errors.find((el) => el === 'EMAIL_ALREADY_USED') &&
                 step === 2 && (
-                  <p className='body-small'>Please select your email</p>
+                  <p className='body-small'>This email is already used</p>
                 )
               )}
             </div>
@@ -163,7 +173,8 @@ export default function SignUp() {
                 <p className='body-small'>Please confirm your password</p>
               )
             ) : (
-              (errors.find((el) => el === 'UNMATCHING_PASSWORD') && step === 3) && (
+              errors.find((el) => el === 'UNMATCHING_PASSWORD') &&
+              step === 3 && (
                 <p className='body-small'>The passwords don't match</p>
               )
             )}

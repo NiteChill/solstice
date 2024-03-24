@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useOutletContext } from 'react-router-dom';
 
 export function useHandleEventSignUp() {
   const [errors, setErrors] = useState([]),
     [step, setStep] = useState(0),
+    [user, setUser] = useOutletContext(),
     [body, setBody] = useState({
       first_name: '',
       last_name: '',
@@ -107,34 +109,23 @@ export function useHandleEventSignUp() {
       setErrors(errors);
       return false;
     }
-    if (
-      body.first_name &&
-      body.last_name &&
-      body.username &&
-      body.age &&
-      body.email &&
-      body.password &&
-      body.password_confirm
-    ) {
-      if (body.password === body.password_confirm) {
-        console.log('hi');
-        // const response = await axios.post(
-        //   'http://localhost:3000/api/sign_up',
-        //   body,
-        //   {
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     withCredentials: true,
-        //   }
-        // );
-        // response.data.user && setUser(response.data.user);
-        // response.data.errors && setErrors(response.data.errors);
-        // console.log(errors);
-        // errors.find((el) => el === 'EMPTY_EMAIL');
-      }
-      else setErrors(['UNMATCHING_PASSWORD']);
-    }
+    if (body.password === body.password_confirm) {
+      console.log('hi');
+      const response = await axios.post(
+        'http://localhost:3000/api/sign_up',
+        body,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+      response.data.user && setUser(response.data.user);
+      response.data.errors && setErrors(response.data.errors);
+      if (response.data.errors.find((el) => el === 'EMAIL_ALREADY_USED'))
+        setStep(2);
+    } else setErrors(['UNMATCHING_PASSWORD']);
   }
   return [
     handleClick,
@@ -145,5 +136,7 @@ export function useHandleEventSignUp() {
     setStep,
     body,
     setBody,
+    user,
+    setUser
   ];
 }

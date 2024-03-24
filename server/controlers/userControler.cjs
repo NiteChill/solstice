@@ -52,7 +52,16 @@ const loginUser = async (req, res) => {
   }
 };
 
+const signUp = async (req, res) => {
+  if (await userModel.findOne({ email: req.body.email })) {
+    res.json({ errors: ['EMAIL_ALREADY_USED'] });
+    return;
+  }
+  
+};
+
 module.exports = {
   getUser,
   loginUser,
+  signUp,
 };
