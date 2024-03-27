@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useOutletContext } from 'react-router-dom';
+import validator from 'validator';
+
 
 export function useHandleEventSignUp() {
   const [errors, setErrors] = useState([]),
@@ -30,9 +32,9 @@ export function useHandleEventSignUp() {
         setErrors(tempArr);
         errors = tempArr;
       }
-      if (body.first_name === '' || body.first_name === null)
+      if (validator.isEmpty(body.first_name, { ignore_whitespace: true}))
         errors = [...errors, 'EMPTY_FIRST_NAME'];
-      if (body.last_name === '' || body.last_name === null)
+      if (validator.isEmpty(body.last_name, { ignore_whitespace: true }))
         errors = [...errors, 'EMPTY_LAST_NAME'];
       if (
         errors.find((el) => el === 'EMPTY_FIRST_NAME') ||
@@ -55,9 +57,10 @@ export function useHandleEventSignUp() {
         setErrors(tempArr);
         errors = tempArr;
       }
-      if (body.username === '' || body.username === null)
+      if (validator.isEmpty(body.username, { ignore_whitespace: true}))
         errors = [...errors, 'EMPTY_USERNAME'];
-      if (!body.age || body.age === null) errors = [...errors, 'EMPTY_AGE'];
+      if (validator.isEmpty(body.age, { ignore_whitespace: true }))
+        errors = [...errors, 'EMPTY_AGE'];
       if (
         errors.find((el) => el === 'EMPTY_USERNAME') ||
         errors.find((el) => el === 'EMPTY_AGE')
@@ -79,13 +82,23 @@ export function useHandleEventSignUp() {
         setErrors(tempArr);
         errors = tempArr;
       }
-      if (body.email === '' || body.email === null)
+      if (errors.find((el) => el === 'INVALID_EMAIL')) {
+        let tempArr = errors;
+        tempArr.splice(tempArr.indexOf('INVALID_EMAIL'), 1);
+        setErrors(tempArr);
+        errors = tempArr;
+      }
+      if (validator.isEmpty(body.email, { ignore_whitespace: true }))
         errors = [...errors, 'EMPTY_EMAIL'];
-      if (!body.password || body.password === null)
+      else {
+        if (!validator.isEmail(body.email)) errors = [...errors, 'INVALID_EMAIL'];
+      }
+      if (validator.isEmpty(body.password, { ignore_whitespace: true }))
         errors = [...errors, 'EMPTY_PASSWORD'];
       if (
         errors.find((el) => el === 'EMPTY_EMAIL') ||
-        errors.find((el) => el === 'EMPTY_PASSWORD')
+        errors.find((el) => el === 'EMPTY_PASSWORD') ||
+        errors.find((el) => el === 'INVALID_EMAIL')
       ) {
         setErrors(errors);
         return false;
@@ -103,7 +116,7 @@ export function useHandleEventSignUp() {
       setErrors(tempArr);
       errors = tempArr;
     }
-    if (body.password_confirm === '' || body.password_confirm === null)
+    if (validator.isEmpty(body.password_confirm, { ignore_whitespace: true }))
       errors = [...errors, 'EMPTY_PASSWORD_CONFIRM'];
     if (errors.find((el) => el === 'EMPTY_PASSWORD_CONFIRM')) {
       setErrors(errors);

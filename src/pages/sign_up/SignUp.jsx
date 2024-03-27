@@ -60,7 +60,9 @@ export default function SignUp() {
               (errors.find((el) => el === 'EMPTY_FIRST_NAME') && step === 0) ||
               (errors.find((el) => el === 'EMPTY_USERNAME') && step === 1) ||
               (errors.find((el) => el === 'EMPTY_EMAIL') && step === 2) ||
-              (errors.find((el) => el === 'EMAIL_ALREADY_USED') && step === 2)
+              (errors.find((el) => el === 'EMAIL_ALREADY_USED') &&
+                step === 2) ||
+              (errors.find((el) => el === 'INVALID_EMAIL') && step === 2)
                 ? '1.5rem'
                 : '1rem',
           }}
@@ -112,10 +114,13 @@ export default function SignUp() {
                 <p className='body-small'>Please select a username</p>
               ) : errors.find((el) => el === 'EMPTY_EMAIL') && step === 2 ? (
                 <p className='body-small'>Please select your email</p>
+              ) : errors.find((el) => el === 'EMAIL_ALREADY_USED') &&
+                step === 2 ? (
+                <p className='body-small'>This email is already used</p>
               ) : (
-                errors.find((el) => el === 'EMAIL_ALREADY_USED') &&
+                errors.find((el) => el === 'INVALID_EMAIL') &&
                 step === 2 && (
-                  <p className='body-small'>This email is already used</p>
+                  <p className='body-small'>Please select a valid email</p>
                 )
               )}
             </div>
