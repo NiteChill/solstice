@@ -48,7 +48,7 @@ export default function Login() {
         >
           <div>
             <input
-              type='email'
+              type='text'
               className='body-large'
               name='email'
               placeholder='Email'

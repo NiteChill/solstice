@@ -78,9 +78,7 @@ export default function SignUp() {
                       ? body.username
                       : step === 2 && body.email
                   }
-                  type={
-                    step === 0 || step === 1 ? 'text' : step === 2 && 'email'
-                  }
+                  type='text'
                   className='body-large'
                   name={
                     step === 0
