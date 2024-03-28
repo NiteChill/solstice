@@ -30,7 +30,6 @@
         width: 2rem;
         height: 2rem;
         border-radius: inherit;
-        background: var(--surface-container-high);
         flex-shrink: 0;
         & > img {
           width: inherit;
@@ -48,6 +47,18 @@
 .filled_small {
   & > div > div > span {
     color: var(--on-surface-variant);
+  }
+  &:hover > div > div {
+    background: var(--state-layer-on-surface-variant-008);
+  }
+  &:active > div > div {
+    background: var(--state-layer-on-surface-variant-012);
+  }
+}
+
+.filled_small_primary {
+  & > div > div > span {
+    color: var(--on-secondary-container);
   }
   &:hover > div > div {
     background: var(--state-layer-on-surface-variant-008);

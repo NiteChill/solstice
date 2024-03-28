@@ -15,6 +15,8 @@ export default function IconButton({
           ? styles.filled_small
           : style === 'filled'
           ? styles.filled
+          : style === 'filled_small_primary'
+          ? styles.filled_small_primary
           : styles.standard
       } ${overridePadding && styles.override_padding} ${
         style === 'standard' && highContrast && styles.high_contrast
@@ -23,19 +25,17 @@ export default function IconButton({
     >
       <div>
         <div>
-          {style === 'filled_small' ? (
+          {style === 'filled_small' || style === 'filled_small_primary' ? (
             <div
               style={{
-                background: 'var(--surface-container-high)',
+                background:
+                  style === 'filled_small'
+                    ? 'var(--surface-container-high)'
+                    : 'var(--secondary-container)',
               }}
             ></div>
           ) : (
-            avatar && (
-              <img
-                src={avatar}
-                alt='profilePicture'
-              />
-            )
+            avatar && <img src={avatar} alt='profilePicture' />
           )}
 
           {!avatar && <span className='material-symbols-outlined'>{icon}</span>}

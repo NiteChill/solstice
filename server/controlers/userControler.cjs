@@ -1,7 +1,7 @@
-const validator = require('validator');
-
-const userModel = require('../models/userModel.cjs'),
-  bcrypt = require('bcrypt');
+const validator = require('validator'),
+  userModel = require('../models/userModel.cjs'),
+  bcrypt = require('bcrypt'),
+  saltRounds = 10;
 
 const getUser = (req, res) => {
   if (req.session.user) res.json({ user: req.session.user });
@@ -57,17 +57,57 @@ const loginUser = async (req, res) => {
 };
 
 const signUp = async (req, res) => {
-  const first_name = validator.escape(validator.trim(req.body.first_name ?? '')) ?? '',
-    last_name = validator.escape(validator.trim(req.body.last_name ?? '')) ?? '',
+  console.log(req.body.password);
+  const first_name =
+      validator.escape(validator.trim(req.body.first_name ?? '')) ?? '',
+    last_name =
+      validator.escape(validator.trim(req.body.last_name ?? '')) ?? '',
     username = validator.escape(validator.trim(req.body.username ?? '')) ?? '',
     age = validator.escape(validator.trim(req.body.age ?? '')) ?? '',
     email = validator.escape(validator.trim(req.body.email ?? '')) ?? '',
-    password = validator.escape(validator.trim(req.body.password ?? '')) ?? '',
-    password_confirm = validator.escape(validator.trim(req.body.password_confirm ?? '')) ?? '';
+    password = validator.escape(validator.trim(req.body.password ?? '')) ?? '';
   if (await userModel.findOne({ email: email })) {
     res.json({ errors: ['EMAIL_ALREADY_USED'] });
     return;
   }
+  // let hashPassword;
+  // bcrypt.hash(password, saltRounds, (err, hash) => {
+  //   hashPassword = hash;
+  //   console.log(hashPassword);
+  // });
+  // const hashPassword = bcrypt.hash(password, saltRounds, async (err, hash) => hash);
+  // const hashPassword = await new Promise((resolve, reject) => {
+  //   bcrypt.hash(password, saltRounds, function (err, hash) {
+  //     if (err) reject(err)
+  //     resolve(hash)
+  //   });
+  const hashPassword = await new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) reject(err);
+      resolve(hash);
+    });
+  })
+  console.log(hashPassword + 'hi');
+  const newUser = new userModel({
+    first_name: first_name,
+    last_name: last_name,
+    username: username,
+    age: age,
+    email: email,
+    password: hashPassword,
+  });
+  newUser.save();
+  const dbUser = await userModel.findOne({ email: email }),
+    userData = {
+      id: dbUser._id,
+      name: dbUser.name,
+      email: dbUser.email,
+      age: dbUser.age,
+      createdAt: dbUser.createdAt,
+      profilePicture: dbUser.profilePicture,
+    };
+  req.session.user = userData;
+  res.send({ user: userData });
 };
 
 module.exports = {

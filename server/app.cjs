@@ -6,7 +6,7 @@ const express = require('express'),
   app = express(),
   port = process.env.PORT || 3000,
   session = require('express-session'),
-  recipesRoutes = require('./routes/userRoutes.cjs');
+  userRoutes = require('./routes/userRoutes.cjs');
 
 // connection
 mongoose.connect(process.env.ATLAS_URI);
@@ -37,7 +37,7 @@ app.use(
   })
 );
 
-app.use('/api', recipesRoutes);
+app.use('/api', userRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

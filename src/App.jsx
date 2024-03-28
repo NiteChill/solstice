@@ -34,7 +34,7 @@ export default function App() {
           <Navbar
             location={location}
             loggedIn={user && true}
-            avatar={user && `data:image/${user.profilePicture.contentType};base64,${user.profilePicture.data.toString('base64')}`}
+            avatar={user?.profilePicture && `data:image/${user.profilePicture.contentType};base64,${user.profilePicture.data.toString('base64')}`}
           />
           <Outlet context={[user, setUser]} />
         </>
