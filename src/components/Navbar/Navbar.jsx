@@ -17,7 +17,7 @@ export default function Navbar({ loggedIn = false, location, avatar = 'none' }) 
           icon={location === '/' ? 'menu' : 'arrow_back'}
           overridePadding
           highContrast
-          onClick={() => location === '/login' || location === '/sign_up' && navigate(-1)}
+          onClick={() => (location === '/login' || location === '/sign_up') && navigate(-1)}
         />
       )}
       <h1 className='title-large'>

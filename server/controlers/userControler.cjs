@@ -36,9 +36,11 @@ const loginUser = async (req, res) => {
           // connection <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
           const userData = {
             id: user._id,
-            name: user.name,
-            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            username: user.username,
             age: user.age,
+            email: user.email,
             createdAt: user.createdAt,
             profilePicture: user.profilePicture,
           };
@@ -100,9 +102,11 @@ const signUp = async (req, res) => {
   const dbUser = await userModel.findOne({ email: email }),
     userData = {
       id: dbUser._id,
-      name: dbUser.name,
-      email: dbUser.email,
+      first_name: dbUser.first_name,
+      last_name: dbUser.last_name,
+      username: dbUser.username,
       age: dbUser.age,
+      email: dbUser.email,
       createdAt: dbUser.createdAt,
       profilePicture: dbUser.profilePicture,
     };
