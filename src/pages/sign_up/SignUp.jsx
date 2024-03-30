@@ -157,6 +157,7 @@ export default function SignUp() {
                     onInput={(e) =>
                       setBody({ ...body, [e.target.name]: e.target.value })
                     }
+                    style={{ paddingRight: '3rem' }}
                   />
                   <IconButton
                     icon={visibility ? 'visibility_off' : 'visibility'}

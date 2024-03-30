@@ -3,13 +3,15 @@ import Button from '../../components/Button/Button';
 import styles from './Login.module.scss';
 import axios from 'axios';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import IconButton from '../../components/IconButton/IconButton';
 // import { check } from 'express-validator';
 
 export default function Login() {
   const [body, setBody] = useState(),
     [user, setUser] = useOutletContext(),
     [errors, setErrors] = useState([]),
-    navigate = useNavigate();
+    navigate = useNavigate(),
+    [visibility, setVisibility] = useState(false);
   async function handleSubmit(e) {
     e.preventDefault();
     const response = await axios.post('http://localhost:3000/api/login', body, {
@@ -67,7 +69,7 @@ export default function Login() {
           </div>
           <div>
             <input
-              type='password'
+              type={visibility ? 'text' : 'password'}
               className='body-large'
               name='password'
               placeholder='Password'
@@ -75,6 +77,11 @@ export default function Login() {
               onInput={(e) =>
                 setBody({ ...body, [e.target.name]: e.target.value })
               }
+              style={{paddingRight: '3rem'}}
+            />
+            <IconButton
+              icon={visibility ? 'visibility_off' : 'visibility'}
+              onClick={() => setVisibility(!visibility)}
             />
             {errors.find((el) => el === 'EMPTY_PASSWORD') ? (
               <p className='body-small'>Please select your password</p>
@@ -86,7 +93,11 @@ export default function Login() {
           </div>
         </div>
         <div className={styles.container_btn}>
-          <Button style='text' label='Sign up' onClick={() => navigate('/sign_up')} />
+          <Button
+            style='text'
+            label='Sign up'
+            onClick={() => navigate('/sign_up')}
+          />
           <button type='submit'>
             <Button label='Log in' />
           </button>

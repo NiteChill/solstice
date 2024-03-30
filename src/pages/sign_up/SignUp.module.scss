@@ -88,6 +88,9 @@ input {
   &::placeholder {
     color: var(--on-surface-variant);
   }
+  &:hover {
+    border: 1px solid var(--on-surface);
+  }
   &:focus {
     outline: 2px solid var(--primary);
     outline-offset: -1px;

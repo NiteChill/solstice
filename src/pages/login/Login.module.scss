@@ -47,6 +47,7 @@
       flex-direction: column;
       gap: 1rem;
       & > div {
+        position: relative;
         display: flex;
         flex-direction: column;
         height: 3.5rem;
@@ -63,10 +64,18 @@
           &::placeholder {
             color: var(--on-surface-variant);
           }
+          &:hover {
+            border: 1px solid var(--on-surface);
+          }
           &:focus {
             outline: 2px solid var(--primary);
             outline-offset: -1px;
           }
+        }
+        & > div {
+          position: absolute;
+          right: 0;
+          top: 0.25rem;
         }
         & > p {
           color: var(--error);
