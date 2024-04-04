@@ -8,7 +8,7 @@ export default function Discover() {
       <div>
         {user ? (
           <div>
-            <h1 className='display-medium'>{`Hi, ${user.first_name}.`}</h1>
+            <h1 className='display-medium'>{`Hi, ${user.username}.`}</h1>
             <h2 className='display-medium'>What do you want to read today?</h2>
           </div>
         ) : (

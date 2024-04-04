@@ -101,9 +101,17 @@ export default function SignUp() {
                       ? 'username'
                       : step === 2 && 'email'
                   }
-                  onInput={(e) =>
-                    setBody({ ...body, [e.target.name]: e.target.value })
-                  }
+                  onInput={(e) => {
+                    setBody({ ...body, [e.target.name]: e.target.value });
+                    if (
+                      step === 2 &&
+                      errors.find((el) => el === 'EMAIL_ALREADY_USED')
+                    ) {
+                      let tempArr = errors;
+                      tempArr.splice(tempArr.indexOf('EMAIL_ALREADY_USED'), 1);
+                      setErrors(tempArr);
+                    }
+                  }}
                 />
               )}
               {errors.find((el) => el === 'EMPTY_FIRST_NAME') && step === 0 ? (
