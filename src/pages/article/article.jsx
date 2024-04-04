@@ -11,7 +11,7 @@ export default function Article() {
     link === 'new' && setEdit(true);
   }, []);
   useEffect(() => {
-    !user && link === 'new' && navigate('/');
+    !user && edit && navigate('/');
   }, [user]);
   return (
     <div className={styles.article}>
