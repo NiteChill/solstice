@@ -8,7 +8,8 @@ import LoadingElement from './components/LoadingElement/LoadingElement';
 export default function App() {
   const [theme, setTheme] = useState('light'),
     location = useLocation().pathname,
-    [user, setUser] = useState('loading');
+    [user, setUser] = useState('loading'),
+    [edit, setEdit] = useState(null);
   useEffect(() => {
     if (
       window.matchMedia &&
@@ -25,6 +26,9 @@ export default function App() {
     }
     getCookie();
   }, []);
+  useEffect(() => {
+    setEdit(null);
+  }, [location])
   return (
     <div className={`App ${theme}`}>
       {user === 'loading' ? (
@@ -34,9 +38,10 @@ export default function App() {
           <Navbar
             location={location}
             loggedIn={user && true}
-            avatar={user?.profilePicture && `data:image/${user.profilePicture.contentType};base64,${user.profilePicture.data.toString('base64')}`}
+              avatar={user?.profilePicture && `data:image/${user.profilePicture.contentType};base64,${user.profilePicture.data.toString('base64')}`}
+              edit={edit}
           />
-          <Outlet context={[user, setUser]} />
+          <Outlet context={[user, setUser, edit, setEdit]} />
         </>
       )}
     </div>

@@ -26,7 +26,7 @@ export default function Login() {
     errors.find((el) => el === 'EMPTY_EMAIL');
   }
   useEffect(() => {
-    if (user) navigate('/');
+    user && navigate('/');
   }, [user]);
   return (
     <div className={styles.login}>
@@ -77,7 +77,7 @@ export default function Login() {
               onInput={(e) =>
                 setBody({ ...body, [e.target.name]: e.target.value })
               }
-              style={{paddingRight: '3rem'}}
+              style={{ paddingRight: '3rem' }}
             />
             <IconButton
               icon={visibility ? 'visibility_off' : 'visibility'}

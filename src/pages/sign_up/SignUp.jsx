@@ -21,7 +21,7 @@ export default function SignUp() {
       setUser,
     ] = useHandleEventSignUp();
   useEffect(() => {
-    if (user) navigate('/');
+    user && navigate('/');
   }, [user]);
   useEffect(() => {
     setVisibility(false);

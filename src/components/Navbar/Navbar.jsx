@@ -1,10 +1,11 @@
 import IconButton from '../IconButton/IconButton';
 import styles from './Navbar.module.scss';
 import Button from '../Button/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function Navbar({ loggedIn = false, location, avatar = 'none' }) {
-  const navigate = useNavigate();
+export default function Navbar({ loggedIn = false, location, avatar = 'none', edit }) {
+  const navigate = useNavigate(),
+    { link } = useParams();
   return (
     <div className={styles.navbar}>
       {!loggedIn && location === '/' && (
@@ -14,11 +15,11 @@ export default function Navbar({ loggedIn = false, location, avatar = 'none' }) 
       )}
       {(loggedIn || location === '/login' || location === '/sign_up') && (
         <IconButton
-          style={location === '/editor' && 'standard_primary'}
-          icon={location === '/' ? 'menu' : location === '/editor' ? 'done' : 'arrow_back'}
+          style={edit && 'standard_primary'}
+          icon={location === '/' ? 'menu' : edit ? 'done' : 'arrow_back'}
           overridePadding
           highContrast
-          onClick={() => (location === '/login' || location === '/sign_up') && navigate(-1)}
+          onClick={() => (location === '/login' || location === '/sign_up') ? navigate(-1) : link === 'new' && console.log('create')}
         />
       )}
       <h1 className='title-large'>
@@ -28,12 +29,12 @@ export default function Navbar({ loggedIn = false, location, avatar = 'none' }) 
           ? 'Log in'
           : location === '/sign_up' && 'Sign up'}
       </h1>
-      {loggedIn && location === '/editor' &&  <IconButton icon='match_case' />}
-      {loggedIn && <IconButton icon='add' />}
+      {loggedIn && edit &&  <IconButton icon='match_case' />}
+      {loggedIn && <IconButton icon='add' onClick={() => navigate('/article/new')} />}
       {location !== '/login' && location !== '/sign_up' && (
-        <IconButton icon={location === '/editor' ? 'more_vert' : 'search'} />
+        <IconButton icon={edit ? 'more_vert' : 'search'} />
       )}
-      {loggedIn && location !== '/editor' && (
+      {loggedIn && !edit && (
         <IconButton
           avatar={avatar !== 'none' && avatar}
           icon={avatar === 'none' && 'person'}
