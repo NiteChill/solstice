@@ -17,6 +17,8 @@ export default function IconButton({
           ? styles.filled
           : style === 'filled_small_primary'
           ? styles.filled_small_primary
+          : style === 'standard_primary'
+          ? styles.standard_primary
           : styles.standard
       } ${overridePadding && styles.override_padding} ${
         style === 'standard' && highContrast && styles.high_contrast

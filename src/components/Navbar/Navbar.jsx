@@ -14,7 +14,8 @@ export default function Navbar({ loggedIn = false, location, avatar = 'none' }) 
       )}
       {(loggedIn || location === '/login' || location === '/sign_up') && (
         <IconButton
-          icon={location === '/' ? 'menu' : 'arrow_back'}
+          style={location === '/editor' && 'standard_primary'}
+          icon={location === '/' ? 'menu' : location === '/editor' ? 'done' : 'arrow_back'}
           overridePadding
           highContrast
           onClick={() => (location === '/login' || location === '/sign_up') && navigate(-1)}
@@ -27,11 +28,12 @@ export default function Navbar({ loggedIn = false, location, avatar = 'none' }) 
           ? 'Log in'
           : location === '/sign_up' && 'Sign up'}
       </h1>
+      {loggedIn && location === '/editor' &&  <IconButton icon='match_case' />}
       {loggedIn && <IconButton icon='add' />}
       {location !== '/login' && location !== '/sign_up' && (
-        <IconButton icon='search' />
+        <IconButton icon={location === '/editor' ? 'more_vert' : 'search'} />
       )}
-      {loggedIn && (
+      {loggedIn && location !== '/editor' && (
         <IconButton
           avatar={avatar !== 'none' && avatar}
           icon={avatar === 'none' && 'person'}

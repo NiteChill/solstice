@@ -44,7 +44,8 @@
 }
 
 .standard,
-.filled_small {
+.filled_small,
+.standard_primary {
   & > div > div > span {
     color: var(--on-surface-variant);
   }
@@ -91,4 +92,10 @@
 
 .high_contrast > div > div > span {
   color: var(--on-surface);
+}
+
+.standard_primary {
+  & > div > div > span {
+    color: var(--primary);
+  }
 }
