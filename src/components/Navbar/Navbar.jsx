@@ -2,10 +2,23 @@ import IconButton from '../IconButton/IconButton';
 import styles from './Navbar.module.scss';
 import Button from '../Button/Button';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
-export default function Navbar({ loggedIn = false, location, avatar = 'none', edit }) {
+export default function Navbar({
+  loggedIn = false,
+  location,
+  avatar = 'none',
+  edit,
+}) {
   const navigate = useNavigate(),
-    { link } = useParams();
+    { link } = useParams(),
+    handleCreate = async () => {
+      const response = await axios.get('http://localhost:3000/api/new', {
+        withCredentials: true,
+      });
+      if (response.data.state === 'ok') return response.data.id;
+      else return false;
+    };
   return (
     <div className={styles.navbar}>
       {!loggedIn && location === '/' && (
@@ -19,7 +32,11 @@ export default function Navbar({ loggedIn = false, location, avatar = 'none', ed
           icon={location === '/' ? 'menu' : edit ? 'done' : 'arrow_back'}
           overridePadding
           highContrast
-          onClick={() => (location === '/login' || location === '/sign_up') ? navigate(-1) : link === 'new' && console.log('create')}
+          onClick={() =>
+            location === '/login' || location === '/sign_up'
+              ? navigate(-1)
+              : edit && console.log('create')
+          }
         />
       )}
       <h1 className='title-large'>
@@ -27,10 +44,20 @@ export default function Navbar({ loggedIn = false, location, avatar = 'none', ed
           ? 'Solstice'
           : location === '/login'
           ? 'Log in'
-          : location === '/sign_up' && 'Sign up'}
+          : location === '/sign_up'
+          ? 'Sign up'
+          : link && link}
       </h1>
-      {loggedIn && edit &&  <IconButton icon='match_case' />}
-      {loggedIn && <IconButton icon='add' onClick={() => navigate('/article/new')} />}
+      {loggedIn && edit && <IconButton icon='match_case' />}
+      {loggedIn && (
+        <IconButton
+          icon='add'
+          onClick={async () => {
+            const id = await handleCreate();
+            id && navigate(`/article/${id}`);
+          }}
+        />
+      )}
       {location !== '/login' && location !== '/sign_up' && (
         <IconButton icon={edit ? 'more_vert' : 'search'} />
       )}

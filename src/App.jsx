@@ -9,7 +9,7 @@ export default function App() {
   const [theme, setTheme] = useState('light'),
     location = useLocation().pathname,
     [user, setUser] = useState('loading'),
-    [edit, setEdit] = useState(null);
+    [edit, setEdit] = useState(false);
   useEffect(() => {
     if (
       window.matchMedia &&

@@ -6,7 +6,7 @@ const express = require('express'),
   app = express(),
   port = process.env.PORT || 3000,
   session = require('express-session'),
-  userRoutes = require('./routes/userRoutes.cjs');
+  userRoutes = require('./routes/routes.cjs');
 
 // connection
 mongoose.connect(process.env.ATLAS_URI);

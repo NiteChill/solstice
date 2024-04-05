@@ -8,11 +8,11 @@ export default function Article() {
     [body, setBody] = useState([]),
     navigate = useNavigate();
   useEffect(() => {
-    link === 'new' && setEdit(true);
+    link === 'New' && setEdit(true);
   }, []);
   useEffect(() => {
     !user && edit && navigate('/');
-  }, [user]);
+  }, [user, edit]);
   return (
     <div className={styles.article}>
       <input
@@ -28,7 +28,6 @@ export default function Article() {
           reader.addEventListener('load', (e) => {
             input.target.style.background = `url(${e.target.result}) no-repeat center/cover`;
             setBody({ ...body, [input.target.name]: e.target.result });
-            console.log(e.target.result);
           });
         }}
       />

@@ -8,12 +8,12 @@ export default function Discover() {
       <div>
         {user ? (
           <div>
-            <h1 className='display-medium'>{`Hi, ${user.username}.`}</h1>
+            <h1 className='display-medium' style={{lineHeight: '3.5rem'}}>{`Hi, ${user.username}.`}</h1>
             <h2 className='display-medium'>What do you want to read today?</h2>
           </div>
         ) : (
           <div>
-            <h1 className='display-medium'>{`Welcome to Solstice!`}</h1>
+            <h1 className='display-medium'>Welcome to Solstice!</h1>
             <h2 className='display-medium'>Where stories come alive.</h2>
           </div>
         )}

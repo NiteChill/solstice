@@ -72,17 +72,6 @@ const signUp = async (req, res) => {
     res.json({ errors: ['EMAIL_ALREADY_USED'] });
     return;
   }
-  // let hashPassword;
-  // bcrypt.hash(password, saltRounds, (err, hash) => {
-  //   hashPassword = hash;
-  //   console.log(hashPassword);
-  // });
-  // const hashPassword = bcrypt.hash(password, saltRounds, async (err, hash) => hash);
-  // const hashPassword = await new Promise((resolve, reject) => {
-  //   bcrypt.hash(password, saltRounds, function (err, hash) {
-  //     if (err) reject(err)
-  //     resolve(hash)
-  //   });
   const hashPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, (err, hash) => {
       if (err) reject(err);
