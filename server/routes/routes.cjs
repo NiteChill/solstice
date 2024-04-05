@@ -6,6 +6,7 @@ const express = require('express'),
 router.get('/', userRoutes.getUser);
 router.post('/login', userRoutes.loginUser);
 router.post('/sign_up', userRoutes.signUp);
-router.get('/new', articleRoutes.createArticle);
+router.get('/create_article', articleRoutes.createArticle);
+router.post('/get_single_article', articleRoutes.getSingleArticle);
 
 module.exports = router;

@@ -29,7 +29,11 @@
     justify-content: center;
   }
   & > h1 {
+    min-width: 0;
     flex: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     color: var(--on-surface-variant);
   }
   &::before {

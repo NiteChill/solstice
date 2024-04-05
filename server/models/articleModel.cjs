@@ -4,7 +4,7 @@ const ArticleSchema = new mongoose.Schema(
   {
     _id: {
       type: mongoose.ObjectId,
-      default: new mongoose.Types.ObjectId
+      default: new mongoose.Types.ObjectId()
     },
     authorId: {
       type: mongoose.ObjectId,

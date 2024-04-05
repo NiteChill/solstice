@@ -9,13 +9,17 @@ export default function Navbar({
   location,
   avatar = 'none',
   edit,
+  setEdit
 }) {
   const navigate = useNavigate(),
     { link } = useParams(),
     handleCreate = async () => {
-      const response = await axios.get('http://localhost:3000/api/new', {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        'http://localhost:3000/api/create_article',
+        {
+          withCredentials: true,
+        }
+      );
       if (response.data.state === 'ok') return response.data.id;
       else return false;
     };
@@ -54,7 +58,10 @@ export default function Navbar({
           icon='add'
           onClick={async () => {
             const id = await handleCreate();
-            id && navigate(`/article/${id}`);
+            if (id) {
+              navigate(`/article/${id}`);
+              setEdit(true);
+            }
           }}
         />
       )}

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import styles from './article.module.scss';
 import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
@@ -6,9 +7,25 @@ export default function Article() {
   const { link } = useParams(),
     [user, setUser, edit, setEdit] = useOutletContext(),
     [body, setBody] = useState([]),
+    [article, setArticle] = useState(null),
     navigate = useNavigate();
   useEffect(() => {
-    link === 'New' && setEdit(true);
+    const getSingleArticle = async () => {
+      const response = await axios.post(
+        'http://localhost:3000/api/get_single_article',
+        { id: link },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.data?.error) navigate('/');
+      else if (response.data?.article) setArticle(response.data.article);
+      console.log(article);
+    };
+    getSingleArticle();
   }, []);
   useEffect(() => {
     !user && edit && navigate('/');

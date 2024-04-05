@@ -59,7 +59,6 @@ const loginUser = async (req, res) => {
 };
 
 const signUp = async (req, res) => {
-  console.log(req.body.password);
   const first_name =
       validator.escape(validator.trim(req.body.first_name ?? '')) ?? '',
     last_name =

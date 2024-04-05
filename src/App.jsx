@@ -27,8 +27,8 @@ export default function App() {
     getCookie();
   }, []);
   useEffect(() => {
-    setEdit(null);
-  }, [location])
+    location.slice(0, 8) !== '/article' && setEdit(false);
+  }, [location]);
   return (
     <div className={`App ${theme}`}>
       {user === 'loading' ? (
@@ -38,8 +38,14 @@ export default function App() {
           <Navbar
             location={location}
             loggedIn={user && true}
-              avatar={user?.profilePicture && `data:image/${user.profilePicture.contentType};base64,${user.profilePicture.data.toString('base64')}`}
-              edit={edit}
+            avatar={
+              user?.profilePicture &&
+              `data:image/${
+                user.profilePicture.contentType
+              };base64,${user.profilePicture.data.toString('base64')}`
+            }
+            edit={edit}
+            setEdit={setEdit}
           />
           <Outlet context={[user, setUser, edit, setEdit]} />
         </>
