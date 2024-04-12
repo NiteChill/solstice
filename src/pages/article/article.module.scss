@@ -3,6 +3,17 @@
   flex-direction: column;
   gap: 0.5rem;
   padding: 1.5rem;
+  flex: 1 1;
+  height: calc(100% - 4.5rem);
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    background: none;
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--outline-variant);
+    width: 100%;
+  }
 }
 
 .img {
