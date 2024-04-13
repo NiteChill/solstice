@@ -1,4 +1,6 @@
 .light {
+  --bullet: url('./assets/img/list-bullet.svg');
+
   /* brand */
   --brand-gradient: linear-gradient(
     137deg,

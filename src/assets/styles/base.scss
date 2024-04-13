@@ -55,8 +55,23 @@ input::-webkit-inner-spin-button {
     padding: 0 1.25rem;
   }
 
-  li::marker {
-    color: var(--on-surface);
+  li {
+    position: relative;
+    list-style: none;
+    &::before {
+      fill: var(--on-surface);
+      display: inline-block;
+      position: absolute;
+      top: 8px;
+      left: -16px;
+      width: 8px;
+      height: 8px;
+      rotate: calc(var(--rotation) * 36deg);
+      background-image: var(--bullet);
+      line-height: 0;
+      text-align: center;
+      content: '';
+    }
   }
 
   h1 {
@@ -119,7 +134,7 @@ input::-webkit-inner-spin-button {
   pre {
     background: var(--inverse-surface);
     color: var(--inverse-on-surface);
-    font-family: "JetBrains Mono";
+    font-family: 'JetBrains Mono';
     padding: 0.75rem 1rem;
     border-radius: 0.375rem;
 

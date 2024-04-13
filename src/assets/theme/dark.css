@@ -1,4 +1,6 @@
 .dark {
+  --bullet: url('./assets/img/list-bullet-dark.svg');
+
   /* brand */
   --brand-gradient: linear-gradient(
     137deg,
