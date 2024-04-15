@@ -9,7 +9,8 @@ export default function App() {
   const [theme, setTheme] = useState('light'),
     location = useLocation().pathname,
     [user, setUser] = useState('loading'),
-    [edit, setEdit] = useState(false);
+    [edit, setEdit] = useState(false),
+    [article, setArticle] = useState({});
   useEffect(() => {
     if (
       window.matchMedia &&
@@ -45,9 +46,10 @@ export default function App() {
               };base64,${user.profilePicture.data.toString('base64')}`
             }
             edit={edit}
-            setEdit={setEdit}
+              setEdit={setEdit}
+              title={article?.title}
           />
-          <Outlet context={[user, setUser, edit, setEdit]} />
+          <Outlet context={[user, setUser, edit, setEdit, article, setArticle]} />
         </>
       )}
     </div>

@@ -9,10 +9,10 @@ export default function Navbar({
   location,
   avatar = 'none',
   edit,
-  setEdit
+  setEdit,
+  title,
 }) {
   const navigate = useNavigate(),
-    { link } = useParams(),
     handleCreate = async () => {
       const response = await axios.get(
         'http://localhost:3000/api/create_article',
@@ -25,60 +25,85 @@ export default function Navbar({
     };
   return (
     <div className={styles.navbar}>
-      {!loggedIn && location === '/' && (
-        <div className={styles.logo}>
-          <div></div>
-        </div>
+      {location === '/' && loggedIn && (
+        <>
+          <IconButton icon='menu' overridePadding highContrast />
+          <h1 className='title-large'>Solstice</h1>
+          <IconButton
+            icon='add'
+            onClick={async () => {
+              const id = await handleCreate();
+              if (id) {
+                navigate(`/article/${id}`);
+                setEdit(true);
+              }
+            }}
+          />
+          <IconButton icon='search' />
+          <IconButton
+            avatar={avatar !== 'none' && avatar}
+            icon={avatar === 'none' && 'person'}
+            style={avatar === 'none' && 'filled_small_primary'}
+          />
+        </>
       )}
-      {(loggedIn || location === '/login' || location === '/sign_up') && (
-        <IconButton
-          style={edit && 'standard_primary'}
-          icon={location === '/' ? 'menu' : edit ? 'done' : 'arrow_back'}
-          overridePadding
-          highContrast
-          onClick={() =>
-            location === '/login' || location === '/sign_up'
-              ? navigate(-1)
-              : edit && console.log('create')
-          }
-        />
+
+      {location === '/' && !loggedIn && (
+        <>
+          <div className={styles.logo}>
+            <div></div>
+          </div>
+          <h1 className='title-large'>Solstice</h1>
+          <div className={styles.button}>
+            <Button label='Log in' onClick={() => navigate('/login')} />
+          </div>
+        </>
       )}
-      <h1 className='title-large'>
-        {location === '/'
-          ? 'Solstice'
-          : location === '/login'
-          ? 'Log in'
-          : location === '/sign_up'
-          ? 'Sign up'
-          : link && link}
-      </h1>
-      {loggedIn && edit && <IconButton icon='match_case' />}
-      {loggedIn && (
-        <IconButton
-          icon='add'
-          onClick={async () => {
-            const id = await handleCreate();
-            if (id) {
-              navigate(`/article/${id}`);
-              setEdit(true);
-            }
-          }}
-        />
+
+      {(location === '/login' || location === '/sign_up') && (
+        <>
+          <IconButton
+            icon='arrow_back'
+            overridePadding
+            highContrast
+            onClick={() => navigate(-1)}
+          />
+          <h1 className='title-large'>
+            {location === '/login' ? 'Log in' : 'Sign up'}
+          </h1>
+        </>
       )}
-      {location !== '/login' && location !== '/sign_up' && (
-        <IconButton icon={edit ? 'more_vert' : 'search'} />
+
+      {location.slice(0, 8) === '/article' && edit && (
+        <>
+          <IconButton
+            style='standard_primary'
+            icon='done'
+            overridePadding
+            highContrast
+            onClick={() => ''}
+          />
+          <h1 className='title-large'>{title}</h1>
+          <IconButton icon='match_case' />
+          <IconButton icon='add' />
+          <IconButton icon='more_vert' />
+        </>
       )}
-      {loggedIn && !edit && (
-        <IconButton
-          avatar={avatar !== 'none' && avatar}
-          icon={avatar === 'none' && 'person'}
-          style={avatar === 'none' && 'filled_small_primary'}
-        />
-      )}
-      {!loggedIn && location !== '/login' && location !== '/sign_up' && (
-        <div className={styles.button}>
-          <Button label='Log in' onClick={() => navigate('/login')} />
-        </div>
+
+      {location.slice(0, 8) === '/article' && !edit && (
+        <>
+          <IconButton
+            icon='arrow_back'
+            overridePadding
+            highContrast
+            onClick={() => navigate(-1)}
+          />
+          <h1 className='title-large'>{title}</h1>
+          {/* <IconButton icon='favorite' /> */}
+          {/* <IconButton icon='share' /> */}
+          <IconButton icon='message' />
+          <IconButton icon='more_vert' />
+        </>
       )}
     </div>
   );

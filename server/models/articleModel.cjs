@@ -14,19 +14,9 @@ const ArticleSchema = new mongoose.Schema(
       type: String,
       default: 'My new article title!'
     },
-    article: {
-      type: Object,
-      required: true,
-      default: [
-        {
-          element: 'img',
-          content: null
-        },
-        {
-          element: 'title',
-          content: 'My new article title!'
-        }
-      ]
+    content: {
+      type: String,
+      default: '<h4>Good writing!</h4>',
     },
     createdAt: {
       type: Date,
