@@ -12,7 +12,7 @@ const ArticleSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      default: 'My new article title!'
+      default: 'Untitled'
     },
     content: {
       type: String,

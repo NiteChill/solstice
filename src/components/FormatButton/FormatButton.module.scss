@@ -1,0 +1,43 @@
+.format_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  color: var(--on-surface-variant);
+  width: fit-content;
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.25rem;
+    border-radius: inherit;
+    & > .override_size {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 0.75rem;
+      height: 0.75rem;
+      & > span {
+        font-size: 1.25rem;
+      }
+    }
+  }
+  &:hover > div {
+    background: var(--state-layer-on-surface-variant-008);
+  }
+  &:active > div {
+    background: var(--state-layer-on-surface-variant-012);
+  }
+}
+
+.active {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  &:hover > div {
+    background: var(--state-layer-on-secondary-container-008);
+  }
+  &:active > div {
+    background: var(--state-layer-on-secondary-container-012);
+  }
+}

@@ -1,0 +1,32 @@
+.FAB {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  width: fit-content;
+  box-shadow: var(--elevation-3);
+  cursor: pointer;
+  transition: box-shadow .2s cubic-bezier(0.2, 0, 0, 1);
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem 1rem 1rem;
+    border-radius: inherit;
+  }
+  &:hover {
+    box-shadow: var(--elevation-4);
+    & > div {
+      background: var(--state-layer-on-primary-container-008);
+    }
+  }
+  &:active {
+    box-shadow: var(--elevation-3);
+    & > div {
+      background: var(--state-layer-on-primary-container-012);
+    }
+  }
+}

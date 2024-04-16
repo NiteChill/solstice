@@ -13,7 +13,7 @@ const createArticle = async (req, res) => {
       : `
         <img src="https://lh3.googleusercontent.com/186ZGdDhTLrvBaobO6wvilzpbjD45K7I9ifjwvk9Qt2HetzkWX0W5BN3Vi0tMYKDQPa11rbghe1m1syRvVbZhkZDajHhxQNc9B_pcCBrVVGvMEOZc-k=w2400-rj" contenteditable="false" draggable="true" class="ProseMirror-selectednode">
         <h4>
-          Welcome to solstice's article editor!
+          Welcome to solstice's text editor!
         </h4>
         <p>
           Try all the tools provided to you by <strong><a href='https://www.tiptap.dev'>TipTap</a></strong>'s <strong><em>rich text editor</em></strong> and stylized by me :)
