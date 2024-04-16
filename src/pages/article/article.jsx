@@ -89,7 +89,7 @@ export default function Article() {
             setBody({ ...body, [input.target.name]: e.target.result });
           });
         }}
-      /> */}
+        /> */}
         <Editor editor={editor} edit={edit} />
         {user && article.authorId === user?.id && !edit && (
           <div className={styles.FAB}>

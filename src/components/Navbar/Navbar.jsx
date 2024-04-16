@@ -1,7 +1,7 @@
 import IconButton from '../IconButton/IconButton';
 import styles from './Navbar.module.scss';
 import Button from '../Button/Button';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Navbar({
