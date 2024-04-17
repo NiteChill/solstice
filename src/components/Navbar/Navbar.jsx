@@ -11,6 +11,9 @@ export default function Navbar({
   edit,
   setEdit,
   title,
+  editor,
+  article,
+  user,
 }) {
   const navigate = useNavigate(),
     handleCreate = async () => {
@@ -22,7 +25,24 @@ export default function Navbar({
       );
       if (response.data.state === 'ok') return response.data.id;
       else return false;
+    },
+    handleSubmit = async () => {
+      if (article?.authorId === user?.id) {
+        const response = await axios.post(
+          'http://localhost:3000/api/update_article',
+          { id: article._id, content: editor.getHTML() },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        if (response.data.state === 'ok') setEdit(false);
+        //else //error
+      }
     };
+  // console.log(article);
   return (
     <div className={styles.navbar}>
       {location === '/' && loggedIn && (
@@ -81,7 +101,7 @@ export default function Navbar({
             icon='done'
             overridePadding
             highContrast
-            onClick={() => setEdit(false)}
+            onClick={() => handleSubmit()}
           />
           <h1 className='title-large'>{title}</h1>
           {/* <IconButton icon='match_case' /> */}

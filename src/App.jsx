@@ -47,10 +47,23 @@ export default function App() {
               };base64,${user.profilePicture.data.toString('base64')}`
             }
             edit={edit}
-              setEdit={setEdit}
-              title={article?.title}
+            setEdit={setEdit}
+            title={article?.title}
+            editor={editor}
+            article={article}
+            user={user}
           />
-          <Outlet context={[user, setUser, edit, setEdit, article, setArticle, editor]} />
+          <Outlet
+            context={[
+              user,
+              setUser,
+              edit,
+              setEdit,
+              article,
+              setArticle,
+              editor,
+            ]}
+          />
         </>
       )}
     </div>

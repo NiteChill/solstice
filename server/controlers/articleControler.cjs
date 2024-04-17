@@ -54,7 +54,19 @@ const getSingleArticle = async (req, res) => {
   }
 };
 
+const updateArticle = async (req, res) => {
+  if (req?.body.content && req.body?.id) {
+    const response = await articleModel.findByIdAndUpdate(req.body.id, {
+      content: req.body.content,
+    });
+    if (response) res.json({ state: 'ok', id: id });
+    else res.json({ state: 'failed' });
+  }
+  else res.json({ state: 'failed' });
+};
+
 module.exports = {
   createArticle,
   getSingleArticle,
+  updateArticle,
 };
