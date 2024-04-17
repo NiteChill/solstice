@@ -84,7 +84,7 @@ export default function Navbar({
             onClick={() => setEdit(false)}
           />
           <h1 className='title-large'>{title}</h1>
-          <IconButton icon='match_case' />
+          {/* <IconButton icon='match_case' /> */}
           <IconButton icon='add' />
           <IconButton icon='more_vert' />
         </>
