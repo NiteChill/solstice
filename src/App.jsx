@@ -4,14 +4,15 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import axios from 'axios';
 import LoadingElement from './components/LoadingElement/LoadingElement';
+import { useTiptap } from './hooks/useTiptap';
 
 export default function App() {
   const [theme, setTheme] = useState('light'),
     location = useLocation().pathname,
     [user, setUser] = useState('loading'),
-    [edit, setEdit] = useState(false),
-    [article, setArticle] = useState({});
+    [edit, setEdit, article, setArticle, editor] = useTiptap();
   useEffect(() => {
+    console.log(edit);
     if (
       window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -49,7 +50,7 @@ export default function App() {
               setEdit={setEdit}
               title={article?.title}
           />
-          <Outlet context={[user, setUser, edit, setEdit, article, setArticle]} />
+          <Outlet context={[user, setUser, edit, setEdit, article, setArticle, editor]} />
         </>
       )}
     </div>

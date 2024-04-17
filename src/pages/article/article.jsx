@@ -4,47 +4,13 @@ import { useEffect } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import FAB from '../../components/FAB/FAB';
 import FormatButton from '../../components/FormatButton/FormatButton';
-import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Color from '@tiptap/extension-color';
-import ListItem from '@tiptap/extension-list-item';
-import TextStyle from '@tiptap/extension-text-style';
-import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import Underline from '@tiptap/extension-underline';
+import { EditorContent } from '@tiptap/react';
 import ColorButton from '../../components/ColorButton/ColorButton';
-import Placeholder from '@tiptap/extension-placeholder';
 
 export default function Article() {
   const { link } = useParams(),
-    [user, setUser, edit, setEdit, article, setArticle] = useOutletContext(),
-    navigate = useNavigate(),
-    editor = useEditor({
-      extensions: [
-        Link,
-        Underline,
-        Placeholder.configure({
-          placeholder: 'Good writing :)',
-        }),
-        Image.configure({
-          allowBase64: true,
-        }),
-        Color.configure({ types: [TextStyle.name, ListItem.name] }),
-        TextStyle.configure({ types: [ListItem.name] }),
-        StarterKit.configure({
-          bulletList: {
-            keepMarks: true,
-            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-          },
-          orderedList: {
-            keepMarks: true,
-            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-          },
-        }),
-      ],
-      content: article?.content,
-      editable: edit,
-    });
+    [user, setUser, edit, setEdit, article, setArticle, editor] = useOutletContext(),
+    navigate = useNavigate();
   useEffect(() => {
     const getSingleArticle = async () => {
       const response = await axios.post(
