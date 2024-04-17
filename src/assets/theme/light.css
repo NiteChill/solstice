@@ -1,5 +1,6 @@
 .light {
   --bullet: url('./assets/img/list-bullet.svg');
+  --green: #35AA53;
 
   /* brand */
   --brand-gradient: linear-gradient(

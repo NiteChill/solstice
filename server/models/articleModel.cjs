@@ -16,7 +16,7 @@ const ArticleSchema = new mongoose.Schema(
     },
     content: {
       type: String,
-      default: '<h4>Good writing!</h4>',
+      default: '',
     },
     createdAt: {
       type: Date,

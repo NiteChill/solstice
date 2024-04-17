@@ -9,7 +9,7 @@ const createArticle = async (req, res) => {
     _id: id,
     authorId: req.session.user.id,
     content: response
-      ? '<p>Good Writing!</p>'
+      ? ''
       : `
         <img src="https://lh3.googleusercontent.com/186ZGdDhTLrvBaobO6wvilzpbjD45K7I9ifjwvk9Qt2HetzkWX0W5BN3Vi0tMYKDQPa11rbghe1m1syRvVbZhkZDajHhxQNc9B_pcCBrVVGvMEOZc-k=w2400-rj" contenteditable="false" draggable="true" class="ProseMirror-selectednode">
         <h4>
@@ -26,7 +26,7 @@ const createArticle = async (req, res) => {
             ...with multiples elements
           </li>
         </ul>
-        <pre><code class="language-css">&lt;p&gt;Code blocks!&lt;/p&gt;</code></pre>
+        <pre><code class="language-javascript">&lt;p&gt;Code blocks!&lt;/p&gt;</code></pre>
         <blockquote>
           Incredible quotes like this one
           <br />

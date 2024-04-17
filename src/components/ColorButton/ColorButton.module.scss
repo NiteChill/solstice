@@ -1,0 +1,21 @@
+.color_button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  flex: 1;
+  border-radius: 0.125rem;
+  &::before {
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.active::before {
+  content: 'done';
+}

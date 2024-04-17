@@ -42,8 +42,17 @@ input::-webkit-inner-spin-button {
 .tiptap {
   outline: none;
   border: none;
+  width: clamp(0px, 100%, 640px);
   > * + * {
     margin-top: 0.625rem;
+  }
+
+  .is-editor-empty:first-child::before {
+    color: var(--on-surface-variant);
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
   }
 
   strong {
@@ -151,7 +160,7 @@ input::-webkit-inner-spin-button {
     position: relative;
     width: 100%;
     border-radius: 1rem;
-    max-height: 15rem;
+    max-height: 20rem;
     object-fit: cover;
     background-color: var(--surface-container);
     height: auto;

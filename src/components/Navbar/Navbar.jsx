@@ -81,7 +81,7 @@ export default function Navbar({
             icon='done'
             overridePadding
             highContrast
-            onClick={() => ''}
+            onClick={() => setEdit(false)}
           />
           <h1 className='title-large'>{title}</h1>
           <IconButton icon='match_case' />

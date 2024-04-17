@@ -1,5 +1,6 @@
 .dark {
   --bullet: url('./assets/img/list-bullet-dark.svg');
+  --green: hsl(135, 30%, 60%);
 
   /* brand */
   --brand-gradient: linear-gradient(
