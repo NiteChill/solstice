@@ -10,9 +10,13 @@ export default function App() {
   const [theme, setTheme] = useState('light'),
     location = useLocation().pathname,
     [user, setUser] = useState('loading'),
+    [appWidth, setAppWidth] = useState(window.innerWidth),
     [edit, setEdit, article, setArticle, editor] = useTiptap();
   useEffect(() => {
-    console.log(edit);
+    window.addEventListener('resize', () => {
+      setAppWidth(window.innerWidth);
+      console.log(appWidth);
+    });
     if (
       window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -52,6 +56,7 @@ export default function App() {
             editor={editor}
             article={article}
             user={user}
+            appWidth={appWidth}
           />
           <Outlet
             context={[

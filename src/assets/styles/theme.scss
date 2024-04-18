@@ -2,13 +2,10 @@
 @use '../theme/light.css';
 
 :root {
-  ul li:nth-child(4n+1) {
+  ul li:nth-child(4n+2) {
     --rotation: 6;
   }
   ul li:nth-child(3n+1) {
     --rotation: 7;
-  }
-  ul li:nth-child(2n+1) {
-    --rotation: 8;
   }
 }

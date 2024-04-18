@@ -42,7 +42,6 @@ input::-webkit-inner-spin-button {
 .tiptap {
   outline: none;
   border: none;
-  width: clamp(0px, 100%, 640px);
   > * + * {
     margin-top: 0.625rem;
   }

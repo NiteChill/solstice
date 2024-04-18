@@ -7,9 +7,11 @@ export default function IconButton({
   overridePadding = false,
   highContrast = false,
   onClick,
+  disabled = false,
 }) {
   return (
     <div
+      style={{opacity: disabled && '0.6'}}
       className={`${styles.icon_button} ${
         style === 'filled_small'
           ? styles.filled_small

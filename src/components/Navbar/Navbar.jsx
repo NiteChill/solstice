@@ -14,6 +14,7 @@ export default function Navbar({
   editor,
   article,
   user,
+  appWidth,
 }) {
   const navigate = useNavigate(),
     handleCreate = async () => {
@@ -44,7 +45,7 @@ export default function Navbar({
     };
   // console.log(article);
   return (
-    <div className={styles.navbar}>
+    <div className={`${styles.navbar} ${edit && styles.edit_navbar}`}>
       {location === '/' && loggedIn && (
         <>
           <IconButton icon='menu' overridePadding highContrast />
@@ -103,8 +104,21 @@ export default function Navbar({
             highContrast
             onClick={() => handleSubmit()}
           />
-          <h1 className='title-large'>{title}</h1>
-          {/* <IconButton icon='match_case' /> */}
+          <h1 className='title-large'>{appWidth > 450 && title}</h1>
+          {appWidth < 450 && (
+            <>
+              <IconButton
+                icon='undo'
+                onClick={() => editor?.commands.undo()}
+                disabled={!editor?.can().undo()}
+              />
+              <IconButton
+                icon='redo'
+                onClick={() => editor?.commands.redo()}
+                disabled={!editor?.can().redo()}
+              />
+            </>
+          )}
           <IconButton icon='add' />
           <IconButton icon='more_vert' />
         </>

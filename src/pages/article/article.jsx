@@ -44,23 +44,10 @@ export default function Article() {
   return (
     <>
       <div className={styles.article}>
-        {/* <input
-        type='file'
-        className={`${styles.img} material-symbols-outlined`}
-        accept='image/*'
-        icon={body?.img ? 'edit' : 'add_photo_alternate'}
-        name='img'
-        onChange={(input) => {
-          const file = input.target.files[0],
-            reader = new FileReader();
-          file && reader.readAsDataURL(file);
-          reader.addEventListener('load', (e) => {
-            input.target.style.background = `url(${e.target.result}) no-repeat center/cover`;
-            setBody({ ...body, [input.target.name]: e.target.result });
-          });
-        }}
-        /> */}
-        <EditorContent editor={editor} />
+        <EditorContent
+          editor={editor}
+          style={{ width: 'clamp(0px, 100%, 640px)' }}
+        />
         {user && article.authorId === user?.id && !edit && (
           <div className={styles.FAB}>
             <FAB icon='edit' onClick={() => setEdit(true)} />
@@ -69,6 +56,16 @@ export default function Article() {
       </div>
       {user && article.authorId === user?.id && edit && (
         <div className={styles.toolbar}>
+          <FormatButton
+            icon='undo'
+            onClick={() => editor?.commands.undo()}
+            disabled={!editor?.can().undo()}
+          />
+          <FormatButton
+            icon='redo'
+            onClick={() => editor?.commands.redo()}
+            disabled={!editor?.can().redo()}
+          />
           <FormatButton
             icon='format_bold'
             onClick={() => editor.chain().focus().toggleBold().run()}
@@ -118,7 +115,7 @@ export default function Article() {
               }}
             ></div>
             <div className={styles.menu}>
-              <h3 className='body-medium'>Text colour</h3>
+              <h3 className='title-small'>Text colour</h3>
               <div className={styles.divider}></div>
               <div className={styles.colors}>
                 <ColorButton color='on-surface' editor={editor} />
