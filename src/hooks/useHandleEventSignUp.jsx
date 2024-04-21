@@ -135,7 +135,7 @@ export function useHandleEventSignUp() {
       );
       response.data.user && setUser(response.data.user);
       response.data.errors && setErrors(response.data.errors);
-      if (response.data.errors.find((el) => el === 'EMAIL_ALREADY_USED') && step !== 2)
+      if (response.data.errors?.find((el) => el === 'EMAIL_ALREADY_USED') && step !== 2)
         setStep(2);
     } else setErrors(['UNMATCHING_PASSWORD']);
   }

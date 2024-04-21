@@ -76,7 +76,7 @@ const signUp = async (req, res) => {
       if (err) reject(err);
       resolve(hash);
     });
-  })
+  });
   console.log(hashPassword + 'hi');
   const newUser = new userModel({
     first_name: first_name,
@@ -87,19 +87,24 @@ const signUp = async (req, res) => {
     password: hashPassword,
   });
   newUser.save();
-  const dbUser = await userModel.findOne({ email: email }),
+  const dbUser = await userModel.findOne({ email: email });
+  let userData;
+  if (dbUser) {
     userData = {
       id: dbUser._id,
-      first_name: dbUser.first_name,
-      last_name: dbUser.last_name,
-      username: dbUser.username,
-      age: dbUser.age,
-      email: dbUser.email,
-      createdAt: dbUser.createdAt,
-      profilePicture: dbUser.profilePicture,
+      first_name: dbUser?.first_name,
+      last_name: dbUser?.last_name,
+      username: dbUser?.username,
+      age: dbUser?.age,
+      email: dbUser?.email,
+      createdAt: dbUser?.createdAt,
+      profilePicture: dbUser?.profilePicture,
     };
-  req.session.user = userData;
-  res.send({ user: userData });
+  }
+  if (userData) {
+    req.session.user = userData;
+    res.send({ user: userData });
+  }
 };
 
 module.exports = {
