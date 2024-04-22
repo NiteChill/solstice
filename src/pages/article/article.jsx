@@ -83,7 +83,7 @@ export default function Article() {
             active={editor?.isActive('underline')}
           />
           <div
-            className={styles.dropdown_colors}
+            className={styles.dropdown_format}
             tabIndex={-1}
             onClick={(e) => e.target.focus()}
           >
@@ -111,15 +111,11 @@ export default function Article() {
               }}
             ></div>
             <div className={styles.menu}>
-              <h3 className='title-small'>Text colour</h3>
-              <div className={styles.divider}></div>
-              <div className={styles.colors}>
                 <ColorButton color='on-surface' editor={editor} />
                 <ColorButton color='on-surface-variant' editor={editor} />
                 <ColorButton color='primary' editor={editor} />
                 <ColorButton color='green' editor={editor} />
                 <ColorButton color='error' editor={editor} />
-              </div>
             </div>
           </div>
           <div className={styles.divider}></div>

@@ -3,9 +3,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid var(--outline-variant);
   height: 2rem;
-  flex: 1;
-  border-radius: 0.25rem;
+  width: 2rem;
+  border-radius: 100rem;
+  flex-shrink: 0;
+  transition: scale 0.2s var(--transition);
   &::before {
     pointer-events: none;
     display: flex;
@@ -14,8 +17,16 @@
     width: 100%;
     height: 100%;
   }
+  &:hover {
+    scale: 1.05;
+  }
 }
 
-.active::before {
-  content: 'done';
+.active {
+  &::before {
+    content: 'done';
+  }
+  &:hover {
+    scale: 1;
+  }
 }
