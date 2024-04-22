@@ -9,7 +9,8 @@ import ColorButton from '../../components/ColorButton/ColorButton';
 
 export default function Article() {
   const { link } = useParams(),
-    [user, setUser, edit, setEdit, article, setArticle, editor] = useOutletContext(),
+    [user, setUser, edit, setEdit, article, setArticle, editor] =
+      useOutletContext(),
     navigate = useNavigate();
   useEffect(() => {
     const getSingleArticle = async () => {
@@ -81,11 +82,6 @@ export default function Article() {
             onClick={() => editor.chain().focus().toggleUnderline().run()}
             active={editor?.isActive('underline')}
           />
-          <FormatButton
-            icon='format_strikethrough'
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            active={editor?.isActive('strike')}
-          />
           <div
             className={styles.dropdown_colors}
             tabIndex={-1}
@@ -132,6 +128,55 @@ export default function Article() {
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             active={editor?.isActive('bulletList')}
           />
+          <div className={styles.divider}></div>
+          <div
+            className={styles.dropdown_format}
+            tabIndex={-1}
+            onClick={(e) => e.target.focus()}
+          >
+            <FormatButton
+              icon={
+                editor?.isActive({ textAlign: 'center' })
+                  ? 'format_align_center'
+                  : editor?.isActive({ textAlign: 'right' })
+                  ? 'format_align_right'
+                  : editor?.isActive({ textAlign: 'justify' })
+                  ? 'format_align_justify'
+                  : 'format_align_left'
+              }
+              dropDown
+            />
+            <div className={styles.menu}>
+              <FormatButton
+                icon='format_align_left'
+                onClick={() =>
+                  editor.chain().focus().setTextAlign('left').run()
+                }
+                active={editor?.isActive({ textAlign: 'left' })}
+              />
+              <FormatButton
+                icon='format_align_center'
+                onClick={() =>
+                  editor.chain().focus().setTextAlign('center').run()
+                }
+                active={editor?.isActive({ textAlign: 'center' })}
+              />
+              <FormatButton
+                icon='format_align_right'
+                onClick={() =>
+                  editor.chain().focus().setTextAlign('right').run()
+                }
+                active={editor?.isActive({ textAlign: 'right' })}
+              />
+              <FormatButton
+                icon='format_align_justify'
+                onClick={() =>
+                  editor.chain().focus().setTextAlign('justify').run()
+                }
+                active={editor?.isActive({ textAlign: 'justify' })}
+              />
+            </div>
+          </div>
           <div className={styles.divider}></div>
           <div
             className={styles.dropdown_format}

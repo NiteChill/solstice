@@ -6,6 +6,7 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
 import Placeholder from '@tiptap/extension-placeholder';
+import TextAlign from '@tiptap/extension-text-align';
 import { useEditor } from '@tiptap/react';
 import { useState } from 'react';
 
@@ -14,6 +15,9 @@ export function useTiptap() {
     [article, setArticle] = useState({}),
     editor = useEditor({
       extensions: [
+        TextAlign.configure({
+          types: ['heading', 'paragraph'],
+        }),
         Link,
         Underline,
         Placeholder.configure({

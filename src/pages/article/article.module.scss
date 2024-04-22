@@ -128,6 +128,9 @@
     }
     & > div:first-child > div {
       background: var(--state-layer-on-secondary-container-012);
+      & > div > span {
+        rotate: 180deg;
+      }
     }
   }
 }
