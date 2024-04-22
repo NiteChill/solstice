@@ -11,8 +11,7 @@ export default function IconButton({
 }) {
   return (
     <div
-      style={{opacity: disabled && '0.6'}}
-      className={`${styles.icon_button} ${
+      className={`${styles.icon_button} ${disabled && styles.disabled} ${
         style === 'filled_small'
           ? styles.filled_small
           : style === 'filled'

@@ -15,7 +15,6 @@ export default function App() {
   useEffect(() => {
     window.addEventListener('resize', () => {
       setAppWidth(window.innerWidth);
-      console.log(appWidth);
     });
     if (
       window.matchMedia &&
@@ -67,6 +66,7 @@ export default function App() {
               article,
               setArticle,
               editor,
+              appWidth,
             ]}
           />
         </>

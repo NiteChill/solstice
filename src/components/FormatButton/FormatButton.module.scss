@@ -41,3 +41,8 @@
     background: var(--state-layer-on-secondary-container-012);
   }
 }
+
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
