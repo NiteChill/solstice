@@ -16,6 +16,7 @@ export default function Navbar({
   article,
   user,
   appWidth,
+  setIsOpenLink,
 }) {
   const navigate = useNavigate(),
     handleCreate = async () => {
@@ -159,11 +160,11 @@ export default function Navbar({
                     </span>
                     <p className='body-large'>Blockquote</p>
                   </div>
-                  <div>
+                  <div onClick={() => ''}>
                     <span className='material-symbols-outlined'>image</span>
                     <p className='body-large'>Image</p>
                   </div>
-                  <div>
+                  <div onClick={() => setIsOpenLink(true)}>
                     <span className='material-symbols-outlined'>link</span>
                     <p className='body-large'>Link</p>
                   </div>
@@ -190,7 +191,7 @@ export default function Navbar({
         )}
       </div>
       {appWidth > 500 && user && article.authorId === user?.id && edit && (
-        <Toolbar editor={editor} />
+        <Toolbar editor={editor} setIsOpenLink={setIsOpenLink} />
       )}
     </div>
   );

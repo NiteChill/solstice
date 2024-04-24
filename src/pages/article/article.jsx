@@ -1,10 +1,11 @@
 import axios from 'axios';
 import styles from './article.module.scss';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import FAB from '../../components/FAB/FAB';
 import { EditorContent } from '@tiptap/react';
 import Toolbar from '../../components/Toolbar/Toolbar';
+import LinkModal from '../../components/LinkModal/LinkModal';
 
 export default function Article() {
   const { link } = useParams(),
@@ -17,6 +18,8 @@ export default function Article() {
       setArticle,
       editor,
       appWidth,
+      isOpenLink,
+      setIsOpenLink
     ] = useOutletContext(),
     navigate = useNavigate();
   useEffect(() => {
@@ -65,6 +68,7 @@ export default function Article() {
       {appWidth < 500 && user && article.authorId === user?.id && edit && (
         <Toolbar editor={editor} />
       )}
+      <LinkModal isOpen={isOpenLink} setIsOpen={setIsOpenLink} />
     </>
   );
 }

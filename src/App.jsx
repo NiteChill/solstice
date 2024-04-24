@@ -11,7 +11,8 @@ export default function App() {
     location = useLocation().pathname,
     [user, setUser] = useState('loading'),
     [appWidth, setAppWidth] = useState(window.innerWidth),
-    [edit, setEdit, article, setArticle, editor] = useTiptap();
+    [edit, setEdit, article, setArticle, editor] = useTiptap(),
+    [isOpenLink, setIsOpenLink] = useState(false);
   useEffect(() => {
     window.addEventListener('resize', () => {
       setAppWidth(window.innerWidth);
@@ -56,6 +57,7 @@ export default function App() {
             article={article}
             user={user}
             appWidth={appWidth}
+            setIsOpenLink={setIsOpenLink}
           />
           <Outlet
             context={[
@@ -67,6 +69,8 @@ export default function App() {
               setArticle,
               editor,
               appWidth,
+              isOpenLink,
+              setIsOpenLink,
             ]}
           />
         </>

@@ -2,7 +2,7 @@ import ColorButton from '../ColorButton/ColorButton';
 import FormatButton from '../FormatButton/FormatButton';
 import styles from './Toolbar.module.scss';
 
-export default function Toolbar({ editor }) {
+export default function Toolbar({ editor, setIsOpenLink }) {
   return (
     <div className={styles.toolbar}>
       <FormatButton
@@ -233,17 +233,9 @@ export default function Toolbar({ editor }) {
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
         active={editor?.isActive('blockquote')}
       />
-      <div className={styles.divider}></div>
-      <FormatButton
-        icon='image'
-        // onClick={() => editor.chain().focus().setTextAlign('justify').run()}
-        // active={editor?.isActive({ textAlign: 'justify' })}
-      />
-      <FormatButton
-        icon='link'
-        // onClick={() => editor.chain().focus().setTextAlign('justify').run()}
-        // active={editor?.isActive({ textAlign: 'justify' })}
-      />
+      <div className={styles.divider} onClick={() => console.log(setIsOpenLink)}></div>
+      <FormatButton icon='image' />
+      <FormatButton icon='link' onClick={() => setIsOpenLink(true)} />
     </div>
   );
 }
