@@ -3,15 +3,21 @@ import styles from './article.module.scss';
 import { useEffect } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import FAB from '../../components/FAB/FAB';
-import FormatButton from '../../components/FormatButton/FormatButton';
 import { EditorContent } from '@tiptap/react';
-import ColorButton from '../../components/ColorButton/ColorButton';
 import Toolbar from '../../components/Toolbar/Toolbar';
 
 export default function Article() {
   const { link } = useParams(),
-    [user, setUser, edit, setEdit, article, setArticle, editor, appWidth] =
-      useOutletContext(),
+    [
+      user,
+      setUser,
+      edit,
+      setEdit,
+      article,
+      setArticle,
+      editor,
+      appWidth,
+    ] = useOutletContext(),
     navigate = useNavigate();
   useEffect(() => {
     const getSingleArticle = async () => {
@@ -48,7 +54,7 @@ export default function Article() {
       <div className={styles.article}>
         <EditorContent
           editor={editor}
-          style={{ width: 'clamp(0px, 100%, 640px)' }}
+          style={{ width: 'clamp(0px, 100%, 800px)' }}
         />
         {user && article.authorId === user?.id && !edit && (
           <div className={styles.FAB}>
@@ -57,7 +63,7 @@ export default function Article() {
         )}
       </div>
       {appWidth < 500 && user && article.authorId === user?.id && edit && (
-        <Toolbar editor={editor}/>
+        <Toolbar editor={editor} />
       )}
     </>
   );

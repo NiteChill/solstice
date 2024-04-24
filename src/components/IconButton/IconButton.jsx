@@ -20,6 +20,8 @@ export default function IconButton({
           ? styles.filled_small_primary
           : style === 'standard_primary'
           ? styles.standard_primary
+          : style === 'filled_secondary_container'
+          ? styles.filled_secondary_container
           : styles.standard
       } ${overridePadding && styles.override_padding} ${
         style === 'standard' && highContrast && styles.high_contrast
@@ -34,7 +36,7 @@ export default function IconButton({
                 background:
                   style === 'filled_small'
                     ? 'var(--surface-container-high)'
-                    : 'var(--secondary-container)',
+                    : 'var(--primary-container)',
               }}
             ></div>
           ) : (

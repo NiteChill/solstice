@@ -1,15 +1,14 @@
 .light {
   --bullet: url('./assets/img/list-bullet.svg');
-  --green: #35AA53;
+  --green: #35aa53;
 
   /* brand */
   --brand-gradient: linear-gradient(
-    137deg,
-    #ba07f9 -2.5%,
-    #8f07f9 -2.49%,
-    #922ac3 18.79%,
-    #548ae9 74.96%,
-    #41afff 98.89%
+    70deg,
+    #c182f3 -2.49%,
+    #aa68c9 18.79%,
+    #7ea5e9 74.96%,
+    #a5aed8 98.89%
   );
 
   /* transition */

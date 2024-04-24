@@ -46,14 +46,17 @@ export default function Navbar({
     };
   // console.log(article);
   return (
-    <div className={`${styles.navbar} ${edit && styles.edit_navbar}`}>
+    <div
+      className={`${styles.navbar} ${edit ? styles.edit_navbar : undefined}`}
+    >
       <div className={styles.main}>
         {location === '/' && loggedIn && (
           <>
-            <IconButton icon='menu' overridePadding highContrast />
+            <IconButton icon='menu' highContrast />
             <h1 className='title-large'>Solstice</h1>
             <IconButton
               icon='add'
+              // style='filled_small'
               onClick={async () => {
                 const id = await handleCreate();
                 if (id) {
@@ -87,7 +90,6 @@ export default function Navbar({
           <>
             <IconButton
               icon='arrow_back'
-              overridePadding
               highContrast
               onClick={() => navigate(-1)}
             />
@@ -102,7 +104,6 @@ export default function Navbar({
             <IconButton
               style='standard_primary'
               icon='done'
-              overridePadding
               highContrast
               onClick={() => handleSubmit()}
             />
@@ -138,14 +139,20 @@ export default function Navbar({
                 <div className={styles.menu}>
                   <div
                     onClick={() => editor.commands.toggleCodeBlock().run()}
-                    className={editor?.isActive('codeBlock') && styles.active}
+                    className={
+                      editor?.isActive('codeBlock') ? styles.active : undefined
+                    }
                   >
                     <span className='material-symbols-outlined'>code</span>
                     <p className='body-large'>Code block</p>
                   </div>
                   <div
-                    onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                    className={editor?.isActive('blockquote') && styles.active}
+                    onClick={() =>
+                      editor.chain().focus().toggleBlockquote().run()
+                    }
+                    className={
+                      editor?.isActive('blockquote') ? styles.active : undefined
+                    }
                   >
                     <span className='material-symbols-outlined'>
                       format_quote
@@ -171,7 +178,6 @@ export default function Navbar({
           <>
             <IconButton
               icon='arrow_back'
-              overridePadding
               highContrast
               onClick={() => navigate(-1)}
             />

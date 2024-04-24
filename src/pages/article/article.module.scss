@@ -14,7 +14,7 @@
   }
   &::-webkit-scrollbar-thumb {
     background: var(--outline-variant);
-    width: 100%;
+    border-radius: 100rem;
   }
   & > .FAB {
     position: fixed;

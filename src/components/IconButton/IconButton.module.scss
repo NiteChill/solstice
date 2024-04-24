@@ -59,13 +59,28 @@
 
 .filled_small_primary {
   & > div > div > span {
-    color: var(--on-secondary-container);
+    color: var(--on-primary-container);
   }
   &:hover > div > div {
     background: var(--state-layer-on-surface-variant-008);
   }
   &:active > div > div {
     background: var(--state-layer-on-surface-variant-012);
+  }
+}
+
+.filled_secondary_container {
+  & > div {
+    background: var(--secondary-container);
+    & > div > span {
+    color: var(--on-secondary-container);
+  }
+  }
+  &:hover > div > div {
+    background: var(--state-layer-on-secondary-container-008);
+  }
+  &:active > div > div {
+    background: var(--state-layer-on-secondary-container-012);
   }
 }
 
@@ -97,6 +112,12 @@
 .standard_primary {
   & > div > div > span {
     color: var(--primary);
+  }
+  &:hover > div > div {
+    background: var(--state-layer-primary-008);
+  }
+  &:active > div > div {
+    background: var(--state-layer-primary-012);
   }
 }
 

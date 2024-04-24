@@ -5,7 +5,7 @@
   z-index: 10000;
   background: var(--surface-container-lowest);
   flex-shrink: 0;
-  padding: 0.75rem 0.75rem 0.75rem 0.875rem;
+  padding: 0.75rem 0.75rem 0.75rem 0.625rem;
   & > .main {
     position: relative;
     display: flex;
@@ -78,11 +78,11 @@
     right: 0;
     top: 3rem;
     width: 0;
-    z-index: 10000;
+    z-index: 1000;
     transition: scale 0.2s var(--transition), opacity 0.2s var(--transition);
     & > div {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.5rem 0.75rem;
       display: flex;
       align-items: center;
       justify-content: flex-start;

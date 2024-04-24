@@ -1,6 +1,8 @@
 .discover {
   display: flex;
   flex-direction: column;
+  width: clamp(0px, 100%, 800px);
+  align-self: center;
   & > div {
     display: flex;
     flex-direction: column;
@@ -15,10 +17,25 @@
         -webkit-text-fill-color: transparent;
         -moz-background-clip: text;
         -moz-text-fill-color: transparent;
+        font-weight: 700;
+        width: fit-content;
       }
       & > h2 {
         color: var(--on-surface);
+        opacity: 0.3;
+        font-weight: 700;
       }
+    }
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .discover > div > div {
+    & > h1,
+    & > h2 {
+      font-size: 57px;
+      line-height: 64px;
+      letter-spacing: -0.25px;
     }
   }
 }
