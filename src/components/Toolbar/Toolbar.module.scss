@@ -118,12 +118,10 @@
     & > .dropdown_format {
       & > .menu {
         top: 2.25rem;
-        bottom: auto;
-        flex-direction: row;
-      }
-      & > .left_align {
         left: 0;
         right: auto;
+        bottom: auto;
+        flex-direction: row;
       }
     }
   }
