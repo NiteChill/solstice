@@ -233,7 +233,10 @@ export default function Toolbar({ editor, setIsOpenLink }) {
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
         active={editor?.isActive('blockquote')}
       />
-      <div className={styles.divider} onClick={() => console.log(setIsOpenLink)}></div>
+      <div
+        className={styles.divider}
+        onClick={() => console.log(setIsOpenLink)}
+      ></div>
       <FormatButton icon='image' />
       <FormatButton icon='link' onClick={() => setIsOpenLink(true)} />
     </div>

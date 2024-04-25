@@ -56,3 +56,11 @@
     background: var(--state-layer-primary-012);
   }
 }
+
+.disabled {
+  pointer-events: none;
+  & > div {
+    opacity: 0.38;
+    color: var(--on-surface);
+  }
+}

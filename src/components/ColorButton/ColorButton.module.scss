@@ -9,6 +9,7 @@
   border-radius: 100rem;
   flex-shrink: 0;
   transition: scale 0.2s var(--transition);
+  cursor: pointer;
   &::before {
     pointer-events: none;
     display: flex;

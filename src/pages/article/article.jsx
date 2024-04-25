@@ -68,7 +68,7 @@ export default function Article() {
       {appWidth < 500 && user && article.authorId === user?.id && edit && (
         <Toolbar editor={editor} />
       )}
-      <LinkModal isOpen={isOpenLink} setIsOpen={setIsOpenLink} />
+      <LinkModal isOpen={isOpenLink} setIsOpen={setIsOpenLink} editor={editor} />
     </>
   );
 }

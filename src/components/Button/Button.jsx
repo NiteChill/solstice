@@ -5,10 +5,11 @@ export default function Button({
   label = 'Label',
   icon = false,
   onClick,
+  disabled = false
 }) {
   return (
     <div
-      className={`${styles.button} ${
+      className={`${styles.button} ${disabled ? styles.disabled : undefined} ${
         style === 'standard'
           ? styles.standard
           : style === 'outlined_primary'
