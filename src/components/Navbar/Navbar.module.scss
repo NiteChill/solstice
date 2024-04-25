@@ -64,6 +64,7 @@
 .dropdown {
   position: relative;
   z-index: 1000;
+  outline: none;
   & > .menu {
     overflow: hidden;
     scale: 0.7;

@@ -81,6 +81,7 @@ export default function Navbar({
               <div></div>
             </div>
             <h1 className='title-large'>Solstice</h1>
+            <IconButton icon='search' />
             <div className={styles.button}>
               <Button label='Log in' onClick={() => navigate('/login')} />
             </div>
