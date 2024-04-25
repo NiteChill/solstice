@@ -9,12 +9,23 @@ export default function ImageModal({ isOpen, setIsOpen, editor }) {
     [content, setContent] = useState(''),
     [error, setError] = useState(false),
     [mode, setMode] = useState(0),
-    handleSubmit = () => {
+    [file, setFile] = useState(null),
+    handleSubmit = (e) => {
+      if (mode) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.addEventListener('load', (e) => {
+          editor.chain().focus().setImage({ src: e.target.result }).run();
+        });
+        reader.readAsDataURL(file);
+        setIsOpen(false);
+        return;
+      }
       if (!validator.isURL(content)) {
         setError('Please select a valid url');
         return;
       }
-      editor.chain().focus().setLink({ href: content }).run();
+      editor.chain().focus().setImage({ src: content }).run();
       setIsOpen(false);
     };
   useEffect(() => {
@@ -22,8 +33,13 @@ export default function ImageModal({ isOpen, setIsOpen, editor }) {
       ? setModaleState(true)
       : setTimeout(() => setModaleState(false), 300);
     setContent('');
+    setFile(null);
     setError(false);
   }, [isOpen]);
+  useEffect(() => {
+    setContent('');
+    setFile(null);
+  }, [mode]);
   return (
     <div
       className={`${styles.modal} ${isOpen ? styles.is_open : undefined}`}
@@ -36,25 +52,39 @@ export default function ImageModal({ isOpen, setIsOpen, editor }) {
       <div className={styles.container}>
         <h1 className='headline-small'>Upload an image</h1>
         <div className={styles.container_chips}>
+          <Chip label='URL' active={!mode && true} onClick={() => setMode(0)} />
           <Chip
-            label='URL'
-            active={!mode && true}
-            onClick={() => setMode(0)}
-          />
-          <Chip
-            label='My device'
+            label='My files'
             active={mode && true}
             onClick={() => setMode(1)}
           />
         </div>
         <div className={styles.content}>
-          <input
-            type='url'
-            className='body-large'
-            placeholder='Image URL'
-            value={content}
-            onInput={(e) => setContent(e.target.value)}
-          />
+          {mode ? (
+            <>
+              <label htmlFor='file' className='body-large'>
+                {content ? content : 'Select your file'}
+              </label>
+              <input
+                id='file'
+                type='file'
+                accept='image/*'
+                value={content}
+                onInput={(e) => {
+                  setFile(e.target.files[0]);
+                  setContent(e.target.value);
+                }}
+              />
+            </>
+          ) : (
+            <input
+              type='url'
+              className='body-large'
+              placeholder='Image URL'
+              value={content}
+              onInput={(e) => setContent(e.target.value)}
+            />
+          )}
           <div className={styles.supporting_text}>
             <p className='body-small'>{error}</p>
           </div>
