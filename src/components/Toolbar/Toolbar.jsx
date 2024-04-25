@@ -238,7 +238,14 @@ export default function Toolbar({ editor, setIsOpenLink }) {
         onClick={() => console.log(setIsOpenLink)}
       ></div>
       <FormatButton icon='image' />
-      <FormatButton icon='link' onClick={() => setIsOpenLink(true)} />
+      <FormatButton
+        icon='link'
+        onClick={() => {
+          if (editor?.isActive('link')) editor?.commands.unsetLink();
+          else setIsOpenLink(true);
+        }}
+        active={editor?.isActive('link')}
+      />
     </div>
   );
 }

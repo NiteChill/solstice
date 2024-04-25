@@ -18,7 +18,9 @@ export function useTiptap() {
         TextAlign.configure({
           types: ['heading', 'paragraph'],
         }),
-        Link,
+        Link.configure({
+          openOnClick: 'whenNotEditable'
+        }),
         Underline,
         Placeholder.configure({
           placeholder: 'Good writing :)',

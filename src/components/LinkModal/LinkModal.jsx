@@ -15,11 +15,13 @@ export default function LinkModal({ isOpen, setIsOpen, editor }) {
       // editor?.commands.setLink({ href: content });
       editor.chain().focus().setLink({ href: content }).run();
       setIsOpen(false);
-    }
+    };
   useEffect(() => {
     isOpen
       ? setModaleState(true)
       : setTimeout(() => setModaleState(false), 300);
+    setContent('');
+    setError(false);
   }, [isOpen]);
   return (
     <div
@@ -33,14 +35,29 @@ export default function LinkModal({ isOpen, setIsOpen, editor }) {
       <div className={styles.container}>
         <h1 className='headline-small'>Create a link</h1>
         <div className={styles.content}>
-          <input type='url' className='body-large' placeholder='Your link' value={content} onInput={(e) => setContent(e.target.value)} />
+          <input
+            type='url'
+            className='body-large'
+            placeholder='Link location'
+            value={content}
+            onInput={(e) => setContent(e.target.value)}
+          />
           <div className={styles.supporting_text}>
-            <p className="body-small">{error}</p>
+            <p className='body-small'>{error}</p>
           </div>
         </div>
         <div className={styles.container_button}>
-          <Button style='text' label='Cancel' onClick={() => setIsOpen(false)} />
-          <Button style='text' label='Create' disabled={content ? false : true} onClick={handleSubmit} />
+          <Button
+            style='text'
+            label='Cancel'
+            onClick={() => setIsOpen(false)}
+          />
+          <Button
+            style='text'
+            label='Create'
+            disabled={content ? false : true}
+            onClick={handleSubmit}
+          />
         </div>
       </div>
     </div>

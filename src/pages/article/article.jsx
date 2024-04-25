@@ -58,6 +58,7 @@ export default function Article() {
         <EditorContent
           editor={editor}
           style={{ width: 'clamp(0px, 100%, 800px)' }}
+          className={!editor?.isEditable ? styles.enable_a : undefined}
         />
         {user && article.authorId === user?.id && !edit && (
           <div className={styles.FAB}>
