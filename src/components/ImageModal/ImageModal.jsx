@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
-import styles from './LinkModal.module.scss';
+import styles from './ImageModal.module.scss';
 import Button from '../Button/Button';
 import validator from 'validator';
+import Chip from '../Chip/Chip';
 
-export default function LinkModal({ isOpen, setIsOpen, editor }) {
+export default function ImageModal({ isOpen, setIsOpen, editor }) {
   const [modaleState, setModaleState] = useState(false),
     [content, setContent] = useState(''),
     [error, setError] = useState(false),
+    [mode, setMode] = useState(0),
     handleSubmit = () => {
       if (!validator.isURL(content)) {
         setError('Please select a valid url');
@@ -32,12 +34,24 @@ export default function LinkModal({ isOpen, setIsOpen, editor }) {
     >
       <div className={styles.backdrop} onClick={() => setIsOpen(false)}></div>
       <div className={styles.container}>
-        <h1 className='headline-small'>Create a link</h1>
+        <h1 className='headline-small'>Upload an image</h1>
+        <div className={styles.container_chips}>
+          <Chip
+            label='URL'
+            active={!mode && true}
+            onClick={() => setMode(0)}
+          />
+          <Chip
+            label='My device'
+            active={mode && true}
+            onClick={() => setMode(1)}
+          />
+        </div>
         <div className={styles.content}>
           <input
             type='url'
             className='body-large'
-            placeholder='Link URL'
+            placeholder='Image URL'
             value={content}
             onInput={(e) => setContent(e.target.value)}
           />
@@ -53,7 +67,7 @@ export default function LinkModal({ isOpen, setIsOpen, editor }) {
           />
           <Button
             style='text'
-            label='Create'
+            label='Upload'
             disabled={content ? false : true}
             onClick={handleSubmit}
           />

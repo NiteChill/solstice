@@ -17,6 +17,7 @@ export default function Navbar({
   user,
   appWidth,
   setIsOpenLink,
+  setIsOpenImage,
 }) {
   const navigate = useNavigate(),
     handleCreate = async () => {
@@ -161,7 +162,7 @@ export default function Navbar({
                     </span>
                     <p className='body-large'>Blockquote</p>
                   </div>
-                  <div onClick={() => ''}>
+                  <div onClick={() => setIsOpenImage(true)}>
                     <span className='material-symbols-outlined'>image</span>
                     <p className='body-large'>Image</p>
                   </div>
@@ -192,7 +193,7 @@ export default function Navbar({
         )}
       </div>
       {appWidth > 500 && user && article.authorId === user?.id && edit && (
-        <Toolbar editor={editor} setIsOpenLink={setIsOpenLink} />
+        <Toolbar editor={editor} setIsOpenLink={setIsOpenLink} setIsOpenImage={setIsOpenImage} />
       )}
     </div>
   );

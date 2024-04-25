@@ -6,6 +6,7 @@ import FAB from '../../components/FAB/FAB';
 import { EditorContent } from '@tiptap/react';
 import Toolbar from '../../components/Toolbar/Toolbar';
 import LinkModal from '../../components/LinkModal/LinkModal';
+import ImageModal from '../../components/ImageModal/ImageModal';
 
 export default function Article() {
   const { link } = useParams(),
@@ -19,7 +20,9 @@ export default function Article() {
       editor,
       appWidth,
       isOpenLink,
-      setIsOpenLink
+      setIsOpenLink,
+      isOpenImage,
+      setIsOpenImage,
     ] = useOutletContext(),
     navigate = useNavigate();
   useEffect(() => {
@@ -70,6 +73,7 @@ export default function Article() {
         <Toolbar editor={editor} />
       )}
       <LinkModal isOpen={isOpenLink} setIsOpen={setIsOpenLink} editor={editor} />
+      <ImageModal isOpen={isOpenImage} setIsOpen={setIsOpenImage} editor={editor} />
     </>
   );
 }

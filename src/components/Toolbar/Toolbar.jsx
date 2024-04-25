@@ -2,7 +2,7 @@ import ColorButton from '../ColorButton/ColorButton';
 import FormatButton from '../FormatButton/FormatButton';
 import styles from './Toolbar.module.scss';
 
-export default function Toolbar({ editor, setIsOpenLink }) {
+export default function Toolbar({ editor, setIsOpenLink, setIsOpenImage }) {
   return (
     <div className={styles.toolbar}>
       <FormatButton
@@ -237,7 +237,7 @@ export default function Toolbar({ editor, setIsOpenLink }) {
         className={styles.divider}
         onClick={() => console.log(setIsOpenLink)}
       ></div>
-      <FormatButton icon='image' />
+      <FormatButton icon='image' onClick={() => setIsOpenImage(true)} />
       <FormatButton
         icon='link'
         onClick={() => {
