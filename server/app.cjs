@@ -23,7 +23,7 @@ app.use(
   })
 );
 
-app.use(express.json());
+app.use(express.json({ limit: '16MB' }));
 
 app.use(
   session({

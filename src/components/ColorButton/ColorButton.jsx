@@ -16,9 +16,8 @@ export default function ColorButton({ color, editor, mode }) {
         color: `var(--surface)`,
       }}
       onClick={() => {
-        if (color === 'on-surface') {
-          editor?.commands.unsetColor();
-        } else editor.chain().focus().setColor(`var(--${color})`).run();
+        if (color === 'on-surface') editor?.commands.unsetColor();
+        else editor.chain().focus().setColor(`var(--${color})`).run();
       }}
     ></div>
   );
