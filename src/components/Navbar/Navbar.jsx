@@ -4,6 +4,7 @@ import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Toolbar from '../Toolbar/Toolbar';
+import { useState } from 'react';
 
 export default function Navbar({
   loggedIn = false,
@@ -20,15 +21,17 @@ export default function Navbar({
   setIsOpenImage,
 }) {
   const navigate = useNavigate(),
+    [loading, setLoading] = useState(false),
     handleCreate = async () => {
+      setLoading(true);
       const response = await axios.get(
         'http://localhost:3000/api/create_article',
         {
           withCredentials: true,
         }
       );
-      if (response.data.state === 'ok') return response.data.id;
-      else return false;
+      if (response.data.state === 'ok') return setLoading(false);
+      else return setLoading(false);
     },
     handleSubmit = async () => {
       if (article?.authorId === user?.id) {
@@ -104,12 +107,16 @@ export default function Navbar({
 
         {location.slice(0, 8) === '/article' && edit && (
           <>
-            <IconButton
-              style='standard_primary'
-              icon='done'
-              highContrast
-              onClick={() => handleSubmit()}
-            />
+            {loading ? (
+              ''
+            ) : (
+              <IconButton
+                style='standard_primary'
+                icon='done'
+                highContrast
+                onClick={() => handleSubmit()}
+              />
+            )}
             <h1 className='title-large'>{appWidth > 500 && title}</h1>
             {appWidth < 500 && (
               <>
@@ -193,7 +200,11 @@ export default function Navbar({
         )}
       </div>
       {appWidth > 500 && user && article.authorId === user?.id && edit && (
-        <Toolbar editor={editor} setIsOpenLink={setIsOpenLink} setIsOpenImage={setIsOpenImage} />
+        <Toolbar
+          editor={editor}
+          setIsOpenLink={setIsOpenLink}
+          setIsOpenImage={setIsOpenImage}
+        />
       )}
     </div>
   );
