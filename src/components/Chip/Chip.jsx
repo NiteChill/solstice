@@ -5,14 +5,19 @@ export default function Chip({
   label = 'label',
   active = false,
   onClick,
+  overrideDone = false,
 }) {
   return (
     <div
-      className={`${styles.chip} ${active ? styles.active : undefined}`}
+      className={`${styles.chip} ${
+        active ? styles.active : undefined
+      }`}
       onClick={onClick}
     >
-      <div style={{ paddingLeft: (active || icon) && '0.5rem' }}>
-        {(active || icon) && (
+      <div
+        style={{ paddingLeft: ((active && !overrideDone) || icon) && '0.5rem' }}
+      >
+        {((active && !overrideDone) || icon) && (
           <span className='material-symbols-outlined'>
             {active ? 'done' : icon}
           </span>

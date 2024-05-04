@@ -52,11 +52,12 @@ export default function ImageModal({ isOpen, setIsOpen, editor }) {
       <div className={styles.container}>
         <h1 className='headline-small'>Upload an image</h1>
         <div className={styles.container_chips}>
-          <Chip label='URL' active={!mode && true} onClick={() => setMode(0)} />
+          <Chip label='URL' active={!mode && true} onClick={() => setMode(0)} overrideDone />
           <Chip
             label='My files'
             active={mode && true}
             onClick={() => setMode(1)}
+            overrideDone
           />
         </div>
         <div className={styles.content}>
