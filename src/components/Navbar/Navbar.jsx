@@ -4,7 +4,6 @@ import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Toolbar from '../Toolbar/Toolbar';
-import { useState } from 'react';
 
 export default function Navbar({
   loggedIn = false,
@@ -19,9 +18,10 @@ export default function Navbar({
   appWidth,
   setIsOpenLink,
   setIsOpenImage,
+  loading,
+  setLoading,
 }) {
   const navigate = useNavigate(),
-    [loading, setLoading] = useState(false),
     handleCreate = async () => {
       setLoading(true);
       const response = await axios.get(
@@ -34,6 +34,7 @@ export default function Navbar({
       else return setLoading(false);
     },
     handleSubmit = async () => {
+      setLoading(true);
       if (article?.authorId === user?.id) {
         const response = await axios.post(
           'http://localhost:3000/api/update_article',
@@ -45,14 +46,16 @@ export default function Navbar({
             withCredentials: true,
           }
         );
-        if (response.data.state === 'ok') setEdit(false);
-        //else //error
+        if (response.data.state === 'ok') {
+          setEdit(false);
+          setLoading(false);
+        } else return; // setLoading(false);
       }
     };
   // console.log(article);
   return (
     <div
-      className={`${styles.navbar} ${edit ? styles.edit_navbar : undefined}`}
+      className={`${styles.navbar} ${edit && !loading ? styles.edit_navbar : undefined}`}
     >
       <div className={styles.main}>
         {location === '/' && loggedIn && (
@@ -107,17 +110,14 @@ export default function Navbar({
 
         {location.slice(0, 8) === '/article' && edit && (
           <>
-            {loading ? (
-              ''
-            ) : (
-              <IconButton
-                style='standard_primary'
-                icon='done'
-                highContrast
-                onClick={() => handleSubmit()}
-              />
-            )}
-            <h1 className='title-large'>{appWidth > 500 && title}</h1>
+            <IconButton
+              style='standard_primary'
+              icon='done'
+              highContrast
+              onClick={() => !loading && handleSubmit()}
+              loading={loading}
+            />
+            <h1 className='title-large'>{appWidth > 500 && (loading ? 'Saving...' : title)}</h1>
             {appWidth < 500 && (
               <>
                 <IconButton
@@ -189,9 +189,10 @@ export default function Navbar({
             <IconButton
               icon='arrow_back'
               highContrast
-              onClick={() => navigate(-1)}
+              onClick={() => !loading && navigate(-1)}
+              loading={loading}
             />
-            <h1 className='title-large'>{title}</h1>
+            <h1 className='title-large'>{loading ? 'Loading...' : title}</h1>
             {/* <IconButton icon='favorite' /> */}
             {/* <IconButton icon='share' /> */}
             <IconButton icon='message' />
@@ -199,7 +200,7 @@ export default function Navbar({
           </>
         )}
       </div>
-      {appWidth > 500 && user && article.authorId === user?.id && edit && (
+      {appWidth > 500 && user && article.authorId === user?.id && edit && !loading && (
         <Toolbar
           editor={editor}
           setIsOpenLink={setIsOpenLink}

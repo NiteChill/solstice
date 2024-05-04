@@ -7,6 +7,7 @@
   user-select: none;
   overflow: hidden;
   flex-shrink: 0;
+  transition: transform 2s linear;
   & > div {
     display: flex;
     border-radius: 100rem;
@@ -126,4 +127,19 @@
 .disabled {
   opacity: 0.6;
   pointer-events: none;
+}
+
+.rotation {
+  animation: rotation 1.6s linear 0s infinite normal forwards;
+  pointer-events: none;
+  cursor: context-menu;
+}
+
+@keyframes rotation {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(-360deg);
+	}
 }

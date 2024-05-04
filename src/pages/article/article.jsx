@@ -23,10 +23,13 @@ export default function Article() {
       setIsOpenLink,
       isOpenImage,
       setIsOpenImage,
+      loading,
+      setLoading,
     ] = useOutletContext(),
     navigate = useNavigate();
   useEffect(() => {
     const getSingleArticle = async () => {
+      setLoading(true);
       const response = await axios.post(
         'http://localhost:3000/api/get_single_article',
         { id: link },
@@ -38,7 +41,10 @@ export default function Article() {
         }
       );
       if (response.data?.error) navigate('/');
-      else if (response.data?.article) setArticle(response.data.article);
+      else if (response.data?.article) {
+        setArticle(response.data.article);
+        setLoading(false);
+      };
     };
     getSingleArticle();
   }, []);
@@ -72,8 +78,16 @@ export default function Article() {
       {appWidth < 500 && user && article.authorId === user?.id && edit && (
         <Toolbar editor={editor} />
       )}
-      <LinkModal isOpen={isOpenLink} setIsOpen={setIsOpenLink} editor={editor} />
-      <ImageModal isOpen={isOpenImage} setIsOpen={setIsOpenImage} editor={editor} />
+      <LinkModal
+        isOpen={isOpenLink}
+        setIsOpen={setIsOpenLink}
+        editor={editor}
+      />
+      <ImageModal
+        isOpen={isOpenImage}
+        setIsOpen={setIsOpenImage}
+        editor={editor}
+      />
     </>
   );
 }

@@ -1,3 +1,4 @@
+import CircularProgressIndicator from '../CircularProgressIndicator/CircularProgressIndicator';
 import styles from './IconButton.module.scss';
 
 export default function IconButton({
@@ -8,10 +9,14 @@ export default function IconButton({
   highContrast = false,
   onClick,
   disabled = false,
+  rotation = false,
+  loading = false,
 }) {
   return (
     <div
-      className={`${styles.icon_button} ${disabled && styles.disabled} ${
+      className={`${styles.icon_button} ${
+        disabled ? styles.disabled : undefined
+      } ${rotation ? styles.rotation : undefined} ${
         style === 'filled_small'
           ? styles.filled_small
           : style === 'filled'
@@ -25,7 +30,8 @@ export default function IconButton({
           : styles.standard
       } ${overridePadding && styles.override_padding} ${
         style === 'standard' && highContrast && styles.high_contrast
-      }`}
+        }`}
+      style={{pointerEvents: loading && 'none'}}
       onClick={onClick}
     >
       <div>
@@ -43,7 +49,11 @@ export default function IconButton({
             avatar && <img src={avatar} alt='profilePicture' />
           )}
 
-          {!avatar && <span className='material-symbols-outlined'>{icon}</span>}
+          {loading ? (
+            <CircularProgressIndicator />
+          ) : (
+            !avatar && <span className='material-symbols-outlined'>{icon}</span>
+          )}
         </div>
       </div>
     </div>

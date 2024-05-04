@@ -13,7 +13,8 @@ export default function App() {
     [appWidth, setAppWidth] = useState(window.innerWidth),
     [edit, setEdit, article, setArticle, editor] = useTiptap(),
     [isOpenLink, setIsOpenLink] = useState(false),
-    [isOpenImage, setIsOpenImage] = useState(false);
+    [isOpenImage, setIsOpenImage] = useState(false),
+    [loading, setLoading] = useState(false);
   useEffect(() => {
     window.addEventListener('resize', () => {
       setAppWidth(window.innerWidth);
@@ -60,6 +61,8 @@ export default function App() {
             appWidth={appWidth}
             setIsOpenLink={setIsOpenLink}
             setIsOpenImage={setIsOpenImage}
+            loading={loading}
+            setLoading={setLoading}
           />
           <Outlet
             context={[
@@ -75,6 +78,8 @@ export default function App() {
               setIsOpenLink,
               isOpenImage,
               setIsOpenImage,
+              loading,
+              setLoading,
             ]}
           />
         </>
