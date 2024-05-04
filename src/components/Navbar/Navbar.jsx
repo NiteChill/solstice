@@ -55,7 +55,9 @@ export default function Navbar({
   // console.log(article);
   return (
     <div
-      className={`${styles.navbar} ${edit && !loading ? styles.edit_navbar : undefined}`}
+      className={`${styles.navbar} ${
+        edit && !loading ? styles.edit_navbar : undefined
+      }`}
     >
       <div className={styles.main}>
         {location === '/' && loggedIn && (
@@ -117,7 +119,9 @@ export default function Navbar({
               onClick={() => !loading && handleSubmit()}
               loading={loading}
             />
-            <h1 className='title-large'>{appWidth > 500 && (loading ? 'Saving...' : title)}</h1>
+            <h1 className='title-large'>
+              {appWidth > 500 && (loading ? 'Saving...' : title)}
+            </h1>
             {appWidth < 500 && (
               <>
                 <IconButton
@@ -200,13 +204,20 @@ export default function Navbar({
           </>
         )}
       </div>
-      {appWidth > 500 && user && article.authorId === user?.id && edit && !loading && (
-        <Toolbar
-          editor={editor}
-          setIsOpenLink={setIsOpenLink}
-          setIsOpenImage={setIsOpenImage}
-        />
-      )}
+      {/* {location.slice(0, 8) === '/article' && !edit && loading && (
+        <LinearProgressIndicator />
+      )} */}
+      {appWidth > 500 &&
+        user &&
+        article.authorId === user?.id &&
+        edit &&
+        !loading && (
+          <Toolbar
+            editor={editor}
+            setIsOpenLink={setIsOpenLink}
+            setIsOpenImage={setIsOpenImage}
+          />
+        )}
     </div>
   );
 }
