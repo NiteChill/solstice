@@ -10,8 +10,8 @@ export default function CircularProgressIndicator({ size = 24 }) {
           cy='50'
           r='20'
           fill='none'
-          stroke-width='4'
-          stroke-miterlimit='10'
+          strokeWidth='4'
+          strokeMiterlimit='10'
         />
       </svg>
     </div>
