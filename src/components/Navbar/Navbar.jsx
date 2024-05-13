@@ -30,8 +30,13 @@ export default function Navbar({
           withCredentials: true,
         }
       );
-      if (response.data.state === 'ok') return setLoading(false);
-      else return setLoading(false);
+      if (response.data.state === 'ok') {
+        setLoading(false)
+        return response.data.id;
+      } else {
+        setLoading(false);
+        return false;
+      };
     },
     handleSubmit = async () => {
       setLoading(true);
@@ -72,6 +77,7 @@ export default function Navbar({
                 if (id) {
                   navigate(`/article/${id}`);
                   setEdit(true);
+                  console.log('hi');
                 }
               }}
             />
