@@ -1,0 +1,43 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: clamp(0px, 100%, 800px);
+  & > .user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    & > .profile_picture {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem;
+      & > img {
+        height: 2.5rem;
+        width: 2.5rem;
+        object-fit: cover;
+        border-radius: 100rem;
+      }
+      & > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background: var(--primary-container);
+        border-radius: 100rem;
+        color: var(--on-primary-container);
+      }
+    }
+    & > .texts {
+      & > h3 {
+        color: var(--on-surface);
+      }
+      & > p {
+        color: var(--on-surface-variant);
+      }
+    }
+  }
+  & > .container {
+    display: flex;
+  }
+}

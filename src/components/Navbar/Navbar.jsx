@@ -205,7 +205,7 @@ export default function Navbar({
             <h1 className='title-large'>{loading ? 'Loading...' : title}</h1>
             {/* <IconButton icon='favorite' /> */}
             {/* <IconButton icon='share' /> */}
-            <IconButton icon='comment' />
+            {/* <IconButton icon='comment' /> */}
             <IconButton icon='more_vert' />
           </>
         )}

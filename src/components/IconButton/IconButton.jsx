@@ -11,6 +11,7 @@ export default function IconButton({
   disabled = false,
   rotation = false,
   loading = false,
+  label = false,
 }) {
   return (
     <div
@@ -35,7 +36,7 @@ export default function IconButton({
       onClick={onClick}
     >
       <div>
-        <div>
+        <div style={{paddingRight: label && '0.75rem'}}>
           {style === 'filled_small' || style === 'filled_small_primary' ? (
             <div
               style={{
@@ -54,6 +55,7 @@ export default function IconButton({
           ) : (
             !avatar && <span className='material-symbols-outlined'>{icon}</span>
           )}
+          {label && <p className='label-large'>{label}</p>}
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import { EditorContent } from '@tiptap/react';
 import Toolbar from '../../components/Toolbar/Toolbar';
 import LinkModal from '../../components/LinkModal/LinkModal';
 import ImageModal from '../../components/ImageModal/ImageModal';
+import ArticleHeader from '../../components/ArticleHeader/ArticleHeader';
 
 export default function Article() {
   const { link } = useParams(),
@@ -64,6 +65,7 @@ export default function Article() {
   return (
     <>
       <div className={styles.article}>
+        <ArticleHeader name={user.username} date={article.createdAt} />
         <EditorContent
           editor={editor}
           style={{ width: 'clamp(0px, 100%, 800px)' }}
