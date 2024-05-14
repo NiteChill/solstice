@@ -1,27 +1,76 @@
 import styles from './ArticleHeader.module.scss';
-import avatar from '../../assets/img/default_avatar.png';
 import IconButton from '../IconButton/IconButton';
+import axios from 'axios';
 
-export default function ArticleHeader({ avatar = false, name, date, likes = 0, liked = false }) {
+export default function ArticleHeader({
+  avatar = false,
+  name,
+  date,
+  likes = 0,
+  liked = false,
+  id,
+  article,
+  setArticle,
+  noAccountAction,
+}) {
   const month = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ],
+    handleLike = async () => {
+      if (liked) {
+        const response = await axios.post(
+          'http://localhost:3000/api/unLike',
+          { id: id, article: article },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        if (response.data?.error) console.log(response.data.error);
+        else {
+          const arr = article?.likes,
+            index = arr.indexOf(id);
+          arr.splice(index, 1);
+          setArticle({ ...article, likes: arr });
+        }
+      } else {
+        const response = await axios.post(
+          'http://localhost:3000/api/like',
+          { id: id, article: article },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        if (response.data?.error) console.log(response.data.error);
+        else
+          article?.likes &&
+            setArticle({ ...article, likes: [...article?.likes, id] });
+      }
+    };
   let dateTxt;
   if (date) {
     let monthNbr = date.slice(5, 7);
     if (monthNbr.slice(0, 1) === '0') monthNbr = monthNbr.slice(1, 2);
-    dateTxt = `${date.slice(8, 10)} ${month[monthNbr - 1]}, ${date.slice(0, 4)}`;
+    dateTxt = `${date.slice(8, 10)} ${month[monthNbr - 1]}, ${date.slice(
+      0,
+      4
+    )}`;
   }
   return (
     <div className={styles.header}>
@@ -41,8 +90,19 @@ export default function ArticleHeader({ avatar = false, name, date, likes = 0, l
         </div>
       </div>
       <div className={styles.container}>
-        <IconButton icon='favorite' label={likes} stateLayer='error' iconColor={liked && 'error'} fill={liked && true} />
-        <IconButton icon='comment' label='10' />
+        <IconButton
+          icon='favorite'
+          label={likes}
+          stateLayer='error'
+          iconColor={liked && 'error'}
+          fill={liked && true}
+          onClick={() => (id ? handleLike() : noAccountAction())}
+        />
+        <IconButton
+          icon='comment'
+          label='10'
+          onClick={() => (id ? '' : noAccountAction())}
+        />
         <IconButton icon='share' />
       </div>
     </div>

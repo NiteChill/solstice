@@ -63,12 +63,44 @@ const updateArticle = async (req, res) => {
     });
     if (response) res.json({ state: 'ok', id: id });
     else res.json({ state: 'failed' });
+  } else res.json({ state: 'failed' });
+};
+
+const like = async (req, res) => {
+  try {
+    const response = await articleModel.findByIdAndUpdate(
+      req.body.article._id,
+      {
+        likes: [...req.body.article.likes, req.body.id],
+      }
+    );
+    res.send({ state: 'ok' });
+  } catch (error) {
+    res.send({ error: error });
   }
-  else res.json({ state: 'failed' });
+};
+
+const unLike = async (req, res) => {
+  const arr = req.body.article.likes,
+    index = arr.indexOf(req.body.id);
+  arr.splice(index, 1);
+  try {
+    const response = await articleModel.findByIdAndUpdate(
+      req.body.article._id,
+      {
+        likes: arr,
+      }
+    );
+    res.send({ state: 'ok' });
+  } catch (error) {
+    res.send({ error: error });
+  }
 };
 
 module.exports = {
   createArticle,
   getSingleArticle,
   updateArticle,
+  like,
+  unLike,
 };

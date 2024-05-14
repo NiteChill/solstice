@@ -8,6 +8,7 @@ import Toolbar from '../../components/Toolbar/Toolbar';
 import LinkModal from '../../components/LinkModal/LinkModal';
 import ImageModal from '../../components/ImageModal/ImageModal';
 import ArticleHeader from '../../components/ArticleHeader/ArticleHeader';
+import Snackbar from '../../components/Snackbar/Snackbar';
 
 export default function Article() {
   const { link } = useParams(),
@@ -27,7 +28,8 @@ export default function Article() {
       loading,
       setLoading,
     ] = useOutletContext(),
-    navigate = useNavigate();
+    navigate = useNavigate(),
+    [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
   useEffect(() => {
     const getSingleArticle = async () => {
       setLoading(true);
@@ -52,7 +54,7 @@ export default function Article() {
 
   useEffect(() => {
     editor?.commands.setContent(article?.content);
-  }, [editor, article]);
+  }, [editor, article?.content]);
 
   useEffect(() => {
     editor?.setOptions({ editable: edit });
@@ -70,6 +72,10 @@ export default function Article() {
           date={article?.createdAt}
           likes={article?.likes?.length}
           liked={article?.likes?.includes(user?.id)}
+          id={user?.id}
+          article={article}
+          setArticle={setArticle}
+          noAccountAction={() => setIsOpenSnackbar(true)}
         />
         <EditorContent
           editor={editor}
@@ -85,6 +91,7 @@ export default function Article() {
       {appWidth < 500 && user && article.authorId === user?.id && edit && (
         <Toolbar editor={editor} />
       )}
+      <Snackbar label='Account required' action='Log in' onClick={() => navigate('/login')} isOpen={isOpenSnackbar} setIsOpen={setIsOpenSnackbar} />
       <LinkModal
         isOpen={isOpenLink}
         setIsOpen={setIsOpenLink}
