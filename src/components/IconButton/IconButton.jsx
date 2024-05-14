@@ -12,12 +12,17 @@ export default function IconButton({
   rotation = false,
   loading = false,
   label = false,
+  stateLayer,
+  iconColor,
+  fill = false,
 }) {
   return (
     <div
       className={`${styles.icon_button} ${
         disabled ? styles.disabled : undefined
       } ${rotation ? styles.rotation : undefined} ${
+        stateLayer === 'error' ? styles.state_layer_error : undefined
+      } ${
         style === 'filled_small'
           ? styles.filled_small
           : style === 'filled'
@@ -31,12 +36,12 @@ export default function IconButton({
           : styles.standard
       } ${overridePadding && styles.override_padding} ${
         style === 'standard' && highContrast && styles.high_contrast
-        }`}
-      style={{pointerEvents: loading && 'none'}}
+      }`}
+      style={{ pointerEvents: loading && 'none' }}
       onClick={onClick}
     >
       <div>
-        <div style={{paddingRight: label && '0.75rem'}}>
+        <div style={{ paddingRight: label && '0.75rem' }}>
           {style === 'filled_small' || style === 'filled_small_primary' ? (
             <div
               style={{
@@ -53,9 +58,22 @@ export default function IconButton({
           {loading ? (
             <CircularProgressIndicator />
           ) : (
-            !avatar && <span className='material-symbols-outlined'>{icon}</span>
+            !avatar && (
+              <span
+                className='material-symbols-outlined'
+                style={{ color: iconColor === 'error' && 'var(--error)', fontVariationSettings: fill && "'FILL' 1" }}
+              >
+                {icon}
+              </span>
+            )
           )}
-          {label && <p className='label-large'>{label}</p>}
+          {label && (
+            <p
+              className='label-large'
+            >
+              {label}
+            </p>
+          )}
         </div>
       </div>
     </div>

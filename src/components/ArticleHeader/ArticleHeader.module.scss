@@ -3,6 +3,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   width: clamp(0px, 100%, 800px);
+  padding: 0 0 0.5rem 0;
   & > .user {
     display: flex;
     align-items: center;

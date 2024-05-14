@@ -147,3 +147,12 @@
 		transform: rotate(-360deg);
 	}
 }
+
+.state_layer_error {
+  &:hover > div > div {
+    background: var(--state-layer-error-008);
+  }
+  &:active > div > div {
+    background: var(--state-layer-error-012);
+  }
+}

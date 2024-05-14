@@ -41,7 +41,7 @@ export default function ArticleHeader({ avatar = false, name, date }) {
         </div>
       </div>
       <div className={styles.container}>
-        <IconButton icon='favorite' label='35' />
+        <IconButton icon='favorite' label='35' stateLayer='error' iconColor={'error'} fill={true} />
         <IconButton icon='comment' label='10' />
         <IconButton icon='share' />
       </div>
