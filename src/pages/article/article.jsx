@@ -79,7 +79,7 @@ export default function Article() {
         />
         <EditorContent
           editor={editor}
-          style={{ width: 'clamp(0px, 100%, 800px)' }}
+          style={{ width: 'clamp(0px, 100%, 41rem)' }}
           className={!editor?.isEditable ? styles.editable : undefined}
         />
         {user && article.authorId === user?.id && !edit && (
