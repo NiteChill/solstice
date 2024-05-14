@@ -41,7 +41,7 @@ export default function IconButton({
       onClick={onClick}
     >
       <div>
-        <div style={{ paddingRight: label && '0.75rem' }}>
+        <div style={{ paddingRight: label !== false && '0.75rem' }}>
           {style === 'filled_small' || style === 'filled_small_primary' ? (
             <div
               style={{
@@ -61,19 +61,16 @@ export default function IconButton({
             !avatar && (
               <span
                 className='material-symbols-outlined'
-                style={{ color: iconColor === 'error' && 'var(--error)', fontVariationSettings: fill && "'FILL' 1" }}
+                style={{
+                  color: iconColor === 'error' && 'var(--error)',
+                  fontVariationSettings: fill && "'FILL' 1",
+                }}
               >
                 {icon}
               </span>
             )
           )}
-          {label && (
-            <p
-              className='label-large'
-            >
-              {label}
-            </p>
-          )}
+          {label && <p className='label-large'>{label}</p>}
         </div>
       </div>
     </div>

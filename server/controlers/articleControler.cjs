@@ -1,5 +1,6 @@
 const mongoose = require('mongoose'),
-  articleModel = require('../models/articleModel.cjs');
+  articleModel = require('../models/articleModel.cjs'),
+  userModel = require('../models/userModel.cjs');
 
 const createArticle = async (req, res) => {
   const id = new mongoose.Types.ObjectId(),
@@ -48,7 +49,8 @@ const getSingleArticle = async (req, res) => {
   id = new mongoose.Types.ObjectId(req.body.id);
   try {
     const response = await articleModel.findById(id);
-    res.send({ article: response });
+    const responseName = await userModel.findById(response.authorId);
+    res.send({ article: { ...response._doc, author: responseName.username } });
   } catch (error) {
     res.send({ error: error });
   }

@@ -49,6 +49,7 @@
     height: 0.75rem;
     background: linear-gradient(
       180deg,
+      // color-mix(in srgb, var(--inverse-surface) 50%, transparent),
       var(--surface-container-lowest),
       transparent
     );

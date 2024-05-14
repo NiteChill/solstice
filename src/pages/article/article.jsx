@@ -65,7 +65,12 @@ export default function Article() {
   return (
     <>
       <div className={styles.article}>
-        <ArticleHeader name={user.username} date={article.createdAt} />
+        <ArticleHeader
+          name={article?.author}
+          date={article?.createdAt}
+          likes={article?.likes?.length}
+          liked={article?.likes?.includes(user?.id)}
+        />
         <EditorContent
           editor={editor}
           style={{ width: 'clamp(0px, 100%, 800px)' }}

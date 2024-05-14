@@ -21,6 +21,10 @@ const ArticleSchema = new mongoose.Schema(
     createdAt: {
       type: Date,
       default: Date.now,
+    },
+    likes: {
+      type: Array,
+      default: null,
     }
   },
   { collection: 'articles', versionKey: false }

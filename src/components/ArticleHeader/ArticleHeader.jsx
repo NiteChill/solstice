@@ -2,7 +2,7 @@ import styles from './ArticleHeader.module.scss';
 import avatar from '../../assets/img/default_avatar.png';
 import IconButton from '../IconButton/IconButton';
 
-export default function ArticleHeader({ avatar = false, name, date }) {
+export default function ArticleHeader({ avatar = false, name, date, likes = 0, liked = false }) {
   const month = [
     'Jan',
     'Feb',
@@ -41,7 +41,7 @@ export default function ArticleHeader({ avatar = false, name, date }) {
         </div>
       </div>
       <div className={styles.container}>
-        <IconButton icon='favorite' label='35' stateLayer='error' iconColor={'error'} fill={true} />
+        <IconButton icon='favorite' label={likes} stateLayer='error' iconColor={liked && 'error'} fill={liked && true} />
         <IconButton icon='comment' label='10' />
         <IconButton icon='share' />
       </div>
