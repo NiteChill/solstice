@@ -18,8 +18,7 @@ connection.once('open', () => {
 // app init
 app.use(
   cors({
-    // origin: 'http://localhost:5173',
-    origin: 'https://5173-monospace-solstice-1715785461606.cluster-6yqpn75caneccvva7hjo4uejgk.cloudworkstations.dev',
+    origin: 'http://localhost:5173',
     credentials: true,
     optionsSuccessStatus: 200,
   })
