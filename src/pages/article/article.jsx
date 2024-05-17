@@ -31,7 +31,7 @@ export default function Article() {
     navigate = useNavigate(),
     [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
   useEffect(() => {
-    const getSingleArticle = async () => {
+    (async function getSingleArticle() {
       setLoading(true);
       const response = await axios.post(
         'http://localhost:3000/api/get_single_article',
@@ -48,8 +48,7 @@ export default function Article() {
         setArticle(response.data.article);
         setLoading(false);
       };
-    };
-    getSingleArticle();
+    }());
   }, []);
 
   useEffect(() => {

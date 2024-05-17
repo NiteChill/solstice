@@ -26,13 +26,12 @@ export default function App() {
       setTheme('dark');
     setTheme('light');
 
-    async function getCookie() {
+    (async function getCookie() {
       const response = await axios.get('http://localhost:3000/api', {
         withCredentials: true,
       });
       setUser(response.data.user);
-    }
-    getCookie();
+    }());
   }, []);
   useEffect(() => {
     location.slice(0, 8) !== '/article' && setEdit(false);
