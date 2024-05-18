@@ -35,14 +35,24 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+:root {
+  overflow: hidden;
+}
+
 .App {
   display: flex;
-  flex-direction: column;
   height: 100dvh;
   background: var(--surface-container-lowest);
   color: var(--on-surface);
   font-family: 'Manrope';
   font-weight: 500;
+  & > main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
 }
 
 /// tiptap ///

@@ -32,7 +32,7 @@ export default function LinkModal({ isOpen, setIsOpen, editor }) {
     >
       <div className={styles.backdrop} onClick={() => setIsOpen(false)}></div>
       <div className={styles.container}>
-        <h1 className='headline-small'>Create a link</h1>
+        <h1 className='headline-small'>Insert link</h1>
         <div className={styles.content}>
           <input
             type='url'

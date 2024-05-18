@@ -20,6 +20,8 @@ export default function Navbar({
   setIsOpenImage,
   loading,
   setLoading,
+  isOpenCreateSidesheet,
+  setIsOpenCreateSidesheet,
 }) {
   const navigate = useNavigate(),
     handleCreate = async () => {
@@ -31,12 +33,12 @@ export default function Navbar({
         }
       );
       if (response.data.state === 'ok') {
-        setLoading(false)
+        setLoading(false);
         return response.data.id;
       } else {
         setLoading(false);
         return false;
-      };
+      }
     },
     handleSubmit = async () => {
       setLoading(true);
@@ -69,18 +71,21 @@ export default function Navbar({
           <>
             <IconButton icon='menu' highContrast />
             <h1 className='title-large'>Solstice</h1>
-            <IconButton
-              icon='add'
-              // style='filled_small'
-              onClick={async () => {
-                const id = await handleCreate();
-                if (id) {
-                  navigate(`/article/${id}`);
-                  setEdit(true);
-                  console.log('hi');
-                }
-              }}
-            />
+            {!isOpenCreateSidesheet && (
+              <IconButton
+                icon='add'
+                // style='filled_small'
+                onClick={async () => {
+                  setIsOpenCreateSidesheet(true);
+                  // const id = await handleCreate();
+                  // if (id) {
+                  //   navigate(`/article/${id}`);
+                  //   setEdit(true);
+                  //   console.log('hi');
+                  // }
+                }}
+              />
+            )}
             <IconButton icon='search' />
             <IconButton
               avatar={avatar !== 'none' && avatar}

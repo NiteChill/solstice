@@ -50,7 +50,7 @@ export default function ImageModal({ isOpen, setIsOpen, editor }) {
     >
       <div className={styles.backdrop} onClick={() => setIsOpen(false)}></div>
       <div className={styles.container}>
-        <h1 className='headline-small'>Upload an image</h1>
+        <h1 className='headline-small'>Insert image</h1>
         <div className={styles.container_chips}>
           <Chip label='URL' active={!mode && true} onClick={() => setMode(0)} overrideDone />
           <Chip
