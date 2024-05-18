@@ -7,7 +7,15 @@ import Checkbox from '../Checkbox/Checkbox';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function CreateSidesheet({ isOpen, setIsOpen, setLoading, setEdit }) {
+export default function CreateSidesheet({
+  isOpen,
+  setIsOpen,
+  setLoading,
+  setEdit,
+  article = false,
+  setArticle,
+  user,
+}) {
   const [sidesheetState, setSidesheetState] = useState(isOpen),
     navigate = useNavigate(),
     [content, setContent] = useState({
@@ -60,6 +68,25 @@ export default function CreateSidesheet({ isOpen, setIsOpen, setLoading, setEdit
         setIsOpen(false);
         return false;
       }
+    },
+    handleUpdate = async () => {
+      setLoading(true);
+      const response = await axios.post(
+        'http://localhost:3000/api/update_article_data',
+        { ...content, id: article._id, authorId: article.authorId },
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.data.state === 'ok') {
+        setLoading(false);
+        setIsOpen(false);
+        return true;
+      } else {
+        setLoading(false);
+        setIsOpen(false);
+        return false;
+      }
     };
 
   useEffect(() => {
@@ -74,12 +101,21 @@ export default function CreateSidesheet({ isOpen, setIsOpen, setLoading, setEdit
       enable_comments: true,
     });
   }, [isOpen]);
+  useEffect(() => {
+    setContent({
+      thumbnail: article.thumbnail ?? '',
+      title: article.title ?? '',
+      tags: article.tags ?? [],
+      privacy: article.privacy ?? 'public',
+      enable_comments: article.enable_comments ?? true,
+    });
+  }, [article, isOpen]);
 
   useEffect(() => {
     let unselected = [],
       selected = [];
     tags.forEach((tag) => {
-      content.tags.includes(tag.label)
+      content.tags?.includes(tag.label)
         ? (selected = [...selected, tag])
         : (unselected = [...unselected, tag]);
     });
@@ -98,13 +134,17 @@ export default function CreateSidesheet({ isOpen, setIsOpen, setLoading, setEdit
           width:
             window.innerWidth < 800 &&
             (sidesheetState
-              ? (window.innerWidth > 400 ? 'clamp(0px, 100%, 21.25rem)' : '100%')
+              ? window.innerWidth > 400
+                ? 'clamp(0px, 100%, 21.25rem)'
+                : '100%'
               : 0),
         }}
       >
         <div className={styles.sidesheet}>
           <header>
-            <h1 className='title-large'>Create</h1>
+            <h1 className='title-large'>
+              {article ? `Edit ${article.title}` : 'Create'}
+            </h1>
             <IconButton icon='close' onClick={() => setIsOpen(false)} />
           </header>
           <main>
@@ -125,11 +165,16 @@ export default function CreateSidesheet({ isOpen, setIsOpen, setLoading, setEdit
                   id='file'
                   type='file'
                   accept='image/*'
-                  onInput={async (e) => {
-                    setContent({
-                      ...content,
-                      thumbnail: URL.createObjectURL(e.target.files[0]),
+                  onInput={(event) => {
+                    if (!event.target.files[0]) return;
+                    const reader = new FileReader();
+                    reader.addEventListener('load', (e) => {
+                      setContent({
+                        ...content,
+                        thumbnail: e.target.result,
+                      });
                     });
+                    reader.readAsDataURL(event.target.files[0]);
                   }}
                 />
               </div>
@@ -137,6 +182,7 @@ export default function CreateSidesheet({ isOpen, setIsOpen, setLoading, setEdit
                 type='text'
                 placeholder='Title'
                 className='body-large'
+                value={content?.title}
                 onInput={(e) =>
                   setContent({ ...content, title: e.target.value })
                 }
@@ -206,10 +252,10 @@ export default function CreateSidesheet({ isOpen, setIsOpen, setLoading, setEdit
                       key={tag.label}
                       icon={tag.icon}
                       label={tag.label}
-                      active={content.tags.includes(tag.label)}
+                      active={content.tags?.includes(tag.label)}
                       onClick={() => {
-                        const newTags = content.tags.includes(tag.label)
-                          ? content.tags.filter((el) => el !== tag.label)
+                        const newTags = content.tags?.includes(tag.label)
+                          ? content.tags?.filter((el) => el !== tag.label)
                           : [...content.tags, tag.label];
                         setContent({
                           ...content,
@@ -236,13 +282,22 @@ export default function CreateSidesheet({ isOpen, setIsOpen, setLoading, setEdit
           </main>
           <footer>
             <Button
-              label='Create'
-              disabled={!content.title.replace(/\s+/g, '')}
+              label={article ? 'Save' : 'Create'}
+              disabled={!content.title?.replace(/\s+/g, '')}
               onClick={async () => {
-                const id = await handleCreate();
-                if (id) {
-                  navigate(`/article/${id}`);
-                  setEdit(true);
+                if (article.authorId === user?.id) {
+                  if (article._id) {
+                    const response = handleUpdate();
+                    if (response) {
+                      setArticle({ ...article, ...content });
+                    }
+                  } else {
+                    const id = await handleCreate();
+                    if (id) {
+                      navigate(`/article/${id}`);
+                      setEdit(true);
+                    }
+                  }
                 }
               }}
             />

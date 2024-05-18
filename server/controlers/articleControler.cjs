@@ -71,6 +71,20 @@ const updateArticle = async (req, res) => {
   } else res.json({ state: 'failed' });
 };
 
+const updateArticleData = async (req, res) => {
+  if (req.body?.authorId === req.session?.user.id) {
+    const response = await articleModel.findByIdAndUpdate(req.body.id, {
+      enable_comments: req.body.enable_comments,
+      privacy: req.body.privacy,
+      tags: req.body.tags,
+      thumbnail: req.body.thumbnail,
+      title: req.body.title,
+    });
+    if (response) res.json({ state: 'ok' });
+    else res.json({ state: 'failed' });
+  } else res.json({ state: 'failed' });
+};
+
 const like = async (req, res) => {
   try {
     const response = await articleModel.findByIdAndUpdate(
@@ -106,6 +120,7 @@ module.exports = {
   createArticle,
   getSingleArticle,
   updateArticle,
+  updateArticleData,
   like,
   unLike,
 };

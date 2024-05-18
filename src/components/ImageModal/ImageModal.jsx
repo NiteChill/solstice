@@ -13,7 +13,11 @@ export default function ImageModal({ isOpen, setIsOpen, editor }) {
     handleSubmit = (e) => {
       if (mode) {
         if (!file) return;
-        editor.chain().focus().setImage({ src: URL.createObjectURL(file) }).run();
+        const reader = new FileReader();
+        reader.addEventListener('load', (e) => {
+          editor.chain().focus().setImage({ src: e.target.result }).run();
+        });
+        reader.readAsDataURL(file);
         setIsOpen(false);
         return;
       }

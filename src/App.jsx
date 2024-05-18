@@ -93,6 +93,9 @@ export default function App() {
             setIsOpen={setIsOpenCreateSidesheet}
             setLoading={setLoading}
             setEdit={setEdit}
+            article={article?._id && article}
+            setArticle={setArticle}
+            user={user}
           />
         </>
       )}

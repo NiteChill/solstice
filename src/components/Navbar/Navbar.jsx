@@ -43,7 +43,6 @@ export default function Navbar({
         } else return; // setLoading(false);
       }
     };
-  // console.log(article);
   return (
     <div
       className={`${styles.navbar} ${
@@ -187,7 +186,44 @@ export default function Navbar({
             {/* <IconButton icon='favorite' /> */}
             {/* <IconButton icon='share' /> */}
             {/* <IconButton icon='comment' /> */}
-            <IconButton icon='more_vert' />
+            <div
+              className={styles.dropdown}
+              onClick={(e) => {
+                if (e.currentTarget === document.activeElement)
+                  e.currentTarget.removeAttribute('tabindex');
+                else {
+                  e.currentTarget.setAttribute('tabindex', -1);
+                  e.currentTarget.focus();
+                }
+              }}
+              onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
+            >
+              <IconButton icon='more_vert' />
+              <div className={styles.menu}>
+                {article.authorId === user?.id && (
+                  <>
+                    <div onClick={() => setIsOpenCreateSidesheet(true)}>
+                      <span className='material-symbols-outlined'>edit</span>
+                      <p className='body-large'>Edit article data</p>
+                    </div>
+                    <div onClick={() => ''}>
+                      <span
+                        className='material-symbols-outlined'
+                        style={{ color: 'var(--error)' }}
+                      >
+                        delete
+                      </span>
+                      <p
+                        className='body-large'
+                        style={{ color: 'var(--error)' }}
+                      >
+                        Delete article
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </>
         )}
       </div>
