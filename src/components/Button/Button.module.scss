@@ -57,8 +57,17 @@
   }
 }
 
-.disabled {
+.text.disabled {
   pointer-events: none;
+  & > div {
+    opacity: 0.38;
+    color: var(--on-surface);
+  }
+}
+
+.standard.disabled {
+  pointer-events: none;
+  background: var(--state-layer-on-surface-012);
   & > div {
     opacity: 0.38;
     color: var(--on-surface);

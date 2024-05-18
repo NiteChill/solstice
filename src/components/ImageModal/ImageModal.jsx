@@ -13,11 +13,7 @@ export default function ImageModal({ isOpen, setIsOpen, editor }) {
     handleSubmit = (e) => {
       if (mode) {
         if (!file) return;
-        const reader = new FileReader();
-        reader.addEventListener('load', (e) => {
-          editor.chain().focus().setImage({ src: e.target.result }).run();
-        });
-        reader.readAsDataURL(file);
+        editor.chain().focus().setImage({ src: URL.createObjectURL(file) }).run();
         setIsOpen(false);
         return;
       }
@@ -56,7 +52,10 @@ export default function ImageModal({ isOpen, setIsOpen, editor }) {
           <Chip
             label='My files'
             active={mode && true}
-            onClick={() => setMode(1)}
+            onClick={() => {
+              setContent('');
+              setMode(1);
+            }}
             overrideDone
           />
         </div>

@@ -37,7 +37,7 @@ export default function LinkModal({ isOpen, setIsOpen, editor }) {
           <input
             type='url'
             className='body-large'
-            placeholder='Link URL'
+            placeholder='Link'
             value={content}
             onInput={(e) => setContent(e.target.value)}
           />

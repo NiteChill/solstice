@@ -3,10 +3,14 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
-  border: 1px solid var(--outline);
+  // border: 1px solid var(--outline-variant);
+  background: var(--surface-container);
+  // background: var(--state-layer-primary-008);
   cursor: pointer;
   user-select: none;
+  width: fit-content;
   & > div {
+    border-radius: inherit;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,7 +32,6 @@
 .active {
   background: var(--secondary-container);
   border: none;
-  cursor: context-menu;
   & > div {
     color: var(--on-secondary-container);
   }

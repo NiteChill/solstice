@@ -7,23 +7,23 @@ export default function Discover() {
   [category, setCategory] = useState('all'),
   [loading, setLoading] = useState(false);
   useEffect(() => {
-    (async function getArticles() {
-      setLoading(true);
-      const response = await axios.post(
-        'http://localhost:3000/api/get_articles_by_category',
-        { category: category },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        }
-      );
-      if (response.data?.error) console.log(response.data.error);
-      else if (response.data?.articles) {
-        setLoading(false);
-      };
-    }());
+    // (async function getArticles() {
+    //   setLoading(true);
+    //   const response = await axios.post(
+    //     'http://localhost:3000/api/get_articles_by_category',
+    //     { category: category },
+    //     {
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       withCredentials: true,
+    //     }
+    //   );
+    //   if (response.data?.error) console.log(response.data.error);
+    //   else if (response.data?.articles) {
+    //     setLoading(false);
+    //   };
+    // }());
   }, [])
   return (
     <div className={styles.discover}>
