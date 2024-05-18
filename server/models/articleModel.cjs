@@ -10,6 +10,10 @@ const ArticleSchema = new mongoose.Schema(
       type: mongoose.ObjectId,
       required: true
     },
+    thumbnail: {
+      type: String,
+      default: '',
+    },
     title: {
       type: String,
       default: 'Untitled'
@@ -25,7 +29,23 @@ const ArticleSchema = new mongoose.Schema(
     likes: {
       type: Array,
       default: null,
-    }
+    },
+    tags: {
+      type: Array,
+      default: null,
+    },
+    enable_comments: {
+      type: Boolean,
+      default: true,
+    },
+    comments: {
+      type: Array,
+      default: null,
+    },
+    privacy: {
+      type: String,
+      default: 'public',
+    },
   },
   { collection: 'articles', versionKey: false }
 );

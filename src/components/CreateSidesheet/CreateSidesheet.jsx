@@ -4,9 +4,12 @@ import IconButton from '../IconButton/IconButton';
 import styles from './CreateSidesheet.module.scss';
 import Chip from '../Chip/Chip';
 import Checkbox from '../Checkbox/Checkbox';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-export default function CreateSidesheet({ isOpen, setIsOpen }) {
+export default function CreateSidesheet({ isOpen, setIsOpen, setLoading, setEdit }) {
   const [sidesheetState, setSidesheetState] = useState(isOpen),
+    navigate = useNavigate(),
     [content, setContent] = useState({
       thumbnail: '',
       title: '',
@@ -38,7 +41,26 @@ export default function CreateSidesheet({ isOpen, setIsOpen }) {
     ],
     [sortedTags, setSortTags] = useState(tags),
     [isOpenTags, setIsOpenTags] = useState(true),
-    [isOpenPrivacy, setIsOpenPrivacy] = useState(true);
+    [isOpenPrivacy, setIsOpenPrivacy] = useState(true),
+    handleCreate = async () => {
+      setLoading(true);
+      const response = await axios.post(
+        'http://localhost:3000/api/create_article',
+        content,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.data.state === 'ok') {
+        setLoading(false);
+        setIsOpen(false);
+        return response.data.id;
+      } else {
+        setLoading(false);
+        setIsOpen(false);
+        return false;
+      }
+    };
 
   useEffect(() => {
     isOpen
@@ -63,8 +85,6 @@ export default function CreateSidesheet({ isOpen, setIsOpen }) {
     });
     setSortTags([...selected, ...unselected]);
   }, [content.tags]);
-
-  useEffect(() => console.log(content), [content])
   return (
     <>
       <div
@@ -76,9 +96,10 @@ export default function CreateSidesheet({ isOpen, setIsOpen }) {
         className={`${styles.container} ${isOpen ? styles.open : undefined}`}
         style={{
           width:
-            window.innerWidth > 400 &&
             window.innerWidth < 800 &&
-            (sidesheetState ? 'clamp(0px, 100%, 21.25rem)' : 0),
+            (sidesheetState
+              ? (window.innerWidth > 400 ? 'clamp(0px, 100%, 21.25rem)' : '100%')
+              : 0),
         }}
       >
         <div className={styles.sidesheet}>
@@ -122,44 +143,6 @@ export default function CreateSidesheet({ isOpen, setIsOpen }) {
               />
             </div>
             <div className={styles.settings}>
-              <div className={styles.tags}>
-                <header
-                  style={{
-                    margin: isOpenTags && '0.5rem 0 0.625rem 0',
-                  }}
-                  onClick={() => setIsOpenTags(!isOpenTags)}
-                >
-                  <span className='material-symbols-outlined'>folder</span>
-                  <p className='body-large'>categories</p>
-                  <span className='material-symbols-outlined'>
-                    {isOpenTags ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-                  </span>
-                </header>
-                <div
-                  style={{
-                    height: !isOpenTags && 0,
-                    opacity: !isOpenTags && 0,
-                  }}
-                >
-                  {sortedTags.map((tag) => (
-                    <Chip
-                      key={tag.label}
-                      icon={tag.icon}
-                      label={tag.label}
-                      active={content.tags.includes(tag.label)}
-                      onClick={() => {
-                        const newTags = content.tags.includes(tag.label)
-                          ? content.tags.filter((el) => el !== tag.label)
-                          : [...content.tags, tag.label];
-                        setContent({
-                          ...content,
-                          tags: newTags ?? [],
-                        });
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
               <div className={styles.privacy}>
                 <header
                   style={{
@@ -199,14 +182,70 @@ export default function CreateSidesheet({ isOpen, setIsOpen }) {
                   />
                 </div>
               </div>
+              <div className={styles.tags}>
+                <header
+                  style={{
+                    margin: isOpenTags && '0.5rem 0 0.625rem 0',
+                  }}
+                  onClick={() => setIsOpenTags(!isOpenTags)}
+                >
+                  <span className='material-symbols-outlined'>folder</span>
+                  <p className='body-large'>categories</p>
+                  <span className='material-symbols-outlined'>
+                    {isOpenTags ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+                  </span>
+                </header>
+                <div
+                  style={{
+                    height: !isOpenTags && 0,
+                    opacity: !isOpenTags && 0,
+                  }}
+                >
+                  {sortedTags.map((tag) => (
+                    <Chip
+                      key={tag.label}
+                      icon={tag.icon}
+                      label={tag.label}
+                      active={content.tags.includes(tag.label)}
+                      onClick={() => {
+                        const newTags = content.tags.includes(tag.label)
+                          ? content.tags.filter((el) => el !== tag.label)
+                          : [...content.tags, tag.label];
+                        setContent({
+                          ...content,
+                          tags: newTags ?? [],
+                        });
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
               <div className={styles.enable_comments}>
                 <p className='body-large'>Allow comments</p>
-                <Checkbox isChecked={content.enable_comments} onClick={() => setContent({ ...content, enable_comments: !content.enable_comments })} />
+                <Checkbox
+                  isChecked={content.enable_comments}
+                  onClick={() =>
+                    setContent({
+                      ...content,
+                      enable_comments: !content.enable_comments,
+                    })
+                  }
+                />
               </div>
             </div>
           </main>
           <footer>
-            <Button label='Create' disabled={!content.title.replace(/\s+/g, '')} />
+            <Button
+              label='Create'
+              disabled={!content.title.replace(/\s+/g, '')}
+              onClick={async () => {
+                const id = await handleCreate();
+                if (id) {
+                  navigate(`/article/${id}`);
+                  setEdit(true);
+                }
+              }}
+            />
             <Button
               label='Cancel'
               style='outlined_primary'

@@ -24,22 +24,6 @@ export default function Navbar({
   setIsOpenCreateSidesheet,
 }) {
   const navigate = useNavigate(),
-    handleCreate = async () => {
-      setLoading(true);
-      const response = await axios.get(
-        'http://localhost:3000/api/create_article',
-        {
-          withCredentials: true,
-        }
-      );
-      if (response.data.state === 'ok') {
-        setLoading(false);
-        return response.data.id;
-      } else {
-        setLoading(false);
-        return false;
-      }
-    },
     handleSubmit = async () => {
       setLoading(true);
       if (article?.authorId === user?.id) {
@@ -75,15 +59,7 @@ export default function Navbar({
               <IconButton
                 icon='add'
                 // style='filled_small'
-                onClick={async () => {
-                  setIsOpenCreateSidesheet(true);
-                  // const id = await handleCreate();
-                  // if (id) {
-                  //   navigate(`/article/${id}`);
-                  //   setEdit(true);
-                  //   console.log('hi');
-                  // }
-                }}
+                onClick={async () => setIsOpenCreateSidesheet(true)}
               />
             )}
             <IconButton icon='search' />

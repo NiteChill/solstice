@@ -9,6 +9,11 @@ const createArticle = async (req, res) => {
   article = new articleModel({
     _id: id,
     authorId: req.session.user.id,
+    title: req.body.title,
+    thumbnail: req.body.thumbnail,
+    enable_comments: req.body.enable_comments,
+    privacy: req.body.privacy,
+    tags: req.body.tags,
     content: response
       ? ''
       : `

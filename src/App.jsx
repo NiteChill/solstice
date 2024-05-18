@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './default.scss';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import axios from 'axios';
 import LoadingElement from './components/LoadingElement/LoadingElement';
@@ -91,6 +91,8 @@ export default function App() {
           <CreateSidesheet
             isOpen={isOpenCreateSidesheet}
             setIsOpen={setIsOpenCreateSidesheet}
+            setLoading={setLoading}
+            setEdit={setEdit}
           />
         </>
       )}
