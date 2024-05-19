@@ -14,18 +14,18 @@ export default function ArticleHeader({
   noAccountAction,
 }) {
   const month = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JUL',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC',
     ],
     handleLike = async () => {
       if (liked) {
@@ -67,44 +67,50 @@ export default function ArticleHeader({
   if (date) {
     let monthNbr = date.slice(5, 7);
     if (monthNbr.slice(0, 1) === '0') monthNbr = monthNbr.slice(1, 2);
-    dateTxt = `${date.slice(8, 10)} ${month[monthNbr - 1]}, ${date.slice(
+    dateTxt = ` ${month[monthNbr - 1]} ${date.slice(8, 10)}, ${date.slice(
       0,
       4
     )}`;
   }
   return (
     <div className={styles.header}>
-      <div className={styles.user}>
-        <div className={styles.profile_picture}>
-          {avatar ? (
-            <img src={avatar} alt='Profile' />
-          ) : (
-            <div>
-              <span className='material-symbols-outlined'>person</span>
-            </div>
-          )}
+      <h1 className={window.innerWidth > 400 ?'display-large' : 'display-small'}>{article?.title}</h1>
+      <p className='body-large'>{dateTxt}</p>
+      <footer>
+        <div className={styles.user}>
+          <div className={styles.profile_picture}>
+            {avatar ? (
+              <img src={avatar} alt='Profile' />
+            ) : (
+              <div>
+                <span className='material-symbols-outlined'>person</span>
+              </div>
+            )}
+          </div>
+          <h3 className='body-large'>{name}</h3>
         </div>
-        <div className={styles.texts}>
-          <h3 className='body-medium'>{name}</h3>
-          <p className='body-small'>{dateTxt}</p>
+        <div className={styles.container}>
+          <IconButton
+            icon='favorite'
+            label={likes}
+            stateLayer='error'
+            iconColor={liked && 'error'}
+            fill={liked && true}
+            onClick={() => (id ? handleLike() : noAccountAction())}
+          />
+          <IconButton
+            icon='comment'
+            label='10'
+            onClick={() => (id ? '' : noAccountAction())}
+          />
+          <IconButton icon='share' />
         </div>
-      </div>
-      <div className={styles.container}>
-        <IconButton
-          icon='favorite'
-          label={likes}
-          stateLayer='error'
-          iconColor={liked && 'error'}
-          fill={liked && true}
-          onClick={() => (id ? handleLike() : noAccountAction())}
-        />
-        <IconButton
-          icon='comment'
-          label='10'
-          onClick={() => (id ? '' : noAccountAction())}
-        />
-        <IconButton icon='share' />
-      </div>
+      </footer>
+      {article?.thumbnail ? (
+          <img src={article?.thumbnail} alt='Thumbnail' />
+      ) : (
+          <div />
+      )}
     </div>
   );
 }

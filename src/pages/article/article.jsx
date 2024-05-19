@@ -78,7 +78,7 @@ export default function Article() {
         />
         <EditorContent
           editor={editor}
-          style={{ width: 'clamp(0px, 100%, 41rem)' }}
+          style={{ width: 'clamp(0px, 100%, 45rem)' }}
           className={!editor?.isEditable ? styles.editable : undefined}
         />
         {user && article.authorId === user?.id && !edit && (
@@ -90,7 +90,13 @@ export default function Article() {
       {appWidth < 500 && user && article.authorId === user?.id && edit && (
         <Toolbar editor={editor} />
       )}
-      <Snackbar label='Account required' action='Log in' onClick={() => navigate('/login')} isOpen={isOpenSnackbar} setIsOpen={setIsOpenSnackbar} />
+      <Snackbar
+        label='Account required'
+        action='Log in'
+        onClick={() => navigate('/login')}
+        isOpen={isOpenSnackbar}
+        setIsOpen={setIsOpenSnackbar}
+      />
       <LinkModal
         isOpen={isOpenLink}
         setIsOpen={setIsOpenLink}

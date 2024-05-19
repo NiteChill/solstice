@@ -182,7 +182,7 @@ export default function Navbar({
               onClick={() => !loading && navigate(-1)}
               loading={loading}
             />
-            <h1 className='title-large'>{loading ? 'Loading...' : title}</h1>
+            <h1 className='title-large'>Solstice</h1>
             {/* <IconButton icon='favorite' /> */}
             {/* <IconButton icon='share' /> */}
             {/* <IconButton icon='comment' /> */}
