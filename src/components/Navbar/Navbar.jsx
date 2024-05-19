@@ -204,7 +204,7 @@ export default function Navbar({
                   <>
                     <div onClick={() => setIsOpenCreateSidesheet(true)}>
                       <span className='material-symbols-outlined'>edit</span>
-                      <p className='body-large'>Edit article data</p>
+                      <p className='body-large'>Edit details</p>
                     </div>
                     <div onClick={() => ''}>
                       <span

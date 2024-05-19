@@ -236,7 +236,7 @@ export default function CreateSidesheet({
                   onClick={() => setIsOpenTags(!isOpenTags)}
                 >
                   <span className='material-symbols-outlined'>folder</span>
-                  <p className='body-large'>categories</p>
+                  <p className='body-large'>Categories</p>
                   <span className='material-symbols-outlined'>
                     {isOpenTags ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
                   </span>
