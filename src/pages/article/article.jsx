@@ -27,6 +27,7 @@ export default function Article() {
       setIsOpenImage,
       loading,
       setLoading,
+      isOpenMenu,
     ] = useOutletContext(),
     navigate = useNavigate(),
     [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
@@ -81,13 +82,13 @@ export default function Article() {
           style={{ width: 'clamp(0px, 100%, 45rem)' }}
           className={!editor?.isEditable ? styles.editable : undefined}
         />
-        {user && article.authorId === user?.id && !edit && (
-          <div className={styles.FAB}>
+        {user && article?.authorId === user?.id && !edit && (
+          <div className={styles.FAB} style={{bottom: isOpenMenu && window.innerWidth < 720 && '5.25rem'}}>
             <FAB icon='edit' onClick={() => setEdit(true)} />
           </div>
         )}
       </div>
-      {appWidth < 500 && user && article.authorId === user?.id && edit && (
+      {appWidth < 500 && user && article?.authorId === user?.id && edit && (
         <Toolbar editor={editor} />
       )}
       <Snackbar

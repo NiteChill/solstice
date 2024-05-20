@@ -1,22 +1,12 @@
 .progress_indicator {
+  display: flex;
   position: relative;
   margin: 0 auto;
-  &:before {
-    content: '';
-    display: block;
-    padding-top: 100%;
-  }
+  max-height: 1.5rem;
+  min-width: 1.5rem;
+  flex-shrink: 0;
   & > svg {
     animation: rotate 2s linear infinite;
-    height: 100%;
-    transform-origin: center center;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
     & > circle {
       stroke: var(--primary);
       stroke-dasharray: 1, 200;

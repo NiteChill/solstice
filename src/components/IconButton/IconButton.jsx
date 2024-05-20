@@ -41,7 +41,12 @@ export default function IconButton({
       onClick={onClick}
     >
       <div>
-        <div style={{ paddingRight: label !== false && '0.75rem' }}>
+        <div
+          style={{
+            paddingRight: label !== false && '0.75rem',
+            padding: loading && '1.5rem',
+          }}
+        >
           {style === 'filled_small' || style === 'filled_small_primary' ? (
             <div
               style={{

@@ -83,7 +83,10 @@
     width: 0;
     z-index: 1000;
     transition: scale 0.2s var(--transition), opacity 0.2s var(--transition);
+    flex-shrink: 0;
     & > div {
+      flex-shrink: 0;
+      height: 3.5rem;
       width: 100%;
       padding: 0.5rem 0.75rem;
       display: flex;

@@ -26,7 +26,10 @@ export default function Toolbar({ editor, setIsOpenLink, setIsOpenImage }) {
             e.currentTarget.focus();
           }
         }}
-        onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
+        onBlur={(e) => {
+          e.currentTarget.removeAttribute('tabindex');
+          editor.chain().focus().run();
+        }}
       >
         <FormatButton
           icon={
@@ -135,7 +138,10 @@ export default function Toolbar({ editor, setIsOpenLink, setIsOpenImage }) {
             e.currentTarget.focus();
           }
         }}
-        onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
+        onBlur={(e) => {
+          e.currentTarget.removeAttribute('tabindex');
+          editor.chain().focus().run();
+        }}
       >
         <FormatButton icon='format_color_text' />
         <div

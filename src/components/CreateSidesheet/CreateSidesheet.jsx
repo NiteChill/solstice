@@ -94,15 +94,6 @@ export default function CreateSidesheet({
       ? setSidesheetState(true)
       : setTimeout(() => setSidesheetState(false), 300);
     setContent({
-      thumbnail: '',
-      title: '',
-      tags: [],
-      privacy: 'public',
-      enable_comments: true,
-    });
-  }, [isOpen]);
-  useEffect(() => {
-    setContent({
       thumbnail: article.thumbnail ?? '',
       title: article.title ?? '',
       tags: article.tags ?? [],
@@ -132,7 +123,7 @@ export default function CreateSidesheet({
         className={`${styles.container} ${isOpen ? styles.open : undefined}`}
         style={{
           width:
-            window.innerWidth < 800 &&
+            window.innerWidth < 900 &&
             (sidesheetState
               ? window.innerWidth > 400
                 ? 'clamp(0px, 100%, 21.25rem)'
@@ -285,18 +276,18 @@ export default function CreateSidesheet({
               label={article ? 'Save' : 'Create'}
               disabled={!content.title?.replace(/\s+/g, '')}
               onClick={async () => {
-                if (article.authorId === user?.id) {
-                  if (article._id) {
+                if (article._id) {
+                  if (article.authorId === user?.id) {
                     const response = handleUpdate();
                     if (response) {
                       setArticle({ ...article, ...content });
                     }
-                  } else {
-                    const id = await handleCreate();
-                    if (id) {
-                      navigate(`/article/${id}`);
-                      setEdit(true);
-                    }
+                  }
+                } else {
+                  const id = await handleCreate();
+                  if (id) {
+                    navigate(`/article/${id}`);
+                    setEdit(true);
                   }
                 }
               }}

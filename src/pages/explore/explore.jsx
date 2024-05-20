@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './explore.module.scss';
 import { useOutletContext } from 'react-router-dom';
+import IconButton from '../../components/IconButton/IconButton';
 
 export default function Explore() {
   const [user, setUser] = useOutletContext(),
@@ -26,11 +27,14 @@ export default function Explore() {
     // }());
   }, [])
   return (
-    <div className={styles.discover}>
-      <div>
+    <div className={styles.explore}>
+      <div className={styles.title}>
         {user ? (
           <div>
-            <h1 className='display-medium' style={{lineHeight: '3.5rem'}}>{`Hi ${user.username},`}</h1>
+            <h1
+              className='display-medium'
+              style={{ lineHeight: '3.5rem' }}
+            >{`Hi ${user.username},`}</h1>
             <h2 className='display-medium'>What do you want to read today?</h2>
           </div>
         ) : (
@@ -40,6 +44,7 @@ export default function Explore() {
           </div>
         )}
       </div>
+      <a href='/article/66202b3d2f67ec58b8baa41c'>devlog</a>
     </div>
   );
 }

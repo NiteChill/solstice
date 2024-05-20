@@ -47,13 +47,21 @@ input::-webkit-inner-spin-button {
   color: var(--on-surface);
   font-family: 'Manrope';
   font-weight: 500;
-  padding: 0 0 5rem 0;
   & > main {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
     overflow: hidden;
+  }
+  &.open {
+    padding: 0 0 3.75rem 0;
+  }
+}
+
+@media screen and (min-width: 720px) {
+  .App.open {
+    padding: 0 0 0 6rem;
   }
 }
 

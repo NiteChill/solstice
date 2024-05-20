@@ -17,7 +17,8 @@ export default function App() {
     [isOpenLink, setIsOpenLink] = useState(false),
     [isOpenImage, setIsOpenImage] = useState(false),
     [loading, setLoading] = useState(false),
-    [isOpenCreateSidesheet, setIsOpenCreateSidesheet] = useState(false);
+    [isOpenCreateSidesheet, setIsOpenCreateSidesheet] = useState(false),
+    [isOpenMenu, setIsOpenMenu] = useState(true);
   useEffect(() => {
     window.addEventListener('resize', () => {
       setAppWidth(window.innerWidth);
@@ -27,7 +28,7 @@ export default function App() {
       window.matchMedia('(prefers-color-scheme: dark)').matches
     )
       setTheme('dark');
-    setTheme('light');
+    // setTheme('light');
 
     (async function getCookie() {
       const response = await axios.get('http://localhost:3000/api', {
@@ -37,10 +38,19 @@ export default function App() {
     })();
   }, []);
   useEffect(() => {
-    location.slice(0, 8) !== '/article' && setEdit(false);
+    if (location.slice(0, 8) !== '/article') {
+      setEdit(false);
+      setArticle(null);
+    } else {
+      // setIsOpenMenu(false)
+    }
   }, [location]);
+
+  useEffect(() => {
+    edit ? setIsOpenMenu(false) : setIsOpenMenu(true);
+  }, [edit]);
   return (
-    <div className={`App ${theme}`}>
+    <div className={`App ${theme} ${isOpenMenu ? 'open' : ''}`}>
       {user === 'loading' ? (
         <LoadingElement />
       ) : (
@@ -86,10 +96,17 @@ export default function App() {
                 setIsOpenImage,
                 loading,
                 setLoading,
+                isOpenMenu,
               ]}
             />
           </main>
-          <NavigationMenu location={location} />
+          {isOpenMenu && (
+            <NavigationMenu
+              location={location}
+              theme={theme}
+              setTheme={setTheme}
+            />
+          )}
           <CreateSidesheet
             isOpen={isOpenCreateSidesheet}
             setIsOpen={setIsOpenCreateSidesheet}

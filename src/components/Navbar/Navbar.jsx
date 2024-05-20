@@ -79,7 +79,7 @@ export default function Navbar({
               <div></div>
             </div>
             <h1 className='title-large'>Solstice</h1>
-            <IconButton icon='search' />
+            {/* <IconButton icon='search' /> */}
             <div className={styles.button}>
               <Button label='Log in' onClick={() => navigate('/login')} />
             </div>
@@ -179,54 +179,58 @@ export default function Navbar({
 
         {location.slice(0, 8) === '/article' && !edit && (
           <>
-            <IconButton
+            {/* {loading ? (
+              <IconButton
+                loading
+              />
+            ) : (
+              <div className={styles.logo}>
+                <div></div>
+              </div>
+            )} */}
+            {/* <IconButton
               icon='arrow_back'
               highContrast
               onClick={() => !loading && navigate(-1)}
               loading={loading}
-            />
-            <h1 className='title-large'>Solstice</h1>
+            /> */}
+            <h1 className='title-large' style={{paddingLeft: '0.75rem'}}>Solstice</h1>
             {/* <IconButton icon='favorite' /> */}
             {/* <IconButton icon='share' /> */}
             {/* <IconButton icon='comment' /> */}
-            <div
-              className={styles.dropdown}
-              onClick={(e) => {
-                if (e.currentTarget === document.activeElement)
-                  e.currentTarget.removeAttribute('tabindex');
-                else {
-                  e.currentTarget.setAttribute('tabindex', -1);
-                  e.currentTarget.focus();
-                }
-              }}
-              onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
-            >
-              <IconButton icon='more_vert' />
-              <div className={styles.menu}>
-                {article.authorId === user?.id && (
-                  <>
-                    <div onClick={() => setIsOpenCreateSidesheet(true)}>
-                      <span className='material-symbols-outlined'>edit</span>
-                      <p className='body-large'>Edit details</p>
-                    </div>
-                    <div onClick={() => ''}>
-                      <span
-                        className='material-symbols-outlined'
-                        style={{ color: 'var(--error)' }}
-                      >
-                        delete
-                      </span>
-                      <p
-                        className='body-large'
-                        style={{ color: 'var(--error)' }}
-                      >
-                        Delete article
-                      </p>
-                    </div>
-                  </>
-                )}
+            {article?.authorId === user?.id && (
+              <div
+                className={styles.dropdown}
+                onClick={(e) => {
+                  if (e.currentTarget === document.activeElement)
+                    e.currentTarget.removeAttribute('tabindex');
+                  else {
+                    e.currentTarget.setAttribute('tabindex', -1);
+                    e.currentTarget.focus();
+                  }
+                }}
+                onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
+              >
+                <IconButton icon='more_vert' />
+                <div className={styles.menu}>
+                  <div onClick={() => setIsOpenCreateSidesheet(true)}>
+                    <span className='material-symbols-outlined'>edit</span>
+                    <p className='body-large'>Edit details</p>
+                  </div>
+                  <div onClick={() => ''}>
+                    <span
+                      className='material-symbols-outlined'
+                      style={{ color: 'var(--error)' }}
+                    >
+                      delete
+                    </span>
+                    <p className='body-large' style={{ color: 'var(--error)' }}>
+                      Delete article
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </>
         )}
       </div>
@@ -235,7 +239,7 @@ export default function Navbar({
       )} */}
       {appWidth > 500 &&
         user &&
-        article.authorId === user?.id &&
+        article?.authorId === user?.id &&
         edit &&
         !loading && (
           <Toolbar
