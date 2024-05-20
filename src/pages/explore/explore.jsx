@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import styles from './discover.module.scss';
+import styles from './explore.module.scss';
 import { useOutletContext } from 'react-router-dom';
 
-export default function Discover() {
+export default function Explore() {
   const [user, setUser] = useOutletContext(),
   [category, setCategory] = useState('all'),
   [loading, setLoading] = useState(false);

@@ -52,7 +52,10 @@ export default function Navbar({
       <div className={styles.main}>
         {location === '/' && loggedIn && (
           <>
-            <IconButton icon='menu' highContrast />
+            {/* <IconButton icon='menu' highContrast /> */}
+            <div className={styles.logo}>
+              <div></div>
+            </div>
             <h1 className='title-large'>Solstice</h1>
             {!isOpenCreateSidesheet && (
               <IconButton
@@ -61,12 +64,12 @@ export default function Navbar({
                 onClick={async () => setIsOpenCreateSidesheet(true)}
               />
             )}
-            <IconButton icon='search' />
-            <IconButton
+            {/* <IconButton icon='search' /> */}
+            {/* <IconButton
               avatar={avatar !== 'none' && avatar}
               icon={avatar === 'none' && 'person'}
               style={avatar === 'none' && 'filled_small_primary'}
-            />
+            /> */}
           </>
         )}
 

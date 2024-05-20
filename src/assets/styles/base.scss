@@ -40,12 +40,14 @@ input::-webkit-inner-spin-button {
 }
 
 .App {
+  position: relative;
   display: flex;
   height: 100dvh;
   background: var(--surface-container-lowest);
   color: var(--on-surface);
   font-family: 'Manrope';
   font-weight: 500;
+  padding: 0 0 5rem 0;
   & > main {
     display: flex;
     flex-direction: column;

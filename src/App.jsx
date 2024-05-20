@@ -6,6 +6,7 @@ import axios from 'axios';
 import LoadingElement from './components/LoadingElement/LoadingElement';
 import { useTiptap } from './hooks/useTiptap';
 import CreateSidesheet from './components/CreateSidesheet/CreateSidesheet';
+import NavigationMenu from './components/NavigationMenu/NavigationMenu';
 
 export default function App() {
   const [theme, setTheme] = useState('light'),
@@ -88,6 +89,7 @@ export default function App() {
               ]}
             />
           </main>
+          <NavigationMenu location={location} />
           <CreateSidesheet
             isOpen={isOpenCreateSidesheet}
             setIsOpen={setIsOpenCreateSidesheet}
