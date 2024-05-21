@@ -47,6 +47,7 @@ input::-webkit-inner-spin-button {
   color: var(--on-surface);
   font-family: 'Manrope';
   font-weight: 500;
+  transition: padding 0.2s var(--transition);
   & > main {
     display: flex;
     flex-direction: column;

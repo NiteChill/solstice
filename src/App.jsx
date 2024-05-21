@@ -28,7 +28,7 @@ export default function App() {
       window.matchMedia('(prefers-color-scheme: dark)').matches
     )
       setTheme('dark');
-    // setTheme('light');
+    setTheme('light');
 
     (async function getCookie() {
       const response = await axios.get('http://localhost:3000/api', {
@@ -71,13 +71,13 @@ export default function App() {
               editor={editor}
               article={article}
               user={user}
-              appWidth={appWidth}
               setIsOpenLink={setIsOpenLink}
               setIsOpenImage={setIsOpenImage}
               loading={loading}
               setLoading={setLoading}
               isOpenCreateSidesheet={isOpenCreateSidesheet}
               setIsOpenCreateSidesheet={setIsOpenCreateSidesheet}
+              appWidth={appWidth}
             />
 
             <Outlet
@@ -89,24 +89,23 @@ export default function App() {
                 article,
                 setArticle,
                 editor,
-                appWidth,
                 isOpenLink,
                 setIsOpenLink,
                 isOpenImage,
                 setIsOpenImage,
                 loading,
                 setLoading,
+                appWidth,
                 isOpenMenu,
               ]}
             />
           </main>
-          {isOpenMenu && (
-            <NavigationMenu
-              location={location}
-              theme={theme}
-              setTheme={setTheme}
-            />
-          )}
+          <NavigationMenu
+            location={location}
+            theme={theme}
+            setTheme={setTheme}
+            isOpen={isOpenMenu}
+          />
           <CreateSidesheet
             isOpen={isOpenCreateSidesheet}
             setIsOpen={setIsOpenCreateSidesheet}

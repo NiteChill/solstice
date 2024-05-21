@@ -1,3 +1,13 @@
+.navbar_title {
+  padding: 0.625rem 1rem;
+  flex: 1;
+  & > h1 {
+    width: fit-content;
+    cursor: pointer;
+    color: var(--on-surface-variant);
+  }
+}
+
 .navbar {
   position: relative;
   display: flex;
@@ -32,14 +42,6 @@
       padding: 0.25rem;
       align-items: center;
       justify-content: center;
-    }
-    & > h1 {
-      min-width: 0;
-      flex: 1;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      color: var(--on-surface-variant);
     }
   }
   &::before {

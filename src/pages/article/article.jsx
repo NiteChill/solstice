@@ -20,13 +20,13 @@ export default function Article() {
       article,
       setArticle,
       editor,
-      appWidth,
       isOpenLink,
       setIsOpenLink,
       isOpenImage,
       setIsOpenImage,
       loading,
       setLoading,
+      appWidth,
       isOpenMenu,
     ] = useOutletContext(),
     navigate = useNavigate(),
@@ -48,8 +48,8 @@ export default function Article() {
       else if (response.data?.article) {
         setArticle(response.data.article);
         setLoading(false);
-      };
-    }());
+      }
+    })();
   }, []);
 
   useEffect(() => {
@@ -67,30 +67,41 @@ export default function Article() {
   return (
     <>
       <div className={styles.article}>
-        <ArticleHeader
-          name={article?.author}
-          date={article?.createdAt}
-          likes={article?.likes?.length}
-          liked={article?.likes?.includes(user?.id)}
-          id={user?.id}
-          article={article}
-          setArticle={setArticle}
-          noAccountAction={() => setIsOpenSnackbar(true)}
-        />
+        {!loading && (
+          <ArticleHeader
+            name={article?.author}
+            date={article?.createdAt}
+            likes={article?.likes?.length}
+            liked={article?.likes?.includes(user?.id)}
+            id={user?.id}
+            article={article}
+            setArticle={setArticle}
+            noAccountAction={() => setIsOpenSnackbar(true)}
+          />
+        )}
         <EditorContent
           editor={editor}
           style={{ width: 'clamp(0px, 100%, 45rem)' }}
           className={!editor?.isEditable ? styles.editable : undefined}
         />
         {user && article?.authorId === user?.id && !edit && (
-          <div className={styles.FAB} style={{bottom: isOpenMenu && window.innerWidth < 720 && '5.25rem'}}>
-            <FAB icon='edit' onClick={() => setEdit(true)} />
+          <div
+            className={styles.FAB}
+            style={{
+              bottom: isOpenMenu && appWidth < 720 && '5.25rem',
+            }}
+          >
+            <FAB
+              icon='edit'
+              onClick={() => setEdit(true)}
+            />
           </div>
         )}
       </div>
-      {appWidth < 500 && user && article?.authorId === user?.id && edit && (
-        <Toolbar editor={editor} />
-      )}
+      {appWidth < 500 &&
+        user &&
+        article?.authorId === user?.id &&
+        edit && <Toolbar editor={editor} />}
       <Snackbar
         label='Account required'
         action='Log in'

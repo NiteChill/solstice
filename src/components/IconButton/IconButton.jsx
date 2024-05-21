@@ -44,7 +44,7 @@ export default function IconButton({
         <div
           style={{
             paddingRight: label !== false && '0.75rem',
-            padding: loading && '1.5rem',
+            // padding: loading && '1.5rem',
           }}
         >
           {style === 'filled_small' || style === 'filled_small_primary' ? (
@@ -57,23 +57,27 @@ export default function IconButton({
               }}
             ></div>
           ) : (
-            avatar && <img src={avatar} alt='profilePicture' />
+            avatar && (
+              <img
+                src={avatar}
+                alt='profilePicture'
+              />
+            )
           )}
 
-          {loading ? (
-            <CircularProgressIndicator />
-          ) : (
-            !avatar && (
-              <span
-                className='material-symbols-outlined'
-                style={{
-                  color: iconColor === 'error' && 'var(--error)',
-                  fontVariationSettings: fill && "'FILL' 1",
-                }}
-              >
-                {icon}
-              </span>
-            )
+          {!avatar && (
+            <span
+              className='material-symbols-outlined'
+              style={{
+                color: loading
+                  ? 'transparent'
+                  : iconColor === 'error' && 'var(--error)',
+                fontVariationSettings: fill && "'FILL' 1",
+              }}
+            >
+              {loading && <CircularProgressIndicator />}
+              {icon}
+            </span>
           )}
           {label && <p className='label-large'>{label}</p>}
         </div>

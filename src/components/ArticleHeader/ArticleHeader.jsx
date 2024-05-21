@@ -1,6 +1,7 @@
 import styles from './ArticleHeader.module.scss';
 import IconButton from '../IconButton/IconButton';
 import axios from 'axios';
+import { useState } from 'react';
 
 export default function ArticleHeader({
   avatar = false,
@@ -27,7 +28,9 @@ export default function ArticleHeader({
       'NOV',
       'DEC',
     ],
+    [loadingLike, setLoadingLike] = useState(false),
     handleLike = async () => {
+      setLoadingLike(true);
       if (liked) {
         const response = await axios.post(
           'http://localhost:3000/api/unLike',
@@ -45,6 +48,7 @@ export default function ArticleHeader({
             index = arr.indexOf(id);
           arr.splice(index, 1);
           setArticle({ ...article, likes: arr });
+          setLoadingLike(false);
         }
       } else {
         const response = await axios.post(
@@ -58,9 +62,10 @@ export default function ArticleHeader({
           }
         );
         if (response.data?.error) console.log(response.data.error);
-        else
-          article?.likes &&
-            setArticle({ ...article, likes: [...article?.likes, id] });
+        else if (article?.likes) {
+          setArticle({ ...article, likes: [...article?.likes, id] });
+          setLoadingLike(false);
+        }
       }
     };
   let dateTxt;
@@ -74,13 +79,20 @@ export default function ArticleHeader({
   }
   return (
     <div className={styles.header}>
-      <h1 className={window.innerWidth > 400 ?'display-large' : 'display-small'}>{article?.title}</h1>
+      <h1
+        className={window.innerWidth > 400 ? 'display-large' : 'display-small'}
+      >
+        {article?.title}
+      </h1>
       <p className='body-large'>{dateTxt}</p>
       <footer>
         <div className={styles.user}>
           <div className={styles.profile_picture}>
             {avatar ? (
-              <img src={avatar} alt='Profile' />
+              <img
+                src={avatar}
+                alt='Profile'
+              />
             ) : (
               <div>
                 <span className='material-symbols-outlined'>person</span>
@@ -96,7 +108,10 @@ export default function ArticleHeader({
             stateLayer='error'
             iconColor={liked && 'error'}
             fill={liked && true}
-            onClick={() => (id ? handleLike() : noAccountAction())}
+            onClick={() =>
+              !loadingLike && (id ? handleLike() : noAccountAction())
+            }
+            loading={loadingLike}
           />
           <IconButton
             icon='comment'
@@ -107,9 +122,12 @@ export default function ArticleHeader({
         </div>
       </footer>
       {article?.thumbnail ? (
-          <img src={article?.thumbnail} alt='Thumbnail' />
+        <img
+          src={article?.thumbnail}
+          alt='Thumbnail'
+        />
       ) : (
-          <div />
+        <div />
       )}
     </div>
   );
