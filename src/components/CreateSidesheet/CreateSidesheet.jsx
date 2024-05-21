@@ -51,6 +51,7 @@ export default function CreateSidesheet({
     [isOpenTags, setIsOpenTags] = useState(true),
     [isOpenPrivacy, setIsOpenPrivacy] = useState(true),
     handleCreate = async () => {
+      setIsOpen(false);
       setLoading(true);
       const response = await axios.post(
         'http://localhost:3000/api/create_article',
@@ -61,16 +62,15 @@ export default function CreateSidesheet({
       );
       if (response.data.state === 'ok') {
         setLoading(false);
-        setIsOpen(false);
         return response.data.id;
       } else {
         setLoading(false);
-        setIsOpen(false);
         return false;
       }
     },
     handleUpdate = async () => {
       setLoading(true);
+      setIsOpen(false);
       const response = await axios.post(
         'http://localhost:3000/api/update_article_data',
         { ...content, id: article._id, authorId: article.authorId },
@@ -80,11 +80,9 @@ export default function CreateSidesheet({
       );
       if (response.data.state === 'ok') {
         setLoading(false);
-        setIsOpen(false);
         return true;
       } else {
         setLoading(false);
-        setIsOpen(false);
         return false;
       }
     };
@@ -93,6 +91,9 @@ export default function CreateSidesheet({
     isOpen
       ? setSidesheetState(true)
       : setTimeout(() => setSidesheetState(false), 300);
+  }, [isOpen]);
+
+  useEffect(() => {
     setContent({
       thumbnail: article.thumbnail ?? '',
       title: article.title ?? '',
@@ -100,7 +101,7 @@ export default function CreateSidesheet({
       privacy: article.privacy ?? 'public',
       enable_comments: article.enable_comments ?? true,
     });
-  }, [article, isOpen]);
+  }, [article])
 
   useEffect(() => {
     let unselected = [],
