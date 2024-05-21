@@ -17,7 +17,6 @@ const createArticle = async (req, res) => {
     content: response
       ? ''
       : `
-        <img src="https://lh3.googleusercontent.com/186ZGdDhTLrvBaobO6wvilzpbjD45K7I9ifjwvk9Qt2HetzkWX0W5BN3Vi0tMYKDQPa11rbghe1m1syRvVbZhkZDajHhxQNc9B_pcCBrVVGvMEOZc-k=w2400-rj" contenteditable="false" draggable="true" class="ProseMirror-selectednode">
         <h4>
           Welcome to solstice's text editor!
         </h4>
@@ -51,9 +50,8 @@ const createArticle = async (req, res) => {
 };
 
 const getSingleArticle = async (req, res) => {
-  id = new mongoose.Types.ObjectId(req.body.id);
   try {
-    const response = await articleModel.findById(id);
+    const response = await articleModel.findById(req.body.id);
     const responseName = await userModel.findById(response.authorId);
     res.send({ article: { ...response._doc, author: responseName.username } });
   } catch (error) {
@@ -116,6 +114,18 @@ const unLike = async (req, res) => {
   }
 };
 
+const getArticlesByCategories = async (req, res) => {
+  try {
+    const response =
+      req.body.tags === 'all'
+        ? await articleModel.find({ privacy: 'public' })
+        : await articleModel.find({privacy: 'public', tags: { $in: req.body.tags } });
+    res.send({ articles: response });
+  } catch (error) {
+    res.send({ error: error });
+  }
+};
+
 module.exports = {
   createArticle,
   getSingleArticle,
@@ -123,4 +133,5 @@ module.exports = {
   updateArticleData,
   like,
   unLike,
+  getArticlesByCategories,
 };

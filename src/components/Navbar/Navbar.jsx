@@ -62,10 +62,7 @@ export default function Navbar({
           {location === '/' && !loggedIn && <Root navigate={navigate} />}
 
           {(location === '/login' || location === '/sign_up') && (
-            <LoginSignup
-              navigate={navigate}
-              location={location}
-            />
+            <LoginSignup navigate={navigate} location={location} />
           )}
 
           {location.slice(0, 8) === '/article' && edit && (
@@ -110,10 +107,7 @@ function SolsticeLink() {
   const navigate = useNavigate();
   return (
     <div className={styles.navbar_title}>
-      <h1
-        className='title-large'
-        onClick={() => navigate('/')}
-      >
+      <h1 className='title-large' onClick={() => navigate('/')}>
         Solstice
       </h1>
     </div>
@@ -139,10 +133,7 @@ function Root({ navigate }) {
     <>
       <SolsticeLink />
       <div className={styles.button}>
-        <Button
-          label='Log in'
-          onClick={() => navigate('/login')}
-        />
+        <Button label='Log in' onClick={() => navigate('/login')} />
       </div>
     </>
   );
@@ -151,12 +142,8 @@ function Root({ navigate }) {
 function LoginSignup({ navigate, location }) {
   return (
     <>
-      <IconButton
-        icon='arrow_back'
-        highContrast
-        onClick={() => navigate(-1)}
-      />
-      <div className={styles.navbar_title}>
+      <IconButton icon='arrow_back' highContrast onClick={() => navigate(-1)} />
+      <div className={styles.navbar_title} style={{ paddingLeft: 0 }}>
         <h1 className='title-large'>
           {location === '/login' ? 'Log in' : 'Sign up'}
         </h1>
@@ -273,10 +260,7 @@ function Article({ article, user, setIsOpenCreateSidesheet }) {
               >
                 delete
               </span>
-              <p
-                className='body-large'
-                style={{ color: 'var(--error)' }}
-              >
+              <p className='body-large' style={{ color: 'var(--error)' }}>
                 Delete article
               </p>
             </div>

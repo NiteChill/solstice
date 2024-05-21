@@ -44,7 +44,6 @@ export default function IconButton({
         <div
           style={{
             paddingRight: label !== false && '0.75rem',
-            // padding: loading && '1.5rem',
           }}
         >
           {style === 'filled_small' || style === 'filled_small_primary' ? (

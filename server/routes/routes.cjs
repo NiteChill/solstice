@@ -12,5 +12,6 @@ router.post('/update_article', articleRoutes.updateArticle);
 router.post('/update_article_data', articleRoutes.updateArticleData);
 router.post('/like', articleRoutes.like);
 router.post('/unLike', articleRoutes.unLike);
+router.post('/get_articles_by_category', articleRoutes.getArticlesByCategories);
 
 module.exports = router;

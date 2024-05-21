@@ -6,10 +6,11 @@ export default function Chip({
   active = false,
   onClick,
   overrideDone = false,
+  low = false,
 }) {
   return (
     <div
-      className={`${styles.chip} ${active ? styles.active : undefined}`}
+      className={`${styles.chip} ${active ? styles.active : undefined} ${low ? styles.low : undefined}`}
       onClick={onClick}
     >
       <div

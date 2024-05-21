@@ -18,7 +18,30 @@ export default function App() {
     [isOpenImage, setIsOpenImage] = useState(false),
     [loading, setLoading] = useState(false),
     [isOpenCreateSidesheet, setIsOpenCreateSidesheet] = useState(false),
-    [isOpenMenu, setIsOpenMenu] = useState(true);
+    [isOpenMenu, setIsOpenMenu] = useState(true),
+    tags = [
+      { icon: 'newspaper', label: 'News' },
+      { icon: 'sports_baseball', label: 'Sports' },
+      { icon: 'movie', label: 'Entertainment' },
+      { icon: 'science', label: 'Science' },
+      { icon: 'health_and_safety', label: 'Health' },
+      { icon: 'account_balance_wallet', label: 'Finance' },
+      { icon: 'flight_takeoff', label: 'Travel' },
+      { icon: 'restaurant', label: 'Food' },
+      { icon: 'school', label: 'Education' },
+      { icon: 'business_center', label: 'Business' },
+      { icon: 'computer', label: 'Tech' },
+      { icon: 'palette', label: 'Art' },
+      { icon: 'music_note', label: 'Music' },
+      { icon: 'videogame_asset', label: 'Gaming' },
+      { icon: 'pets', label: 'Animals' },
+      { icon: 'mood', label: 'Humor' },
+      { icon: 'spa', label: 'Wellness' },
+      { icon: 'people', label: 'Relationships' },
+      { icon: 'child_care', label: 'Parenting' },
+      { icon: 'self_improvement', label: 'Self-improvement' },
+    ];
+
   useEffect(() => {
     window.addEventListener('resize', () => {
       setAppWidth(window.innerWidth);
@@ -38,6 +61,7 @@ export default function App() {
     })();
   }, []);
   useEffect(() => {
+    setIsOpenCreateSidesheet(false);
     if (location.slice(0, 8) !== '/article') {
       setEdit(false);
       setArticle(null);
@@ -97,6 +121,7 @@ export default function App() {
                 setLoading,
                 appWidth,
                 isOpenMenu,
+                tags,
               ]}
             />
           </main>
@@ -114,6 +139,7 @@ export default function App() {
             article={article?._id && article}
             setArticle={setArticle}
             user={user}
+            tags={tags}
           />
         </>
       )}

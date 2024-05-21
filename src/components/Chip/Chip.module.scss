@@ -9,6 +9,7 @@
   cursor: pointer;
   user-select: none;
   width: fit-content;
+  height: fit-content;
   & > div {
     border-radius: inherit;
     display: flex;
@@ -17,6 +18,8 @@
     gap: 0.5rem;
     padding: 0.375rem 0.75rem;
     color: var(--on-surface-variant);
+    transition: background 0.2s var(--transition);
+    text-wrap: nowrap;
     & > span {
       font-size: 1.125rem;
     }
@@ -27,6 +30,10 @@
   &:active > div {
     background: var(--state-layer-on-surface-variant-012);
   }
+}
+
+.low {
+  background: var(--surface-container-low);
 }
 
 .active {
