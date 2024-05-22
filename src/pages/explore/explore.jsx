@@ -64,17 +64,17 @@ export default function Explore() {
           {user ? (
             <div>
               <h1
-                className='display-medium'
+                className='display-large'
                 style={{ lineHeight: '3.5rem' }}
               >{`Hi ${user.username},`}</h1>
-              <h2 className='display-medium'>
+              <h2 className='display-large'>
                 What do you want to read today?
               </h2>
             </div>
           ) : (
             <div>
-              <h1 className='display-medium'>Welcome to Solstice!</h1>
-              <h2 className='display-medium'>Where stories come alive.</h2>
+              <h1 className='display-large'>Welcome to Solstice!</h1>
+              <h2 className='display-large'>Where stories come alive.</h2>
             </div>
           )}
         </div>
