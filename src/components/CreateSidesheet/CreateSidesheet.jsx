@@ -114,7 +114,7 @@ export default function CreateSidesheet({
         <div className={styles.sidesheet}>
           <header>
             <h1 className='title-large'>
-              {article ? `Edit ${article.title}` : 'Create'}
+              {article ? `Edit "${article.title}"` : 'Create'}
             </h1>
             <IconButton icon='close' onClick={() => setIsOpen(false)} />
           </header>

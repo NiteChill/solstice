@@ -52,6 +52,12 @@
         left: 0;
         top: 100%;
       }
+      & > h1 {
+        flex: 1;
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
     & > main {
       display: flex;

@@ -7,6 +7,7 @@ import LoadingElement from './components/LoadingElement/LoadingElement';
 import { useTiptap } from './hooks/useTiptap';
 import CreateSidesheet from './components/CreateSidesheet/CreateSidesheet';
 import NavigationMenu from './components/NavigationMenu/NavigationMenu';
+import ErrorElement from './components/ErrorElement/ErrorElement';
 
 export default function App() {
   const [theme, setTheme] = useState('light'),
@@ -19,6 +20,7 @@ export default function App() {
     [loading, setLoading] = useState(false),
     [isOpenCreateSidesheet, setIsOpenCreateSidesheet] = useState(false),
     [isOpenMenu, setIsOpenMenu] = useState(true),
+    [error, setError] = useState(null),
     tags = [
       { icon: 'newspaper', label: 'News' },
       { icon: 'sports_baseball', label: 'Sports' },
@@ -39,7 +41,7 @@ export default function App() {
       { icon: 'spa', label: 'Wellness' },
       { icon: 'people', label: 'Relationships' },
       { icon: 'child_care', label: 'Parenting' },
-      { icon: 'self_improvement', label: 'Self-improvement' },
+      { icon: 'local_taxi', label: 'Cars' },
     ];
 
   useEffect(() => {
@@ -54,10 +56,14 @@ export default function App() {
     setTheme('light');
 
     (async function getCookie() {
-      const response = await axios.get('http://localhost:3000/api', {
-        withCredentials: true,
-      });
-      setUser(response.data.user);
+      try {
+        const response = await axios.get('http://localhost:3000/api', {
+          withCredentials: true,
+        });
+        setUser(response.data.user);
+      } catch (error) {
+        setError(error);
+      }
     })();
   }, []);
   useEffect(() => {
@@ -74,9 +80,11 @@ export default function App() {
     edit ? setIsOpenMenu(false) : setIsOpenMenu(true);
   }, [edit]);
   return (
-    <div className={`App ${theme} ${isOpenMenu ? 'open' : ''}`}>
+    <div className={`App ${theme} ${isOpenMenu ? 'open' : undefined}`}>
       {user === 'loading' ? (
         <LoadingElement />
+      ) : error === 'DB_CONNECTION_ERROR' ? (
+        <ErrorElement error={error} />
       ) : (
         <>
           <main>
@@ -122,6 +130,7 @@ export default function App() {
                 appWidth,
                 isOpenMenu,
                 tags,
+                isOpenCreateSidesheet,
               ]}
             />
           </main>
@@ -130,6 +139,7 @@ export default function App() {
             theme={theme}
             setTheme={setTheme}
             isOpen={isOpenMenu}
+            user={user}
           />
           <CreateSidesheet
             isOpen={isOpenCreateSidesheet}

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './NavigationMenu.module.scss';
 import IconButton from '../IconButton/IconButton';
 
-export default function NavigationMenu({ location, isOpen, theme, setTheme }) {
+export default function NavigationMenu({ location, isOpen, theme, setTheme, user }) {
   const navigate = useNavigate();
   return (
     <nav className={isOpen ? styles.open : undefined}>
@@ -18,12 +18,12 @@ export default function NavigationMenu({ location, isOpen, theme, setTheme }) {
         active={location === '/search'}
         onClick={() => navigate('/search')}
       />
-      <Segment
+      {user && <Segment
         icon='person'
         label='Account'
         active={location === '/account'}
         onClick={() => navigate('/account')}
-      />
+      />}
       <div className={styles.container}>
         <IconButton
           icon={theme === 'light' ? 'dark_mode' : 'light_mode'}

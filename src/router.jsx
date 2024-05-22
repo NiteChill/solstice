@@ -7,11 +7,13 @@ import Login from './pages/login/Login';
 import MyArticles from './pages/my_articles/MyArticles';
 import Search from './pages/search/search';
 import SignUp from './pages/sign_up/SignUp';
+import ErrorElement from './components/ErrorElement/ErrorElement';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <ErrorElement />,
     children: [
       {
         path: '/',

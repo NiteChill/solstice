@@ -6,6 +6,7 @@ const express = require('express'),
 router.get('/', userRoutes.getUser);
 router.post('/login', userRoutes.loginUser);
 router.post('/sign_up', userRoutes.signUp);
+router.post('/get_username_by_id', userRoutes.getUsernameById);
 router.post('/create_article', articleRoutes.createArticle);
 router.post('/get_single_article', articleRoutes.getSingleArticle);
 router.post('/update_article', articleRoutes.updateArticle);

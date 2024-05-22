@@ -64,7 +64,7 @@ const updateArticle = async (req, res) => {
     const response = await articleModel.findByIdAndUpdate(req.body.id, {
       content: req.body.content,
     });
-    if (response) res.json({ state: 'ok', id: id });
+    if (response) res.json({ state: 'ok' });
     else res.json({ state: 'failed' });
   } else res.json({ state: 'failed' });
 };

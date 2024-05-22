@@ -107,8 +107,22 @@ const signUp = async (req, res) => {
   }
 };
 
+const getUsernameById = async (req, res) => {
+  if (req.session.user?.id === req.body.id)
+    res.send({ self: true });
+  else {
+    try {
+      const response = await userModel.findById(req.body.id);
+      res.send({ username: response.username });
+    } catch (error) {
+      res.send({ error: error });
+    }
+  }
+};
+
 module.exports = {
   getUser,
   loginUser,
   signUp,
+  getUsernameById,
 };
