@@ -164,7 +164,7 @@ function ArticleEdited({ handleSubmit, loading, editor, title, appWidth }) {
         onClick={() => !loading && handleSubmit()}
         // loading={loading}
       />
-      <div className={styles.navbar_title} style={{paddingLeft: 0}}>
+      <div className={styles.navbar_title} style={{ paddingLeft: 0 }}>
         <h1 className='title-large'>{appWidth > 500 && title}</h1>
       </div>
       {appWidth < 500 && (
