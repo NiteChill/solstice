@@ -260,15 +260,8 @@ function Article({
               <p className='body-large'>Edit details</p>
             </div>
             <div onClick={() => ''}>
-              <span
-                className='material-symbols-outlined'
-                style={{ color: 'var(--error)' }}
-              >
-                delete
-              </span>
-              <p className='body-large' style={{ color: 'var(--error)' }}>
-                Delete article
-              </p>
+              <span className='material-symbols-outlined'>delete</span>
+              <p className='body-large'>Delete article</p>
             </div>
           </div>
         </div>
