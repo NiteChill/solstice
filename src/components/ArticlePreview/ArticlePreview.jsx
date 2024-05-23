@@ -46,7 +46,8 @@ export default function ArticlePreview({ article }) {
         <div>
           {loading ? <div><div></div></div> : <p className={`label-large ${self ? styles.self : undefined}`}>{username}</p>}
           <span></span>
-          <p className='label-large'>{article.likes.length} likes</p>
+          <p className='label-large'>{article.likes.length} like{article.likes.length > 1 && 's'}</p>
+          <p className='label-large'>{article.comments}</p>
         </div>
       </div>
     </div>
