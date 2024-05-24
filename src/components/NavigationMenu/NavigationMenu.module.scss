@@ -1,4 +1,4 @@
-nav {
+.navigation_menu {
   display: flex;
   width: 100%;
   position: absolute;
@@ -120,7 +120,7 @@ nav {
 }
 
 @media screen and (min-width: 720px) {
-  nav {
+  .navigation_menu {
     padding: 1.5rem 0;
     flex-direction: column;
     justify-content: flex-start;

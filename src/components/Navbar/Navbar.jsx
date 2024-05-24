@@ -274,5 +274,15 @@ function Article({
 }
 
 function Account() {
-  return <SolsticeLink />;
+  return (
+    <>
+      <SolsticeLink />
+      <IconButton
+        icon='settings'
+      />
+      <IconButton
+        icon='more_vert'
+      />
+    </>
+  );
 }

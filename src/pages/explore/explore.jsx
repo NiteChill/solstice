@@ -29,7 +29,6 @@ export default function Explore() {
     [sortTags, setSortTags] = useState(tags),
     [articles, setArticles] = useState([]);
   useEffect(() => {
-    console.log(selectedTags);
     (async function getArticlesByCategories() {
       setLoading(true);
       const response = await axios.post(

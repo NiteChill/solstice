@@ -119,7 +119,30 @@ const getArticlesByCategories = async (req, res) => {
     const response =
       req.body.tags === 'all'
         ? await articleModel.find({ privacy: 'public' })
-        : await articleModel.find({privacy: 'public', tags: { $in: req.body.tags } });
+        : await articleModel.find({
+            privacy: 'public',
+            tags: { $in: req.body.tags },
+          });
+    res.send({ articles: response });
+  } catch (error) {
+    res.send({ error: error });
+  }
+};
+
+const getArticlesByUser = async (req, res) => {
+  try {
+    const response = await articleModel.find({ authorId: req.body.id });
+    res.send({ articles: response });
+  } catch (error) {
+    res.send({ error: error });
+  }
+};
+
+const getArticlesByLikes = async (req, res) => {
+  try {
+    const response = await articleModel.find({
+      likes: { $in: req.body.id },
+    });
     res.send({ articles: response });
   } catch (error) {
     res.send({ error: error });
@@ -134,4 +157,6 @@ module.exports = {
   like,
   unLike,
   getArticlesByCategories,
+  getArticlesByUser,
+  getArticlesByLikes,
 };
