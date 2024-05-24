@@ -25,8 +25,11 @@ export default function Account() {
       isOpenCreateSidesheet,
     ] = useOutletContext(),
     [page, setPage] = useState('my_articles'),
-    [articles, setArticles] = useState([]);
+    [myArticles, setMyArticles] = useState([]),
+    [likedArticles, setLikedArticles] = useState([])
+
   useEffect(() => {
+    if (!myArticles.length || !likedArticles.length) {
     (async function getArticlesByCategories() {
       setLoading(true);
       let response;
@@ -56,9 +59,10 @@ export default function Account() {
       if (response.data?.error) console.log(response.data.error);
       else if (response.data?.articles) {
         setLoading(false);
-        setArticles(response.data.articles);
+        page === 'my_articles' ? setMyArticles(response.data.articles) : setLikedArticles(response.data.articles);
       }
     })();
+   }
   }, [page]);
   return (
     <div className={styles.account}>
@@ -103,12 +107,16 @@ export default function Account() {
             isOpenCreateSidesheet ? styles.open : ''
           }`}
         >
-          {articles?.map((article) => (
+          {page === 'my_articles' ? (
+            myArticles.map((article) => (
+              <ArticlePreview key={article.title} article={article} />
+            )))
+           : (likedArticles?.map((article) => (
             <ArticlePreview
               key={article.title}
               article={article}
             />
-          ))}
+          )))}
         </div>
       </main>
     </div>
