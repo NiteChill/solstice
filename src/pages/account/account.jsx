@@ -23,8 +23,10 @@ export default function Account() {
       isOpenMenu,
       tags,
       isOpenCreateSidesheet,
-      navigate = useNavigate(),
+      isOpenFilterSidesheet,
+      setIsOpenFilterSidesheet,
     ] = useOutletContext(),
+    navigate = useNavigate(),
     [page, setPage] = useState('my_articles'),
     [myArticles, setMyArticles] = useState([]),
     [likedArticles, setLikedArticles] = useState([]);
@@ -104,7 +106,7 @@ export default function Account() {
         </nav>
         <div
           className={`${styles.articles} ${
-            isOpenCreateSidesheet ? styles.open : ''
+            isOpenCreateSidesheet || isOpenFilterSidesheet ? styles.open : ''
           }`}
         >
           {page === 'my_articles'

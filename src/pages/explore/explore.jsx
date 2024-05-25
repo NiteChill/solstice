@@ -25,7 +25,9 @@ export default function Explore() {
       appWidth,
       isOpenMenu,
       tags,
-      isOpenCreateSidesheet
+      isOpenCreateSidesheet,
+      isOpenFilterSidesheet,
+      setIsOpenFilterSidesheet,
     ] = useOutletContext(),
     [sortTags, setSortTags] = useState(tags),
     [articles, setArticles] = useState([]);
@@ -67,9 +69,7 @@ export default function Explore() {
                 className='display-large'
                 style={{ lineHeight: '3.5rem' }}
               >{`Hi ${user.username},`}</h1>
-              <h2 className='display-large'>
-                What do you want to read today?
-              </h2>
+              <h2 className='display-large'>What do you want to read today?</h2>
             </div>
           ) : (
             <div>
@@ -95,10 +95,19 @@ export default function Explore() {
                 }}
               />
             ))} */}
-            <Button style='outlined_primary' icon='instant_mix' label='Filters' />
+            <Button
+              style={isOpenFilterSidesheet ? 'standard' : 'outlined_primary'}
+              icon={isOpenFilterSidesheet ? 'close' : 'instant_mix'}
+              label='Filters'
+              onClick={() => setIsOpenFilterSidesheet(!isOpenFilterSidesheet)}
+            />
           </div>
         </div>
-        <div className={`${styles.articles} ${isOpenCreateSidesheet ? styles.open : ''}`}>
+        <div
+          className={`${styles.articles} ${
+            isOpenCreateSidesheet || isOpenFilterSidesheet ? styles.open : ''
+          }`}
+        >
           {articles?.map((article) => (
             <ArticlePreview key={article.title} article={article} />
           ))}

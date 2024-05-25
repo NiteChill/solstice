@@ -8,6 +8,7 @@ import { useTiptap } from './hooks/useTiptap';
 import CreateSidesheet from './components/CreateSidesheet/CreateSidesheet';
 import NavigationMenu from './components/NavigationMenu/NavigationMenu';
 import ErrorElement from './components/ErrorElement/ErrorElement';
+import FilterSidesheet from './components/FilterSidesheet/FilterSidesheet';
 
 export default function App() {
   const [theme, setTheme] = useState('light'),
@@ -20,6 +21,7 @@ export default function App() {
     [loading, setLoading] = useState(false),
     [isOpenCreateSidesheet, setIsOpenCreateSidesheet] = useState(false),
     [isOpenMenu, setIsOpenMenu] = useState(true),
+    [isOpenFilterSidesheet, setIsOpenFilterSidesheet] = useState(false),
     [error, setError] = useState(null),
     tags = [
       { icon: 'newspaper', label: 'News' },
@@ -68,6 +70,7 @@ export default function App() {
   }, []);
   useEffect(() => {
     setIsOpenCreateSidesheet(false);
+    setIsOpenFilterSidesheet(false);
     if (location.slice(0, 8) !== '/article') {
       setEdit(false);
       setArticle(null);
@@ -76,6 +79,12 @@ export default function App() {
     }
   }, [location]);
 
+  useEffect(() => {
+    isOpenCreateSidesheet && setIsOpenFilterSidesheet(false);
+  }, [isOpenCreateSidesheet]);
+  useEffect(() => {
+    isOpenFilterSidesheet && setIsOpenCreateSidesheet(false);
+  }, [isOpenFilterSidesheet]);
   useEffect(() => {
     edit ? setIsOpenMenu(false) : setIsOpenMenu(true);
   }, [edit]);
@@ -87,6 +96,10 @@ export default function App() {
         <ErrorElement error={error} />
       ) : (
         <>
+          <FilterSidesheet
+            isOpen={isOpenFilterSidesheet}
+            setIsOpen={setIsOpenFilterSidesheet}
+          />
           <main>
             <Navbar
               location={location}
@@ -133,6 +146,8 @@ export default function App() {
                 isOpenMenu,
                 tags,
                 isOpenCreateSidesheet,
+                isOpenFilterSidesheet,
+                setIsOpenFilterSidesheet,
               ]}
             />
           </main>

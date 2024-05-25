@@ -156,7 +156,8 @@ export default function Navbar({
                 onClick={async () => setIsOpenCreateSidesheet(true)}
               />
             )}
-          {user && user?.id === article?.authorId &&
+          {user &&
+            user?.id === article?.authorId &&
             location.slice(0, 8) === '/article' &&
             !isOpenCreateSidesheet &&
             !edit && (

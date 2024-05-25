@@ -106,7 +106,7 @@ export default function ArticleHeader({
             icon='favorite'
             label={likes}
             stateLayer='error'
-            iconColor={liked && 'error'}
+            iconColor={liked && 'var(--error)'}
             fill={liked && true}
             onClick={() =>
               !loadingLike && (id ? handleLike() : noAccountAction())

@@ -70,7 +70,7 @@ export default function IconButton({
               style={{
                 color: loading
                   ? 'transparent'
-                  : iconColor === 'error' && 'var(--error)',
+                  : iconColor && iconColor,
                 fontVariationSettings: fill && "'FILL' 1",
               }}
             >
