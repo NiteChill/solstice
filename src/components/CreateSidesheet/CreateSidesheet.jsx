@@ -70,6 +70,13 @@ export default function CreateSidesheet({
     isOpen
       ? setSidesheetState(true)
       : setTimeout(() => setSidesheetState(false), 300);
+    setContent({
+      thumbnail: '',
+      title: '',
+      tags: [],
+      privacy: 'public',
+      enable_comments: true,
+    });
   }, [isOpen]);
 
   useEffect(() => {
@@ -109,20 +116,30 @@ export default function CreateSidesheet({
       >
         <div className={styles.sidesheet}>
           <header>
-            <h1 className='title-large'>
-              {article ? 'Settings' : 'Create'}
-            </h1>
-            <IconButton icon='close' onClick={() => setIsOpen(false)} />
+            <h1 className='title-large'>{article ? 'Settings' : 'Create'}</h1>
+            <IconButton
+              icon='close'
+              onClick={() => setIsOpen(false)}
+            />
           </header>
           <main>
             <div className={styles.image_title}>
               {content?.thumbnail && (
-                <label htmlFor='file' className={styles.thumbnail}>
-                  <img src={content?.thumbnail} alt='thumbnail' />
+                <label
+                  htmlFor='file'
+                  className={styles.thumbnail}
+                >
+                  <img
+                    src={content?.thumbnail}
+                    alt='thumbnail'
+                  />
                 </label>
               )}
               <div className={styles.image_selector}>
-                <label htmlFor='file' className='label-large'>
+                <label
+                  htmlFor='file'
+                  className='label-large'
+                >
                   <span className='material-symbols-outlined'>
                     add_photo_alternate
                   </span>
