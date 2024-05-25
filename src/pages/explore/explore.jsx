@@ -4,6 +4,7 @@ import { useOutletContext } from 'react-router-dom';
 import axios from 'axios';
 import Chip from '../../components/Chip/Chip';
 import ArticlePreview from '../../components/ArticlePreview/ArticlePreview';
+import Button from '../../components/Button/Button';
 
 export default function Explore() {
   const [selectedTags, setSelectedTags] = useState([]),
@@ -79,7 +80,7 @@ export default function Explore() {
         </div>
         <div className={styles.tags}>
           <div>
-            {sortTags.map((tag) => (
+            {/* {sortTags.map((tag) => (
               <Chip
                 key={tag.label}
                 icon={tag.icon}
@@ -93,7 +94,8 @@ export default function Explore() {
                   setSelectedTags(newTags);
                 }}
               />
-            ))}
+            ))} */}
+            <Button style='outlined_primary' icon='instant_mix' label='Filters' />
           </div>
         </div>
         <div className={`${styles.articles} ${isOpenCreateSidesheet ? styles.open : ''}`}>

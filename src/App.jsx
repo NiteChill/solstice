@@ -110,6 +110,8 @@ export default function App() {
               isOpenCreateSidesheet={isOpenCreateSidesheet}
               setIsOpenCreateSidesheet={setIsOpenCreateSidesheet}
               appWidth={appWidth}
+              theme={theme}
+              setTheme={setTheme}
             />
 
             <Outlet

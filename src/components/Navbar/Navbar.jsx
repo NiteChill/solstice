@@ -23,6 +23,8 @@ export default function Navbar({
   isOpenCreateSidesheet,
   setIsOpenCreateSidesheet,
   appWidth,
+  theme,
+  setTheme,
 }) {
   const navigate = useNavigate(),
     handleSubmit = async () => {
@@ -52,41 +54,122 @@ export default function Navbar({
         }`}
       >
         <div className={styles.main}>
-          {location === '/' && loggedIn && (
-            <RootLoggedIn
-              isOpenCreateSidesheet={isOpenCreateSidesheet}
-              setIsOpenCreateSidesheet={setIsOpenCreateSidesheet}
-            />
-          )}
-
-          {location === '/' && !loggedIn && <Root navigate={navigate} />}
-
-          {(location === '/login' || location === '/sign_up') && (
-            <LoginSignup navigate={navigate} location={location} />
-          )}
-
           {location.slice(0, 8) === '/article' && edit && (
-            <ArticleEdited
-              handleSubmit={handleSubmit}
-              loading={loading}
-              editor={editor}
-              title={title}
-              appWidth={appWidth}
+            <IconButton
+              style='standard_primary'
+              icon='done'
+              highContrast
+              onClick={() => !loading && handleSubmit()}
             />
           )}
-
-          {location.slice(0, 8) === '/article' && !edit && (
-            <Article
-              article={article}
-              user={user}
-              setIsOpenCreateSidesheet={setIsOpenCreateSidesheet}
-              loading={loading}
-              loggedIn={loggedIn}
-              navigate={navigate}
+          <div className={styles.navbar_title}>
+            <h1 className='title-large' onClick={() => navigate('/')}>
+              {location.slice(0, 8) === '/article' && edit
+                ? appWidth > 500 && title
+                : 'Solstice'}
+            </h1>
+          </div>
+          {location.slice(0, 8) === '/article' && (
+            <>
+              {appWidth < 500 && edit && (
+                <>
+                  <IconButton
+                    icon='undo'
+                    onClick={() => editor?.commands.undo()}
+                    disabled={!editor?.can().undo()}
+                  />
+                  <IconButton
+                    icon='redo'
+                    onClick={() => editor?.commands.redo()}
+                    disabled={!editor?.can().redo()}
+                  />
+                </>
+              )}
+              {appWidth < 700 && edit && (
+                <div
+                  className={styles.dropdown}
+                  onClick={(e) => {
+                    if (e.currentTarget === document.activeElement)
+                      e.currentTarget.removeAttribute('tabindex');
+                    else {
+                      e.currentTarget.setAttribute('tabindex', -1);
+                      e.currentTarget.focus();
+                    }
+                  }}
+                  onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
+                >
+                  <IconButton icon='add' />
+                  <div className={styles.menu}>
+                    <div
+                      onClick={() => editor.commands.toggleCodeBlock().run()}
+                      className={
+                        editor?.isActive('codeBlock')
+                          ? styles.active
+                          : undefined
+                      }
+                    >
+                      <span className='material-symbols-outlined'>code</span>
+                      <p className='body-large'>Code block</p>
+                    </div>
+                    <div
+                      onClick={() =>
+                        editor.chain().focus().toggleBlockquote().run()
+                      }
+                      className={
+                        editor?.isActive('blockquote')
+                          ? styles.active
+                          : undefined
+                      }
+                    >
+                      <span className='material-symbols-outlined'>
+                        format_quote
+                      </span>
+                      <p className='body-large'>Blockquote</p>
+                    </div>
+                    <div onClick={() => setIsOpenImage(true)}>
+                      <span className='material-symbols-outlined'>image</span>
+                      <p className='body-large'>Image</p>
+                    </div>
+                    <div onClick={() => setIsOpenLink(true)}>
+                      <span className='material-symbols-outlined'>link</span>
+                      <p className='body-large'>Link</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+          {appWidth < 720 && !edit && (
+            <IconButton
+              icon={theme === 'light' ? 'dark_mode' : 'light_mode'}
+              onClick={() =>
+                theme === 'light' ? setTheme('dark') : setTheme('light')
+              }
             />
           )}
-
-          {location === '/account' && <Account />}
+          {user &&
+            !isOpenCreateSidesheet &&
+            !edit &&
+            location.slice(0, 8) !== '/article' && (
+              <IconButton
+                icon='add'
+                onClick={async () => setIsOpenCreateSidesheet(true)}
+              />
+            )}
+          {user && user?.id === article?.authorId &&
+            location.slice(0, 8) === '/article' &&
+            !isOpenCreateSidesheet &&
+            !edit && (
+              <IconButton
+                icon='settings'
+                onClick={async () => setIsOpenCreateSidesheet(true)}
+              />
+            )}
+          {!user && location !== '/login' && location !== '/sign_up' && (
+            <div className={styles.button}>
+              <Button label='Log in' onClick={() => navigate('/login')} />
+            </div>
+          )}
         </div>
         {appWidth > 500 &&
           user &&
@@ -105,184 +188,180 @@ export default function Navbar({
   );
 }
 
-function SolsticeLink() {
-  const navigate = useNavigate();
-  return (
-    <div className={styles.navbar_title}>
-      <h1 className='title-large' onClick={() => navigate('/')}>
-        Solstice
-      </h1>
-    </div>
-  );
-}
+// function SolsticeLink() {
+//   const navigate = useNavigate();
+//   return (
+//     <div className={styles.navbar_title}>
+//       <h1 className='title-large' onClick={() => navigate('/')}>
+//         Solstice
+//       </h1>
+//     </div>
+//   );
+// }
 
-function RootLoggedIn({ isOpenCreateSidesheet, setIsOpenCreateSidesheet }) {
-  return (
-    <>
-      <SolsticeLink />
-      {!isOpenCreateSidesheet && (
-        <IconButton
-          icon='add'
-          onClick={async () => setIsOpenCreateSidesheet(true)}
-        />
-      )}
-    </>
-  );
-}
+// function RootLoggedIn({ isOpenCreateSidesheet, setIsOpenCreateSidesheet }) {
+//   return (
+//     <>
+//       <SolsticeLink />
+//       {!isOpenCreateSidesheet && (
+//         <IconButton
+//           icon='add'
+//           onClick={async () => setIsOpenCreateSidesheet(true)}
+//         />
+//       )}
+//     </>
+//   );
+// }
 
-function Root({ navigate }) {
-  return (
-    <>
-      <SolsticeLink />
-      <div className={styles.button}>
-        <Button label='Log in' onClick={() => navigate('/login')} />
-      </div>
-    </>
-  );
-}
+// function Root({ navigate }) {
+//   return (
+//     <>
+//       <SolsticeLink />
+//       <div className={styles.button}>
+//         <Button label='Log in' onClick={() => navigate('/login')} />
+//       </div>
+//     </>
+//   );
+// }
 
-function LoginSignup({ navigate, location }) {
-  return (
-    <>
-      <IconButton icon='arrow_back' highContrast onClick={() => navigate(-1)} />
-      <div className={styles.navbar_title} style={{ paddingLeft: 0 }}>
-        <h1 className='title-large'>
-          {location === '/login' ? 'Log in' : 'Sign up'}
-        </h1>
-      </div>
-    </>
-  );
-}
+// function LoginSignup({ navigate, location }) {
+//   return (
+//     <>
+//       <IconButton icon='arrow_back' highContrast onClick={() => navigate(-1)} />
+//       <div className={styles.navbar_title} style={{ paddingLeft: 0 }}>
+//         <h1 className='title-large'>
+//           {location === '/login' ? 'Log in' : 'Sign up'}
+//         </h1>
+//       </div>
+//     </>
+//   );
+// }
 
-function ArticleEdited({ handleSubmit, loading, editor, title, appWidth }) {
-  return (
-    <>
-      <IconButton
-        style='standard_primary'
-        icon='done'
-        highContrast
-        onClick={() => !loading && handleSubmit()}
-        // loading={loading}
-      />
-      <div className={styles.navbar_title} style={{ paddingLeft: 0 }}>
-        <h1 className='title-large'>{appWidth > 500 && title}</h1>
-      </div>
-      {appWidth < 500 && (
-        <>
-          <IconButton
-            icon='undo'
-            onClick={() => editor?.commands.undo()}
-            disabled={!editor?.can().undo()}
-          />
-          <IconButton
-            icon='redo'
-            onClick={() => editor?.commands.redo()}
-            disabled={!editor?.can().redo()}
-          />
-        </>
-      )}
-      {appWidth < 650 && (
-        <div
-          className={styles.dropdown}
-          onClick={(e) => {
-            if (e.currentTarget === document.activeElement)
-              e.currentTarget.removeAttribute('tabindex');
-            else {
-              e.currentTarget.setAttribute('tabindex', -1);
-              e.currentTarget.focus();
-            }
-          }}
-          onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
-        >
-          <IconButton icon='add' />
-          <div className={styles.menu}>
-            <div
-              onClick={() => editor.commands.toggleCodeBlock().run()}
-              className={
-                editor?.isActive('codeBlock') ? styles.active : undefined
-              }
-            >
-              <span className='material-symbols-outlined'>code</span>
-              <p className='body-large'>Code block</p>
-            </div>
-            <div
-              onClick={() => editor.chain().focus().toggleBlockquote().run()}
-              className={
-                editor?.isActive('blockquote') ? styles.active : undefined
-              }
-            >
-              <span className='material-symbols-outlined'>format_quote</span>
-              <p className='body-large'>Blockquote</p>
-            </div>
-            <div onClick={() => setIsOpenImage(true)}>
-              <span className='material-symbols-outlined'>image</span>
-              <p className='body-large'>Image</p>
-            </div>
-            <div onClick={() => setIsOpenLink(true)}>
-              <span className='material-symbols-outlined'>link</span>
-              <p className='body-large'>Link</p>
-            </div>
-          </div>
-        </div>
-      )}
-      <IconButton icon='more_vert' />
-    </>
-  );
-}
+// function ArticleEdited({ handleSubmit, loading, editor, title, appWidth }) {
+//   return (
+//     <>
+//       <IconButton
+//         style='standard_primary'
+//         icon='done'
+//         highContrast
+//         onClick={() => !loading && handleSubmit()}
+//         // loading={loading}
+//       />
+//       <div className={styles.navbar_title} style={{ paddingLeft: 0 }}>
+//         <h1 className='title-large'>{appWidth > 500 && title}</h1>
+//       </div>
+//       {appWidth < 500 && (
+//         <>
+//           <IconButton
+//             icon='undo'
+//             onClick={() => editor?.commands.undo()}
+//             disabled={!editor?.can().undo()}
+//           />
+//           <IconButton
+//             icon='redo'
+//             onClick={() => editor?.commands.redo()}
+//             disabled={!editor?.can().redo()}
+//           />
+//         </>
+//       )}
+//       {appWidth < 650 && (
+//         <div
+//           className={styles.dropdown}
+//           onClick={(e) => {
+//             if (e.currentTarget === document.activeElement)
+//               e.currentTarget.removeAttribute('tabindex');
+//             else {
+//               e.currentTarget.setAttribute('tabindex', -1);
+//               e.currentTarget.focus();
+//             }
+//           }}
+//           onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
+//         >
+//           <IconButton icon='add' />
+//           <div className={styles.menu}>
+//             <div
+//               onClick={() => editor.commands.toggleCodeBlock().run()}
+//               className={
+//                 editor?.isActive('codeBlock') ? styles.active : undefined
+//               }
+//             >
+//               <span className='material-symbols-outlined'>code</span>
+//               <p className='body-large'>Code block</p>
+//             </div>
+//             <div
+//               onClick={() => editor.chain().focus().toggleBlockquote().run()}
+//               className={
+//                 editor?.isActive('blockquote') ? styles.active : undefined
+//               }
+//             >
+//               <span className='material-symbols-outlined'>format_quote</span>
+//               <p className='body-large'>Blockquote</p>
+//             </div>
+//             <div onClick={() => setIsOpenImage(true)}>
+//               <span className='material-symbols-outlined'>image</span>
+//               <p className='body-large'>Image</p>
+//             </div>
+//             <div onClick={() => setIsOpenLink(true)}>
+//               <span className='material-symbols-outlined'>link</span>
+//               <p className='body-large'>Link</p>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//       <IconButton icon='more_vert' />
+//     </>
+//   );
+// }
 
-function Article({
-  article,
-  user,
-  setIsOpenCreateSidesheet,
-  loggedIn,
-  navigate,
-}) {
-  return (
-    <>
-      <SolsticeLink />
-      {article?.authorId === user?.id && (
-        <div
-          className={styles.dropdown}
-          onClick={(e) => {
-            if (e.currentTarget === document.activeElement)
-              e.currentTarget.removeAttribute('tabindex');
-            else {
-              e.currentTarget.setAttribute('tabindex', -1);
-              e.currentTarget.focus();
-            }
-          }}
-          onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
-        >
-          <IconButton icon='more_vert' />
-          <div className={styles.menu}>
-            <div onClick={() => setIsOpenCreateSidesheet(true)}>
-              <span className='material-symbols-outlined'>edit</span>
-              <p className='body-large'>Edit details</p>
-            </div>
-            <div onClick={() => ''}>
-              <span className='material-symbols-outlined'>delete</span>
-              <p className='body-large'>Delete article</p>
-            </div>
-          </div>
-        </div>
-      )}
-      {!loggedIn && (
-        <Button label='Log in' onClick={() => navigate('/login')} />
-      )}
-    </>
-  );
-}
+// function Article({
+//   article,
+//   user,
+//   setIsOpenCreateSidesheet,
+//   loggedIn,
+//   navigate,
+// }) {
+//   return (
+//     <>
+//       <SolsticeLink />
+//       {article?.authorId === user?.id && (
+//         <div
+//           className={styles.dropdown}
+//           onClick={(e) => {
+//             if (e.currentTarget === document.activeElement)
+//               e.currentTarget.removeAttribute('tabindex');
+//             else {
+//               e.currentTarget.setAttribute('tabindex', -1);
+//               e.currentTarget.focus();
+//             }
+//           }}
+//           onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
+//         >
+//           <IconButton icon='more_vert' />
+//           <div className={styles.menu}>
+//             <div onClick={() => setIsOpenCreateSidesheet(true)}>
+//               <span className='material-symbols-outlined'>edit</span>
+//               <p className='body-large'>Edit details</p>
+//             </div>
+//             <div onClick={() => ''}>
+//               <span className='material-symbols-outlined'>delete</span>
+//               <p className='body-large'>Delete article</p>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//       {!loggedIn && (
+//         <Button label='Log in' onClick={() => navigate('/login')} />
+//       )}
+//     </>
+//   );
+// }
 
-function Account() {
-  return (
-    <>
-      <SolsticeLink />
-      <IconButton
-        icon='settings'
-      />
-      <IconButton
-        icon='more_vert'
-      />
-    </>
-  );
-}
+// function Account() {
+//   return (
+//     <>
+//       <SolsticeLink />
+//       <IconButton icon='settings' />
+//       <IconButton icon='more_vert' />
+//     </>
+//   );
+// }

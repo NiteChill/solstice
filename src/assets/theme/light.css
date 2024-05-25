@@ -59,9 +59,10 @@
   --scrim: #000000;
   --surface-container-highest: #e1e2ec;
   --surface-container-high: #e7e7f2;
-  --surface-container: #ededf8;
+  /* --surface-container: #ededf8; */
+  --surface-container: #f5f5fa;
   /* --surface-container-low: #f3f3fd; */
-  --surface-container-low: #f4f4fa;
+  --surface-container-low: #f9f9fb;
   --surface-container-lowest: #ffffff;
   --surface-bright: #faf8ff;
   --surface-dim: #d9d9e4;

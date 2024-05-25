@@ -19,7 +19,7 @@ export default function Button({
       onClick={onClick}
     >
       <div style={{ paddingLeft: icon && '0.75rem' }}>
-        {icon && <span class='material-symbols-outlined'>{icon}</span>}
+        {icon && <span className='material-symbols-outlined'>{icon}</span>}
         <p className='label-large'>{label}</p>
       </div>
     </div>

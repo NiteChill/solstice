@@ -80,7 +80,7 @@ export default function CreateSidesheet({
       privacy: article.privacy ?? 'public',
       enable_comments: article.enable_comments ?? true,
     });
-  }, [article])
+  }, [article]);
 
   useEffect(() => {
     let unselected = [],
@@ -104,17 +104,13 @@ export default function CreateSidesheet({
         style={{
           width:
             window.innerWidth < 900 &&
-            (sidesheetState
-              ? window.innerWidth > 400
-                ? 'clamp(0px, 100%, 21.25rem)'
-                : '100%'
-              : 0),
+            (sidesheetState ? 'clamp(0px, 100%, 21.25rem)' : 0),
         }}
       >
         <div className={styles.sidesheet}>
           <header>
             <h1 className='title-large'>
-              {article ? `Edit "${article.title}"` : 'Create'}
+              {article ? 'Settings' : 'Create'}
             </h1>
             <IconButton icon='close' onClick={() => setIsOpen(false)} />
           </header>
