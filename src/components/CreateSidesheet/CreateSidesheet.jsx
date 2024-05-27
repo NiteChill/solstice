@@ -70,13 +70,6 @@ export default function CreateSidesheet({
     isOpen
       ? setSidesheetState(true)
       : setTimeout(() => setSidesheetState(false), 300);
-    setContent({
-      thumbnail: '',
-      title: '',
-      tags: [],
-      privacy: 'public',
-      enable_comments: true,
-    });
   }, [isOpen]);
 
   useEffect(() => {
@@ -87,7 +80,7 @@ export default function CreateSidesheet({
       privacy: article.privacy ?? 'public',
       enable_comments: article.enable_comments ?? true,
     });
-  }, [article]);
+  }, [article, isOpen]);
   return (
     <>
       <div
