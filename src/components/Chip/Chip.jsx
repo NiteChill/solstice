@@ -7,10 +7,13 @@ export default function Chip({
   onClick,
   overrideDone = false,
   low = false,
+  close = false,
 }) {
   return (
     <div
-      className={`${styles.chip} ${active ? styles.active : undefined} ${low ? styles.low : undefined}`}
+      className={`${styles.chip} ${active || close ? styles.active : undefined} ${
+        low ? styles.low : undefined
+      }`}
       onClick={onClick}
     >
       <div
@@ -22,6 +25,11 @@ export default function Chip({
           </span>
         )}
         <p className='label-large'>{label}</p>
+        {close && (
+          <span className='material-symbols-outlined'>
+            close
+          </span>
+        )}
       </div>
     </div>
   );

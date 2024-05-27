@@ -7,8 +7,7 @@ import ArticlePreview from '../../components/ArticlePreview/ArticlePreview';
 import Button from '../../components/Button/Button';
 
 export default function Explore() {
-  const [selectedTags, setSelectedTags] = useState([]),
-    [
+  const [
       user,
       setUser,
       edit,
@@ -28,8 +27,9 @@ export default function Explore() {
       isOpenCreateSidesheet,
       isOpenFilterSidesheet,
       setIsOpenFilterSidesheet,
+      selectedTags,
+      setSelectedTags,
     ] = useOutletContext(),
-    [sortTags, setSortTags] = useState(tags),
     [articles, setArticles] = useState([]);
   useEffect(() => {
     (async function getArticlesByCategories() {
@@ -50,14 +50,6 @@ export default function Explore() {
         setArticles(response.data.articles);
       }
     })();
-    let unselected = [],
-      selected = [];
-    tags.forEach((tag) => {
-      selectedTags?.includes(tag.label)
-        ? (selected = [...selected, tag])
-        : (unselected = [...unselected, tag]);
-    });
-    setSortTags([...selected, ...unselected]);
   }, [selectedTags]);
   return (
     <div className={styles.explore}>
@@ -80,27 +72,25 @@ export default function Explore() {
         </div>
         <div className={styles.tags}>
           <div>
-            {/* {sortTags.map((tag) => (
-              <Chip
-                key={tag.label}
-                icon={tag.icon}
-                label={tag.label}
-                low
-                active={selectedTags?.includes(tag.label)}
-                onClick={() => {
-                  const newTags = selectedTags?.includes(tag.label)
-                    ? selectedTags?.filter((el) => el !== tag.label)
-                    : [...selectedTags, tag.label];
-                  setSelectedTags(newTags);
-                }}
-              />
-            ))} */}
             <Button
               style={isOpenFilterSidesheet ? 'standard' : 'outlined_primary'}
               icon={isOpenFilterSidesheet ? 'close' : 'instant_mix'}
               label='Filters'
               onClick={() => setIsOpenFilterSidesheet(!isOpenFilterSidesheet)}
             />
+            {selectedTags.map((tag) => (
+              <Chip
+                key={tag}
+                label={tag}
+                close
+                onClick={() => {
+                  const newTags = selectedTags?.includes(tag)
+                    ? selectedTags?.filter((el) => el !== tag)
+                    : [...selectedTags, tag];
+                  setSelectedTags(newTags);
+                }}
+              />
+            ))}
           </div>
         </div>
         <div

@@ -88,17 +88,6 @@ export default function CreateSidesheet({
       enable_comments: article.enable_comments ?? true,
     });
   }, [article]);
-
-  useEffect(() => {
-    let unselected = [],
-      selected = [];
-    tags.forEach((tag) => {
-      content.tags?.includes(tag.label)
-        ? (selected = [...selected, tag])
-        : (unselected = [...unselected, tag]);
-    });
-    setSortTags([...selected, ...unselected]);
-  }, [content.tags]);
   return (
     <>
       <div
@@ -231,7 +220,7 @@ export default function CreateSidesheet({
                     opacity: !isOpenTags && 0,
                   }}
                 >
-                  {sortedTags.map((tag) => (
+                  {tags.map((tag) => (
                     <Chip
                       key={tag.label}
                       icon={tag.icon}

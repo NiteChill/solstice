@@ -63,6 +63,7 @@
       height: 100%;
       padding: 0.75rem 1.5rem 1.5rem 1.5rem;
       overflow-y: auto;
+      gap: 1rem;
       &::-webkit-scrollbar {
         background: none;
         width: 8px;
@@ -70,6 +71,14 @@
       &::-webkit-scrollbar-thumb {
         background: var(--surface-container-highest);
         width: 6px;
+      }
+      & > p {
+        color: var(--on-surface);
+      }
+      & > .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
       }
     }
   }
@@ -98,11 +107,12 @@
     height: 100%;
     position: relative;
     transition: width 0.3s var(--transition);
+    transform: none;
     & > .sidesheet {
       width: 21.25rem;
     }
   }
   .open {
-    width: clamp(0px, 100%, 21.25rem);
+    width: 21.25rem;
   }
 }

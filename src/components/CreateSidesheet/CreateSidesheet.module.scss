@@ -235,6 +235,7 @@
     border-radius: 1rem;
     transition: width 0.3s var(--transition);
     overflow: visible;
+    transform: none;
     & > .sidesheet {
       width: 21.25rem;
     }

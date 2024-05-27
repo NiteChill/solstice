@@ -23,6 +23,7 @@ export default function App() {
     [isOpenMenu, setIsOpenMenu] = useState(true),
     [isOpenFilterSidesheet, setIsOpenFilterSidesheet] = useState(false),
     [error, setError] = useState(null),
+    [selectedTags, setSelectedTags] = useState([]),
     tags = [
       { icon: 'newspaper', label: 'News' },
       { icon: 'sports_baseball', label: 'Sports' },
@@ -99,6 +100,9 @@ export default function App() {
           <FilterSidesheet
             isOpen={isOpenFilterSidesheet}
             setIsOpen={setIsOpenFilterSidesheet}
+            tags={tags}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
           />
           <main>
             <Navbar
@@ -148,6 +152,8 @@ export default function App() {
                 isOpenCreateSidesheet,
                 isOpenFilterSidesheet,
                 setIsOpenFilterSidesheet,
+                selectedTags,
+                setSelectedTags,
               ]}
             />
           </main>
