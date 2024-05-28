@@ -43,7 +43,7 @@ const createArticle = async (req, res) => {
   });
   try {
     article.save();
-    res.json({ state: 'ok', id: id });
+    res.json({id: id });
   } catch (error) {
     res.json({ state: 'failed' });
   }
@@ -52,8 +52,10 @@ const createArticle = async (req, res) => {
 const getSingleArticle = async (req, res) => {
   try {
     const response = await articleModel.findById(req.body.id);
-    const responseName = await userModel.findById(response.authorId);
-    res.send({ article: { ...response._doc, author: responseName.username } });
+    const responseUserInformation = await userModel.findById(response.authorId);
+    res.send({
+      article: { ...response._doc, author: responseUserInformation.username, avatar: responseUserInformation.profile_picture },
+    });
   } catch (error) {
     res.send({ error: error });
   }

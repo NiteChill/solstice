@@ -75,6 +75,7 @@ export default function Article() {
       <div className={styles.article}>
         {!loading && (
           <ArticleHeader
+            avatar={article?.avatar}
             name={article?.author}
             date={article?.createdAt}
             likes={article?.likes?.length}

@@ -32,21 +32,23 @@ export default function Account() {
     [myArticles, setMyArticles] = useState([]),
     [likedArticles, setLikedArticles] = useState([]),
     handleProfilePicture = async (file) => {
-      setLoading(true);
-      response = await axios.post(
-        'http://localhost:3000/api/update_profile_picture',
-        { id: user?.id, profile_picture: file },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
+      if (user?.id) {
+        setLoading(true);
+        const response = await axios.post(
+          'http://localhost:3000/api/update_profile_picture',
+          { id: user?.id, profile_picture: file },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        if (response.data?.error) console.log(response.data.error);
+        else if (response.data?.status === 'ok') {
+          setUser({...user, profile_picture: file });
+          setLoading(false);
         }
-      );
-      if (response.data?.error) console.log(response.data.error);
-      else if (response.data?.profile_picture) {
-        setUser(...user, { profile_picture: response.data.profile_picture });
-        setLoading(false);
       }
     };
   useEffect(() => {
@@ -103,14 +105,21 @@ export default function Account() {
               <span className='material-symbols-outlined'>person</span>
             </div>
           )}
-          <input type='file' accept='image/*' id='profile_picture' onInput={() => {
-            if (!file) return;
-            const reader = new FileReader();
-            reader.addEventListener('load', (e) => {
-              // handleProfilePicture(e.target.result);
-            });
-            reader.readAsDataURL(file);
-          }} />
+          <input
+            type='file'
+            accept='image/*'
+            id='profile_picture'
+            onInput={(e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+              const reader = new FileReader();
+              reader.addEventListener('load', (event) => {
+                console.log('hey');
+                handleProfilePicture(event.target.result);
+              });
+              reader.readAsDataURL(file);
+            }}
+          />
           <IconButton icon='edit' />
         </label>
         <div className={styles.user_info}>

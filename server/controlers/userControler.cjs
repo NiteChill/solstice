@@ -42,7 +42,7 @@ const loginUser = async (req, res) => {
             age: user.age,
             email: user.email,
             createdAt: user.createdAt,
-            profilePicture: user.profilePicture,
+            profile_picture: user.profile_picture,
           };
           req.session.user = userData;
           res.send({ user: userData });
@@ -98,7 +98,7 @@ const signUp = async (req, res) => {
       age: dbUser?.age,
       email: dbUser?.email,
       createdAt: dbUser?.createdAt,
-      profilePicture: dbUser?.profilePicture,
+      profile_picture: dbUser?.profile_picture,
     };
   }
   if (userData) {
@@ -120,9 +120,21 @@ const getUsernameById = async (req, res) => {
   }
 };
 
+const updateProfilePicture = async (req, res) => {
+  try {
+    const response = await userModel.findByIdAndUpdate(req.body.id, {
+      profile_picture: req.body.profile_picture,
+    });
+    res.send({ status: 'ok' });
+  } catch (error) {
+    res.send({ error: error });
+  }
+}
+
 module.exports = {
   getUser,
   loginUser,
   signUp,
   getUsernameById,
+  updateProfilePicture
 };

@@ -72,6 +72,9 @@ export default function App() {
     })();
   }, []);
   useEffect(() => {
+    console.log(user);
+  }, [user])
+  useEffect(() => {
     setIsOpenCreateSidesheet(false);
     setIsOpenFilterSidesheet(false);
     if (location.slice(0, 8) !== '/article') {

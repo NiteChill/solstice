@@ -40,7 +40,7 @@ export default function CreateSidesheet({
           withCredentials: true,
         }
       );
-      if (response.data.state === 'ok') {
+      if (response.data?.id) {
         setLoading(false);
         return response.data.id;
       } else {
