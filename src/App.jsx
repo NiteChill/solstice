@@ -9,6 +9,7 @@ import CreateSidesheet from './components/CreateSidesheet/CreateSidesheet';
 import NavigationMenu from './components/NavigationMenu/NavigationMenu';
 import ErrorElement from './components/ErrorElement/ErrorElement';
 import FilterSidesheet from './components/FilterSidesheet/FilterSidesheet';
+import DeleteModal from './components/DeleteModale/DeleteModal';
 
 export default function App() {
   const [theme, setTheme] = useState('light'),
@@ -18,6 +19,7 @@ export default function App() {
     [edit, setEdit, article, setArticle, editor] = useTiptap(),
     [isOpenLink, setIsOpenLink] = useState(false),
     [isOpenImage, setIsOpenImage] = useState(false),
+    [isOpenDelete, setIsOpenDelete] = useState(false),
     [loading, setLoading] = useState(false),
     [isOpenCreateSidesheet, setIsOpenCreateSidesheet] = useState(false),
     [isOpenMenu, setIsOpenMenu] = useState(true),
@@ -173,6 +175,15 @@ export default function App() {
             setArticle={setArticle}
             user={user}
             tags={tags}
+            setIsOpenDelete={setIsOpenDelete}
+          />
+          <DeleteModal
+            isOpen={isOpenDelete}
+            setIsOpen={setIsOpenDelete}
+            article={article}
+            setLoading={setLoading}
+            setIsOpenCreateSidesheet={setIsOpenCreateSidesheet}
+            user={user}
           />
         </>
       )}

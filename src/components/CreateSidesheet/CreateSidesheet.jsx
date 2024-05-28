@@ -16,6 +16,7 @@ export default function CreateSidesheet({
   setArticle,
   user,
   tags,
+  setIsOpenDelete,
 }) {
   const [sidesheetState, setSidesheetState] = useState(isOpen),
     navigate = useNavigate(),
@@ -99,29 +100,17 @@ export default function CreateSidesheet({
         <div className={styles.sidesheet}>
           <header>
             <h1 className='title-large'>{article ? 'Settings' : 'Create'}</h1>
-            <IconButton
-              icon='close'
-              onClick={() => setIsOpen(false)}
-            />
+            <IconButton icon='close' onClick={() => setIsOpen(false)} />
           </header>
           <main>
             <div className={styles.image_title}>
               {content?.thumbnail && (
-                <label
-                  htmlFor='file'
-                  className={styles.thumbnail}
-                >
-                  <img
-                    src={content?.thumbnail}
-                    alt='thumbnail'
-                  />
+                <label htmlFor='file' className={styles.thumbnail}>
+                  <img src={content?.thumbnail} alt='thumbnail' />
                 </label>
               )}
               <div className={styles.image_selector}>
-                <label
-                  htmlFor='file'
-                  className='label-large'
-                >
+                <label htmlFor='file' className='label-large'>
                   <span className='material-symbols-outlined'>
                     add_photo_alternate
                   </span>
@@ -244,12 +233,24 @@ export default function CreateSidesheet({
                   }
                 />
               </div>
+              {article.authorId === user?.id && user && (
+                <div className={styles.delete}>
+                  <Button
+                    style='text-error'
+                    icon='delete'
+                    label='Delete article'
+                    onClick={() => setIsOpenDelete(true)}
+                  />
+                </div>
+              )}
             </div>
           </main>
           <footer>
             <Button
               label={article ? 'Save' : 'Create'}
-              disabled={!content.title?.replace(/\s+/g, '')}
+              disabled={
+                !content.title?.replace(/\s+/g, '') || !content.thumbnail
+              }
               onClick={async () => {
                 if (article._id) {
                   if (article.authorId === user?.id) {

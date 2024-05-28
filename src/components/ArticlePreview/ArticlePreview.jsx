@@ -39,15 +39,28 @@ export default function ArticlePreview({ article }) {
       onClick={() => navigate(`/article/${article._id}`)}
     >
       {article?.thumbnail && (
-        <img src={article.thumbnail} alt={article.title} />
+        <div className={styles.thumbnail_wrapper}>
+          <div>
+            <img src={article.thumbnail} alt={article.title} />
+          </div>
+        </div>
       )}
       <div>
         <h2 className='title-large'>{article.title}</h2>
         <div>
-          {loading ? <div><div></div></div> : <p className={`label-large ${self ? styles.self : undefined}`}>{username}</p>}
+          {loading ? (
+            <div>
+              <div></div>
+            </div>
+          ) : (
+            <p className={`label-large ${self ? styles.self : undefined}`}>
+              {username}
+            </p>
+          )}
           <span></span>
-          <p className='label-large'>{article.likes.length} like{article.likes.length > 1 && 's'}</p>
-          <p className='label-large'>{article.comments}</p>
+          <p className='label-large'>
+            {article.likes.length} like{article.likes.length > 1 && 's'}
+          </p>
         </div>
       </div>
     </div>

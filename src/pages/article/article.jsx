@@ -1,7 +1,12 @@
 import axios from 'axios';
 import styles from './article.module.scss';
 import { useEffect, useState } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from 'react-router-dom';
 import FAB from '../../components/FAB/FAB';
 import { EditorContent } from '@tiptap/react';
 import Toolbar from '../../components/Toolbar/Toolbar';
@@ -29,6 +34,7 @@ export default function Article() {
       appWidth,
       isOpenMenu,
     ] = useOutletContext(),
+    location = useLocation(),
     navigate = useNavigate(),
     [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
   useEffect(() => {
@@ -77,6 +83,7 @@ export default function Article() {
             article={article}
             setArticle={setArticle}
             noAccountAction={() => setIsOpenSnackbar(true)}
+            location={location}
           />
         )}
         <EditorContent
@@ -91,17 +98,13 @@ export default function Article() {
               bottom: isOpenMenu && appWidth < 720 && '5.25rem',
             }}
           >
-            <FAB
-              icon='edit'
-              onClick={() => setEdit(true)}
-            />
+            <FAB icon='edit' onClick={() => setEdit(true)} />
           </div>
         )}
       </div>
-      {appWidth < 500 &&
-        user &&
-        article?.authorId === user?.id &&
-        edit && <Toolbar editor={editor} />}
+      {appWidth < 500 && user && article?.authorId === user?.id && edit && (
+        <Toolbar editor={editor} />
+      )}
       <Snackbar
         label='Account required'
         action='Log in'

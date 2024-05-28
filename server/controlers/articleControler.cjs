@@ -149,6 +149,15 @@ const getArticlesByLikes = async (req, res) => {
   }
 };
 
+const deleteArticle = async (req, res) => {
+  try {
+    const response = await articleModel.findByIdAndDelete(req.body.id);
+    res.send({ state: 'ok' });
+  } catch (error) {
+    res.send({ error: error });
+  }
+}
+
 module.exports = {
   createArticle,
   getSingleArticle,
@@ -159,4 +168,5 @@ module.exports = {
   getArticlesByCategories,
   getArticlesByUser,
   getArticlesByLikes,
+  deleteArticle,
 };

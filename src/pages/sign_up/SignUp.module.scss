@@ -76,7 +76,10 @@
 }
 
 input {
-  padding: 0.5rem 0 0.5rem 1rem;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0.5rem 1rem;
   border: 1px solid var(--outline);
   outline: none;
   border-radius: 4px;

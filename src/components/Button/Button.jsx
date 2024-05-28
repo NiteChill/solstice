@@ -5,7 +5,7 @@ export default function Button({
   label = 'Label',
   icon = false,
   onClick,
-  disabled = false
+  disabled = false,
 }) {
   return (
     <div
@@ -14,6 +14,8 @@ export default function Button({
           ? styles.standard
           : style === 'outlined_primary'
           ? styles.outlined_primary
+          : style === 'text-error'
+          ? styles.text_error
           : styles.text
       }`}
       onClick={onClick}

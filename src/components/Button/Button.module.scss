@@ -13,6 +13,7 @@
     padding: 0.625rem 1rem;
     border-radius: inherit;
     gap: 0.5rem;
+    transition: .2s background var(--transition);
     & > span {
       font-size: 1.125rem;
     }
@@ -54,6 +55,18 @@
   }
   &:active > div {
     background: var(--state-layer-primary-012);
+  }
+}
+
+.text_error {
+  & > div {
+    color: var(--error);
+  }
+  &:hover > div {
+    background: var(--state-layer-error-008);
+  }
+  &:active > div {
+    background: var(--state-layer-error-012);
   }
 }
 

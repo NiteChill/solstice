@@ -13,6 +13,7 @@ export default function ArticleHeader({
   article,
   setArticle,
   noAccountAction,
+  location,
 }) {
   const month = [
       'JAN',
@@ -89,10 +90,7 @@ export default function ArticleHeader({
         <div className={styles.user}>
           <div className={styles.profile_picture}>
             {avatar ? (
-              <img
-                src={avatar}
-                alt='Profile'
-              />
+              <img src={avatar} alt='Profile' />
             ) : (
               <div>
                 <span className='material-symbols-outlined'>person</span>
@@ -118,14 +116,23 @@ export default function ArticleHeader({
             label='10'
             onClick={() => (id ? '' : noAccountAction())}
           />
-          <IconButton icon='share' />
+          <IconButton
+            icon='share'
+            onClick={() =>
+              navigator.canShare({
+                title: article?.title,
+                url: location.search,
+              }) &&
+              navigator.share({
+                title: article?.title,
+                url: location.search,
+              })
+            }
+          />
         </div>
       </footer>
       {article?.thumbnail ? (
-        <img
-          src={article?.thumbnail}
-          alt='Thumbnail'
-        />
+        <img src={article?.thumbnail} alt='Thumbnail' />
       ) : (
         <div />
       )}
