@@ -3,6 +3,7 @@ import styles from './account.module.scss';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ArticlePreview from '../../components/ArticlePreview/ArticlePreview';
+import IconButton from '../../components/IconButton/IconButton';
 
 export default function Account() {
   const [
@@ -29,7 +30,25 @@ export default function Account() {
     navigate = useNavigate(),
     [page, setPage] = useState('my_articles'),
     [myArticles, setMyArticles] = useState([]),
-    [likedArticles, setLikedArticles] = useState([]);
+    [likedArticles, setLikedArticles] = useState([]),
+    handleProfilePicture = async (file) => {
+      setLoading(true);
+      response = await axios.post(
+        'http://localhost:3000/api/update_profile_picture',
+        { id: user?.id, profile_picture: file },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.data?.error) console.log(response.data.error);
+      else if (response.data?.profile_picture) {
+        setUser(...user, { profile_picture: response.data.profile_picture });
+        setLoading(false);
+      }
+    };
   useEffect(() => {
     if (!myArticles.length || !likedArticles.length) {
       (async function getArticlesByCategories() {
@@ -80,11 +99,19 @@ export default function Account() {
           {user?.profile_picture ? (
             <img src={user.profile_picture} alt='profile_picture ' />
           ) : (
-            <div>
+            <div className={styles.profile_picture}>
               <span className='material-symbols-outlined'>person</span>
             </div>
           )}
-          <input type='file' accept='image/*' id='profile_picture' />
+          <input type='file' accept='image/*' id='profile_picture' onInput={() => {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.addEventListener('load', (e) => {
+              // handleProfilePicture(e.target.result);
+            });
+            reader.readAsDataURL(file);
+          }} />
+          <IconButton icon='edit' />
         </label>
         <div className={styles.user_info}>
           <h1 className='headline-medium'>{`${user?.first_name} ${user?.last_name}`}</h1>
