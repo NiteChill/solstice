@@ -43,6 +43,14 @@
       align-items: center;
       justify-content: center;
     }
+    & > .search_field {
+      flex: 1;
+      border: none;
+      outline: none;
+      height: fit-content;
+      padding: 0.625rem 0 0.625rem 1rem;
+      color: var(--on-surface);
+    }
   }
   &::before {
     content: '';

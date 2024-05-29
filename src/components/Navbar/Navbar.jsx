@@ -25,6 +25,8 @@ export default function Navbar({
   appWidth,
   theme,
   setTheme,
+  searchQuery,
+  setSearchQuery,
 }) {
   const navigate = useNavigate(),
     handleSubmit = async () => {
@@ -62,13 +64,24 @@ export default function Navbar({
               onClick={() => !loading && handleSubmit()}
             />
           )}
-          <div className={styles.navbar_title}>
-            <h1 className='title-large' onClick={() => navigate('/')}>
-              {location.slice(0, 8) === '/article' && edit
-                ? appWidth > 500 && title
-                : 'Solstice'}
-            </h1>
-          </div>
+          {location !== '/search' && (
+            <div className={styles.navbar_title}>
+              <h1
+                className='title-large'
+                onClick={() => {
+                  !(
+                    location.slice(0, 8) === '/article' &&
+                    edit &&
+                    appWidth > 500
+                  ) && navigate('/');
+                }}
+              >
+                {location.slice(0, 8) === '/article' && edit
+                  ? appWidth > 500 && title
+                  : 'Solstice'}
+              </h1>
+            </div>
+          )}
           {location.slice(0, 8) === '/article' && (
             <>
               {appWidth < 500 && edit && (
@@ -139,7 +152,7 @@ export default function Navbar({
               )}
             </>
           )}
-          {appWidth < 720 && !edit && (
+          {appWidth < 720 && !edit && location !== '/search' && (
             <IconButton
               icon={theme === 'light' ? 'dark_mode' : 'light_mode'}
               onClick={() =>
@@ -150,7 +163,8 @@ export default function Navbar({
           {user &&
             !isOpenCreateSidesheet &&
             !edit &&
-            location.slice(0, 8) !== '/article' && (
+            location.slice(0, 8) !== '/article' &&
+            location !== '/search' && (
               <IconButton
                 icon='add'
                 onClick={async () => setIsOpenCreateSidesheet(true)}
@@ -166,10 +180,28 @@ export default function Navbar({
                 onClick={async () => setIsOpenCreateSidesheet(true)}
               />
             )}
-          {!user && location !== '/login' && location !== '/sign_up' && (
-            <div className={styles.button}>
-              <Button label='Log in' onClick={() => navigate('/login')} />
-            </div>
+          {!user &&
+            location !== '/login' &&
+            location !== '/sign_up' &&
+            location !== '/search' && (
+              <div className={styles.button}>
+                <Button label='Log in' onClick={() => navigate('/login')} />
+              </div>
+            )}
+          {location === '/search' && (
+            <>
+              <input
+                type='text'
+                placeholder='Search'
+                className={`${styles.search_field} title-large`}
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                }}
+                autoFocus
+              />
+              <IconButton icon='close' onClick={() => setSearchQuery('')} />
+            </>
           )}
         </div>
         {appWidth > 500 &&

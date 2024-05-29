@@ -125,6 +125,7 @@ const updateProfilePicture = async (req, res) => {
     const response = await userModel.findByIdAndUpdate(req.body.id, {
       profile_picture: req.body.profile_picture,
     });
+    req.session.user.profile_picture = req.body.profile_picture;
     res.send({ status: 'ok' });
   } catch (error) {
     res.send({ error: error });

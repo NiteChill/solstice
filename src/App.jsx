@@ -26,6 +26,7 @@ export default function App() {
     [isOpenFilterSidesheet, setIsOpenFilterSidesheet] = useState(false),
     [error, setError] = useState(null),
     [selectedTags, setSelectedTags] = useState([]),
+    [searchQuery, setSearchQuery] = useState(''),
     tags = [
       { icon: 'newspaper', label: 'News' },
       { icon: 'sports_baseball', label: 'Sports' },
@@ -72,11 +73,9 @@ export default function App() {
     })();
   }, []);
   useEffect(() => {
-    console.log(user);
-  }, [user])
-  useEffect(() => {
     setIsOpenCreateSidesheet(false);
     setIsOpenFilterSidesheet(false);
+    setSearchQuery('')
     if (location.slice(0, 8) !== '/article') {
       setEdit(false);
       setArticle(null);
@@ -134,6 +133,8 @@ export default function App() {
               appWidth={appWidth}
               theme={theme}
               setTheme={setTheme}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
             />
 
             <Outlet
@@ -159,6 +160,8 @@ export default function App() {
                 setIsOpenFilterSidesheet,
                 selectedTags,
                 setSelectedTags,
+                searchQuery,
+                setSearchQuery,
               ]}
             />
           </main>

@@ -3,20 +3,21 @@ const mongoose = require('mongoose'),
   userModel = require('../models/userModel.cjs');
 
 const createArticle = async (req, res) => {
-  const id = new mongoose.Types.ObjectId(),
-    response = await articleModel.findOne({ authorId: req.session.user.id });
+  try {
+    const id = new mongoose.Types.ObjectId(),
+      response = await articleModel.findOne({ authorId: req.session.user.id });
 
-  article = new articleModel({
-    _id: id,
-    authorId: req.session.user.id,
-    title: req.body.title,
-    thumbnail: req.body.thumbnail,
-    enable_comments: req.body.enable_comments,
-    privacy: req.body.privacy,
-    tags: req.body.tags,
-    content: response
-      ? ''
-      : `
+    article = new articleModel({
+      _id: id,
+      authorId: req.session.user.id,
+      title: req.body.title,
+      thumbnail: req.body.thumbnail,
+      enable_comments: req.body.enable_comments,
+      privacy: req.body.privacy,
+      tags: req.body.tags,
+      content: response
+        ? ''
+        : `
         <h4>
           Welcome to solstice's text editor!
         </h4>
@@ -40,12 +41,14 @@ const createArticle = async (req, res) => {
         <p>And a lot more.</p>
         <h6><span style='color: var(--on-surface-variant)'>Have fun creating wonderful stories with Solstice!</span></h6>
         `,
-  });
-  try {
-    article.save();
-    res.json({id: id });
+    });
+    if (response) {
+      const output = await article.save();
+      if (output) res.send({ id: id });
+      else res.send({ state: 'failed' });
+    } else res.send({ state: 'failed' });
   } catch (error) {
-    res.json({ state: 'failed' });
+    res.send({ state: 'failed' });
   }
 };
 
@@ -54,7 +57,11 @@ const getSingleArticle = async (req, res) => {
     const response = await articleModel.findById(req.body.id);
     const responseUserInformation = await userModel.findById(response.authorId);
     res.send({
-      article: { ...response._doc, author: responseUserInformation.username, avatar: responseUserInformation.profile_picture },
+      article: {
+        ...response._doc,
+        author: responseUserInformation.username,
+        avatar: responseUserInformation.profile_picture,
+      },
     });
   } catch (error) {
     res.send({ error: error });
@@ -120,11 +127,17 @@ const getArticlesByCategories = async (req, res) => {
   try {
     const response =
       req.body.tags === 'all'
-        ? await articleModel.find({ privacy: 'public' }).sort({createdAt: -1}).limit(15)
-        : await articleModel.find({
-            privacy: 'public',
-            tags: { $in: req.body.tags },
-          }).sort({createdAt: -1}).limit(15);
+        ? await articleModel
+            .find({ privacy: 'public' })
+            .sort({ createdAt: -1 })
+            .limit(15)
+        : await articleModel
+            .find({
+              privacy: 'public',
+              tags: { $in: req.body.tags },
+            })
+            .sort({ createdAt: -1 })
+            .limit(15);
     res.send({ articles: response });
   } catch (error) {
     res.send({ error: error });
@@ -133,7 +146,10 @@ const getArticlesByCategories = async (req, res) => {
 
 const getArticlesByUser = async (req, res) => {
   try {
-    const response = await articleModel.find({ authorId: req.body.id }).sort({createdAt: -1}).limit(15);
+    const response = await articleModel
+      .find({ authorId: req.body.id })
+      .sort({ createdAt: -1 })
+      .limit(15);
     res.send({ articles: response });
   } catch (error) {
     res.send({ error: error });
@@ -142,9 +158,12 @@ const getArticlesByUser = async (req, res) => {
 
 const getArticlesByLikes = async (req, res) => {
   try {
-    const response = await articleModel.find({
-      likes: { $in: req.body.id },
-    }).sort({createdAt: -1}).limit(15);
+    const response = await articleModel
+      .find({
+        likes: { $in: req.body.id },
+      })
+      .sort({ createdAt: -1 })
+      .limit(15);
     res.send({ articles: response });
   } catch (error) {
     res.send({ error: error });
@@ -158,7 +177,39 @@ const deleteArticle = async (req, res) => {
   } catch (error) {
     res.send({ error: error });
   }
-}
+};
+
+const searchArticles = async (req, res) => {
+  const agg = [
+    {
+      $search: {
+        index: 'articlesSearch',
+        text: {
+          query: req.body.query,
+          path: {
+            wildcard: '*',
+          },
+          // path: 'title',
+          fuzzy: {},
+        },
+      },
+    },
+    {
+      $sort: {
+        score: { $meta: 'textScore' },
+      },
+    },
+    {
+      $limit: 15,
+    },
+  ];
+  try {
+    const response = await articleModel.aggregate(agg).exec();
+    res.send({ articles: response });
+  } catch (error) {
+    res.send({ error: error });
+  }
+};
 
 module.exports = {
   createArticle,
@@ -171,4 +222,5 @@ module.exports = {
   getArticlesByUser,
   getArticlesByLikes,
   deleteArticle,
+  searchArticles,
 };

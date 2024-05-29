@@ -141,6 +141,7 @@ export default function CreateSidesheet({
                 onInput={(e) =>
                   setContent({ ...content, title: e.target.value })
                 }
+                disabled={!isOpen}
               />
             </div>
             <div className={styles.settings}>

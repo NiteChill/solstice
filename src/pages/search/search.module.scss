@@ -1,0 +1,32 @@
+.search {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  padding: 0.75rem 1.5rem 1.5rem 1.5rem;
+  &::-webkit-scrollbar {
+    background: none;
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--surface-container-highest);
+    width: 6px;
+  }
+  & > main {
+    width: clamp(0px, 100%, 52rem);
+    height: fit-content;
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    grid-template-columns: repeat(1, 100%);
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .search > main {
+    grid-template-columns: repeat(2, calc(50% - 0.5rem)) !important;
+  }
+}

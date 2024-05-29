@@ -28,7 +28,7 @@ export default function Account() {
       setIsOpenFilterSidesheet,
     ] = useOutletContext(),
     navigate = useNavigate(),
-    [page, setPage] = useState('my_articles'),
+    [page, setPage] = useState('articles'),
     [myArticles, setMyArticles] = useState([]),
     [likedArticles, setLikedArticles] = useState([]),
     handleProfilePicture = async (file) => {
@@ -56,7 +56,7 @@ export default function Account() {
       (async function getArticlesByCategories() {
         setLoading(true);
         let response;
-        if (page === 'my_articles') {
+        if (page === 'articles') {
           response = await axios.post(
             'http://localhost:3000/api/get_articles_by_user',
             { id: user?.id },
@@ -67,7 +67,7 @@ export default function Account() {
               withCredentials: true,
             }
           );
-        } else if (page === 'liked_articles') {
+        } else if (page === 'likes') {
           response = await axios.post(
             'http://localhost:3000/api/get_articles_by_likes',
             { id: user?.id },
@@ -82,7 +82,7 @@ export default function Account() {
         if (response.data?.error) console.log(response.data.error);
         else if (response.data?.articles) {
           setLoading(false);
-          page === 'my_articles'
+          page === 'articles'
             ? setMyArticles(response.data.articles)
             : setLikedArticles(response.data.articles);
         }
@@ -128,14 +128,14 @@ export default function Account() {
         </div>
         <nav>
           <Tab
-            label='My articles'
-            active={page === 'my_articles'}
-            onClick={() => setPage('my_articles')}
+            label='Articles'
+            active={page === 'articles'}
+            onClick={() => setPage('articles')}
           />
           <Tab
-            label='Liked articles'
-            active={page === 'liked_articles'}
-            onClick={() => setPage('liked_articles')}
+            label='Likes'
+            active={page === 'likes'}
+            onClick={() => setPage('likes')}
           />
           {/* <Tab label='My comments' active={location === '/account/my_comments'} />
             <Tab label='Liked comments' active={location === '/account/liked_comments'} /> */}
@@ -145,7 +145,7 @@ export default function Account() {
             isOpenCreateSidesheet || isOpenFilterSidesheet ? styles.open : ''
           }`}
         >
-          {page === 'my_articles'
+          {page === 'articles'
             ? myArticles.map((article) => (
                 <ArticlePreview key={article.title} article={article} />
               ))

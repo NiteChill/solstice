@@ -18,5 +18,6 @@ router.post('/get_articles_by_category', articleRoutes.getArticlesByCategories);
 router.post('/get_articles_by_user', articleRoutes.getArticlesByUser);
 router.post('/get_articles_by_likes', articleRoutes.getArticlesByLikes);
 router.post('/delete_article', articleRoutes.deleteArticle);
+router.post('/search', articleRoutes.searchArticles);
 
 module.exports = router;
