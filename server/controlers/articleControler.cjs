@@ -186,10 +186,13 @@ const searchArticles = async (req, res) => {
         index: 'articlesSearch',
         text: {
           query: req.body.query,
-          path: {
-            wildcard: '*',
-          },
-          // path: 'title',
+          // path: {
+          //   wildcard: '*',
+          // },
+          path: [
+            'title',
+            'content',
+          ],
           fuzzy: {},
         },
       },
