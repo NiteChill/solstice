@@ -3,7 +3,13 @@ import IconButton from '../IconButton/IconButton';
 import styles from './FilterSidesheet.module.scss';
 import { useEffect, useState } from 'react';
 
-export default function FilterSidesheet({ isOpen, setIsOpen, tags, selectedTags, setSelectedTags }) {
+export default function FilterSidesheet({
+  isOpen,
+  setIsOpen,
+  tags,
+  selectedTags,
+  setSelectedTags,
+}) {
   const [sidesheetState, setSidesheetState] = useState(isOpen);
   useEffect(() => {
     isOpen
@@ -21,8 +27,10 @@ export default function FilterSidesheet({ isOpen, setIsOpen, tags, selectedTags,
         className={`${styles.container} ${isOpen ? styles.open : undefined}`}
         style={{
           width:
-            window.innerWidth < 900 &&
-            (sidesheetState ? 'clamp(0px, 100%, 21.25rem)' : 0),
+            window.innerWidth < 500
+              ? '100%'
+              : window.innerWidth < 900 &&
+                (sidesheetState ? 'clamp(0px, 100%, 21.25rem)' : 0),
         }}
       >
         <div className={styles.sidesheet}>
@@ -31,7 +39,7 @@ export default function FilterSidesheet({ isOpen, setIsOpen, tags, selectedTags,
             <IconButton icon='close' onClick={() => setIsOpen(false)} />
           </header>
           <main>
-            <p className='label-medium'>Filter by tags</p>
+            {/* <p className='label-medium'>Filter by tags</p> */}
             <div className={styles.tags}>
               {tags.map((tag) => (
                 <Chip

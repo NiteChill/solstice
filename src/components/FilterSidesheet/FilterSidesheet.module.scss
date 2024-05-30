@@ -28,7 +28,6 @@
     width: clamp(0px, 100%, 21.25rem);
     flex-shrink: 0;
     border-radius: 0 1rem 1rem 0;
-    padding-bottom: 1.5rem;
     background: var(--surface-container-low);
     & > header {
       position: relative;
@@ -86,6 +85,26 @@
 
 .open {
   transform: translateX(0);
+}
+
+@media screen and (max-width: 500px) {
+  .container {
+    right: 0;
+    transform: translateY(100%);
+    width: 100%;
+    top: auto;
+    height: clamp(320px, calc(100% - 1.5rem), 500px);
+    display: flex;
+    align-items: flex-end;
+    & > .sidesheet {
+      width: 100%;
+      border-radius: 1rem 1rem 0 0;
+      height: 100%;
+    }
+  }
+  .open {
+    transform: translateY(0);
+  }
 }
 
 @media screen and (min-width: 720px) {

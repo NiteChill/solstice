@@ -93,8 +93,10 @@ export default function CreateSidesheet({
         className={`${styles.container} ${isOpen ? styles.open : undefined}`}
         style={{
           width:
-            window.innerWidth < 900 &&
-            (sidesheetState ? 'clamp(0px, 100%, 21.25rem)' : 0),
+            window.innerWidth < 500
+              ? '100%'
+              : window.innerWidth < 900 &&
+                (sidesheetState ? 'clamp(0px, 100%, 21.25rem)' : 0),
         }}
       >
         <div className={styles.sidesheet}>

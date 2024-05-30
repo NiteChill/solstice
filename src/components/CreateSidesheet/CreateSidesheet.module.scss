@@ -231,6 +231,26 @@
   transform: translateX(0);
 }
 
+@media screen and (max-width: 500px) {
+  .container {
+    right: 0;
+    transform: translateY(100%);
+    width: 100%;
+    top: auto;
+    height: clamp(320px, calc(100% - 1.5rem), 700px);
+    display: flex;
+    align-items: flex-end;
+    & > .sidesheet {
+      width: 100%;
+      border-radius: 1rem 1rem 0 0;
+      height: 100%;
+    }
+  }
+  .open {
+    transform: translateY(0);
+  }
+}
+
 @media screen and (min-width: 900px) {
   .backdrop {
     display: none;
