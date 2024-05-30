@@ -14,24 +14,28 @@ export default function Search() {
       setSearchResults([]);
       return;
     };
-    (async () => {
-      setLoading(true);
-      const response = await axios.post(
-        'http://localhost:3000/api/search',
-        { query: searchQuery },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
+    const timeout = setTimeout(() => {
+      (async () => {
+        setLoading(true);
+        const response = await axios.post(
+          'http://localhost:3000/api/search',
+          { query: searchQuery },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        if (response.data?.error) setLoading(false);
+        else if (response.data?.articles) {
+          setSearchResults(response.data.articles);
+          setLoading(false);
         }
-      );
-      if (response.data?.error) setLoading(false);
-      else if (response.data?.articles) {
-        setSearchResults(response.data.articles);
-        setLoading(false);
-      }
-    })();
+      })();
+    },500);
+
+    return () => clearTimeout(timeout);
   }, [searchQuery]);
   return (
     <div className={styles.search}>
