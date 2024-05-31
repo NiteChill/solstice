@@ -10,6 +10,7 @@ import NavigationMenu from './components/NavigationMenu/NavigationMenu';
 import ErrorElement from './components/ErrorElement/ErrorElement';
 import FilterSidesheet from './components/FilterSidesheet/FilterSidesheet';
 import DeleteModal from './components/DeleteModale/DeleteModal';
+import CommentsSidesheet from './components/CommentsSidesheet/CommentsSidesheet';
 
 export default function App() {
   const [theme, setTheme] = useState('light'),
@@ -24,6 +25,7 @@ export default function App() {
     [isOpenCreateSidesheet, setIsOpenCreateSidesheet] = useState(false),
     [isOpenMenu, setIsOpenMenu] = useState(true),
     [isOpenFilterSidesheet, setIsOpenFilterSidesheet] = useState(false),
+    [isOpenCommentsSidesheet, setIsOpenCommentsSidesheet] = useState(false),
     [error, setError] = useState(null),
     [selectedTags, setSelectedTags] = useState([]),
     [searchQuery, setSearchQuery] = useState(''),
@@ -75,7 +77,7 @@ export default function App() {
   useEffect(() => {
     setIsOpenCreateSidesheet(false);
     setIsOpenFilterSidesheet(false);
-    setSearchQuery('')
+    setSearchQuery('');
     if (location.slice(0, 8) !== '/article') {
       setEdit(false);
       setArticle(null);
@@ -85,11 +87,23 @@ export default function App() {
   }, [location]);
 
   useEffect(() => {
-    isOpenCreateSidesheet && setIsOpenFilterSidesheet(false);
+    if (isOpenCreateSidesheet) {
+      setIsOpenFilterSidesheet(false);
+      setIsOpenCommentsSidesheet(false);
+    }
   }, [isOpenCreateSidesheet]);
   useEffect(() => {
-    isOpenFilterSidesheet && setIsOpenCreateSidesheet(false);
+    if (isOpenFilterSidesheet) {
+      setIsOpenCreateSidesheet(false);
+      setIsOpenCommentsSidesheet(false);
+    }
   }, [isOpenFilterSidesheet]);
+  useEffect(() => {
+    if (isOpenCommentsSidesheet) {
+      setIsOpenCreateSidesheet(false);
+      setIsOpenFilterSidesheet(false);
+    }
+  }, [isOpenCommentsSidesheet]);
   useEffect(() => {
     edit ? setIsOpenMenu(false) : setIsOpenMenu(true);
   }, [edit]);
@@ -162,6 +176,7 @@ export default function App() {
                 setSelectedTags,
                 searchQuery,
                 setSearchQuery,
+                setIsOpenCommentsSidesheet,
               ]}
             />
           </main>
@@ -182,6 +197,12 @@ export default function App() {
             user={user}
             tags={tags}
             setIsOpenDelete={setIsOpenDelete}
+          />
+          <CommentsSidesheet
+            isOpen={isOpenCommentsSidesheet}
+            setIsOpen={setIsOpenCommentsSidesheet}
+            user={user}
+            article={article}
           />
           <DeleteModal
             isOpen={isOpenDelete}

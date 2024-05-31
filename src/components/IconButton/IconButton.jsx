@@ -21,7 +21,11 @@ export default function IconButton({
       className={`${styles.icon_button} ${
         disabled ? styles.disabled : undefined
       } ${rotation ? styles.rotation : undefined} ${
-        stateLayer === 'error' ? styles.state_layer_error : undefined
+        stateLayer === 'error'
+          ? styles.state_layer_error
+          : stateLayer === 'primary'
+          ? styles.state_layer_primary
+          : undefined
       } ${
         style === 'filled_small'
           ? styles.filled_small
@@ -56,21 +60,14 @@ export default function IconButton({
               }}
             ></div>
           ) : (
-            avatar && (
-              <img
-                src={avatar}
-                alt='profilePicture'
-              />
-            )
+            avatar && <img src={avatar} alt='profilePicture' />
           )}
 
           {!avatar && (
             <span
               className='material-symbols-outlined'
               style={{
-                color: loading
-                  ? 'transparent'
-                  : iconColor && iconColor,
+                color: loading ? 'transparent' : iconColor && iconColor,
                 fontVariationSettings: fill && "'FILL' 1",
               }}
             >

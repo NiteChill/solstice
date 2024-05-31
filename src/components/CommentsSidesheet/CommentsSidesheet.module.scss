@@ -14,11 +14,11 @@
 .container {
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   bottom: 0;
   z-index: 100000;
   flex-shrink: 0;
-  transform: translateX(-100%);
+  transform: translateX(100%);
   overflow: hidden;
   transition: transform 0.3s var(--transition);
   & > .sidesheet {
@@ -27,7 +27,7 @@
     flex-direction: column;
     width: clamp(0px, 100%, 21.25rem);
     flex-shrink: 0;
-    border-radius: 0 1rem 1rem 0;
+    border-radius: 1rem 0 0 1rem;
     background: var(--surface-container);
     & > header {
       position: relative;
@@ -62,7 +62,6 @@
       height: 100%;
       padding: 0.75rem 1.5rem 1.5rem 1.5rem;
       overflow-y: auto;
-      gap: 1rem;
       &::-webkit-scrollbar {
         background: none;
         width: 8px;
@@ -71,13 +70,25 @@
         background: var(--surface-container-highest);
         width: 6px;
       }
-      & > p {
-        color: var(--on-surface);
-      }
-      & > .tags {
+    }
+    & > footer {
+      display: flex;
+      padding: 0.75rem 1.5rem 1.5rem 1.5rem;
+      gap: 0.5rem;
+      & > div {
+        width: 100%;
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+        padding: 0.25rem 0.25rem 0.25rem 1rem;
+        align-items: center;
+        background: var(--surface-container-lowest);
+        border-radius: 100rem;
+        & > input {
+          height: fit-content;
+          flex: 1;
+          border: none;
+          background: none;
+          outline: none;
+        }
       }
     }
   }
@@ -93,7 +104,7 @@
     transform: translateY(100%);
     width: 100%;
     top: auto;
-    height: clamp(320px, calc(100% - 1.5rem), 500px);
+    height: clamp(320px, calc(100% - 1.5rem), 700px);
     display: flex;
     align-items: flex-end;
     & > .sidesheet {
@@ -107,31 +118,24 @@
   }
 }
 
-@media screen and (min-width: 720px) {
-  .container {
-    left: 6rem;
-  }
-}
-
 @media screen and (min-width: 900px) {
   .backdrop {
     display: none;
   }
   .container {
-    left: 0;
-    display: flex;
-    justify-content: flex-end;
     width: 0;
     opacity: 1;
     height: 100%;
     position: relative;
+    border-radius: 1rem;
     transition: width 0.3s var(--transition);
+    overflow: visible;
     transform: none;
     & > .sidesheet {
       width: 21.25rem;
     }
   }
   .open {
-    width: 21.25rem;
+    width: clamp(0px, 100%, 21.25rem);
   }
 }

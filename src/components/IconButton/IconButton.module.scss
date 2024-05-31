@@ -156,3 +156,12 @@
     background: var(--state-layer-error-012);
   }
 }
+
+.state_layer_primary {
+  &:hover > div > div {
+    background: var(--state-layer-primary-008);
+  }
+  &:active > div > div {
+    background: var(--state-layer-primary-012);
+  }
+}

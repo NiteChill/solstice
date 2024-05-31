@@ -33,6 +33,15 @@ export default function Article() {
       setLoading,
       appWidth,
       isOpenMenu,
+      tags,
+      isOpenCreateSidesheet,
+      isOpenFilterSidesheet,
+      setIsOpenFilterSidesheet,
+      selectedTags,
+      setSelectedTags,
+      searchQuery,
+      setSearchQuery,
+      setIsOpenCommentsSidesheet,
     ] = useOutletContext(),
     location = useLocation(),
     navigate = useNavigate(),
@@ -85,6 +94,7 @@ export default function Article() {
             setArticle={setArticle}
             noAccountAction={() => setIsOpenSnackbar(true)}
             location={location}
+            setIsOpenCommentsSidesheet={setIsOpenCommentsSidesheet}
           />
         )}
         <EditorContent

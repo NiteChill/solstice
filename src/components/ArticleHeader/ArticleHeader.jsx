@@ -14,6 +14,7 @@ export default function ArticleHeader({
   setArticle,
   noAccountAction,
   location,
+  setIsOpenCommentsSidesheet,
 }) {
   const month = [
       'JAN',
@@ -113,8 +114,7 @@ export default function ArticleHeader({
           />
           <IconButton
             icon='comment'
-            label='10'
-            onClick={() => (id ? '' : noAccountAction())}
+            onClick={() => setIsOpenCommentsSidesheet(true)}
           />
           <IconButton
             icon='share'
