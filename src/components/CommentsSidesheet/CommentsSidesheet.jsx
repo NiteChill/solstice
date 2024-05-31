@@ -3,6 +3,7 @@ import styles from './CommentsSidesheet.module.scss';
 import IconButton from '../IconButton/IconButton';
 import LinearProgressIndicator from '../LinearProgressIndicator/LinearProgressIndicator';
 import axios from 'axios';
+import Comment from '../Comment/Comment';
 
 export default function CommentsSidesheet({
   isOpen,
@@ -16,10 +17,11 @@ export default function CommentsSidesheet({
     [comments, setComments] = useState(null),
     [comment, setComment] = useState(''),
     handleComment = async () => {
-      setLoading(true);
+      setLoadingComment(true);
+      console.log(user?.id, comment, article?._id);
       const response = await axios.post(
         'http://localhost:3000/api/create_comment',
-        { id: user?.id, content: comment, articleId: article?.id },
+        { id: user?.id, content: comment, articleId: article?._id },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -27,10 +29,12 @@ export default function CommentsSidesheet({
           withCredentials: true,
         }
       );
-      if (response.state?.error) setLoading(false);
-      else {
+      if (response.data?.error) setLoading(false);
+      else if (response.data?.comment) {
         setComment('');
-        setLoading(false);
+        setLoadingComment(false);
+        setComments([...comments, response.data?.comment]);
+        console.log(response.data?.comment);
       }
     };
   useEffect(() => {
@@ -39,7 +43,7 @@ export default function CommentsSidesheet({
         setLoading(true);
         const response = await axios.post(
           'http://localhost:3000/api/get_comments',
-          { id: article?.id },
+          { id: article?._id },
           {
             headers: {
               'Content-Type': 'application/json',
@@ -72,7 +76,7 @@ export default function CommentsSidesheet({
           width:
             window.innerWidth < 500
               ? '100%'
-              : window.innerWidth < 900 &&
+              : window.innerWidth < 1000 &&
                 (sidesheetState ? 'clamp(0px, 100%, 21.25rem)' : 0),
         }}
       >
@@ -84,14 +88,16 @@ export default function CommentsSidesheet({
           </header>
           <main>
             {comments &&
-              comments?.map((comment) => <div>{comment.content}</div>)}
+              comments?.map((comment) => (
+                <Comment comment={comment} key={comment?._id} />
+              ))}
           </main>
           {user?.id && (
             <footer>
               <div>
                 <input
                   type='text'
-                  placeholder='Write your thoughts'
+                  placeholder='Share your thoughts'
                   className='body-large'
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
@@ -100,7 +106,9 @@ export default function CommentsSidesheet({
                   icon='send'
                   iconColor='var(--primary)'
                   stateLayer='primary'
-                  onClick={handleComment}
+                  onClick={() => comment?.replace(/\s+/g, '') && handleComment()}
+                  loading={loadingComment}
+                  disabled={!comment?.replace(/\s+/g, '')}
                 />
               </div>
             </footer>

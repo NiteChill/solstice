@@ -29,7 +29,7 @@ export default function FilterSidesheet({
           width:
             window.innerWidth < 500
               ? '100%'
-              : window.innerWidth < 900 &&
+              : window.innerWidth < 1000 &&
                 (sidesheetState ? 'clamp(0px, 100%, 21.25rem)' : 0),
         }}
       >

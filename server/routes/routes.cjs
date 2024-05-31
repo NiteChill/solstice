@@ -26,5 +26,6 @@ router.post('/get_comments', commentRoutes.getComments);
 router.post('/create_comment', commentRoutes.createComment);
 router.post('/delete_comment', commentRoutes.deleteComment);
 router.post('/update_comment', commentRoutes.updateComment);
+router.post('/get_comment_author', commentRoutes.getCommentAuthor);
 
 module.exports = router;

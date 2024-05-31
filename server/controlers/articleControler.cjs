@@ -7,7 +7,7 @@ const createArticle = async (req, res) => {
     const id = new mongoose.Types.ObjectId(),
       response = await articleModel.findOne({ authorId: req.session.user.id });
 
-    article = new articleModel({
+    const article = new articleModel({
       _id: id,
       authorId: req.session.user.id,
       title: req.body.title,

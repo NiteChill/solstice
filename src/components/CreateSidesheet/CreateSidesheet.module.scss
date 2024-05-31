@@ -29,7 +29,7 @@
     flex-shrink: 0;
     border-radius: 1rem 0 0 1rem;
     padding-bottom: 1.5rem;
-    background: var(--surface-container);
+    background: var(--surface-container-low);
     & > header {
       position: relative;
       display: flex;
@@ -44,7 +44,7 @@
         height: 0.75rem;
         background: linear-gradient(
           180deg,
-          var(--surface-container),
+          var(--surface-container-low),
           transparent
         );
         left: 0;
@@ -251,7 +251,7 @@
   }
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1000px) {
   .backdrop {
     display: none;
   }

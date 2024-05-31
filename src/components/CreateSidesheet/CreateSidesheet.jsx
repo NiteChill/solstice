@@ -95,7 +95,7 @@ export default function CreateSidesheet({
           width:
             window.innerWidth < 500
               ? '100%'
-              : window.innerWidth < 900 &&
+              : window.innerWidth < 1000 &&
                 (sidesheetState ? 'clamp(0px, 100%, 21.25rem)' : 0),
         }}
       >
@@ -255,6 +255,8 @@ export default function CreateSidesheet({
                 !content.title?.replace(/\s+/g, '') || !content.thumbnail
               }
               onClick={async () => {
+                if (!content.title?.replace(/\s+/g, '') || !content.thumbnail)
+                  return;
                 if (article._id) {
                   if (article.authorId === user?.id) {
                     const response = handleUpdate();

@@ -41,6 +41,7 @@ export default function Article() {
       setSelectedTags,
       searchQuery,
       setSearchQuery,
+      isOpenCommentsSidesheet,
       setIsOpenCommentsSidesheet,
     ] = useOutletContext(),
     location = useLocation(),
@@ -94,6 +95,7 @@ export default function Article() {
             setArticle={setArticle}
             noAccountAction={() => setIsOpenSnackbar(true)}
             location={location}
+            isOpenCommentsSidesheet={isOpenCommentsSidesheet}
             setIsOpenCommentsSidesheet={setIsOpenCommentsSidesheet}
           />
         )}

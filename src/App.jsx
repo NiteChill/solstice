@@ -77,6 +77,7 @@ export default function App() {
   useEffect(() => {
     setIsOpenCreateSidesheet(false);
     setIsOpenFilterSidesheet(false);
+    setIsOpenCommentsSidesheet(false);
     setSearchQuery('');
     if (location.slice(0, 8) !== '/article') {
       setEdit(false);
@@ -176,6 +177,7 @@ export default function App() {
                 setSelectedTags,
                 searchQuery,
                 setSearchQuery,
+                isOpenCommentsSidesheet,
                 setIsOpenCommentsSidesheet,
               ]}
             />

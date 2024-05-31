@@ -14,6 +14,7 @@ export default function ArticleHeader({
   setArticle,
   noAccountAction,
   location,
+  isOpenCommentsSidesheet,
   setIsOpenCommentsSidesheet,
 }) {
   const month = [
@@ -74,7 +75,7 @@ export default function ArticleHeader({
   if (date) {
     let monthNbr = date.slice(5, 7);
     if (monthNbr.slice(0, 1) === '0') monthNbr = monthNbr.slice(1, 2);
-    dateTxt = ` ${month[monthNbr - 1]} ${date.slice(8, 10)}, ${date.slice(
+    dateTxt = `${month[monthNbr - 1]} ${date.slice(8, 10)}, ${date.slice(
       0,
       4
     )}`;
@@ -112,10 +113,14 @@ export default function ArticleHeader({
             }
             loading={loadingLike}
           />
-          <IconButton
-            icon='comment'
-            onClick={() => setIsOpenCommentsSidesheet(true)}
-          />
+          {!isOpenCommentsSidesheet && (
+            <IconButton
+              icon='comment'
+              onClick={() =>
+                setIsOpenCommentsSidesheet(true)
+              }
+            />
+          )}
           <IconButton
             icon='share'
             onClick={() =>
