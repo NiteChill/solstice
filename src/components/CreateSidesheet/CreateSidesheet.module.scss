@@ -82,74 +82,34 @@
           width: 100%;
           height: 10rem;
           border-radius: 1rem;
-          padding: 1rem;
-          background: var(--primary-container);
+          background: var(--surface-container-lowest);
           transition: background 0.2s var(--transition);
+          border: 1px solid var(--outline-variant);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          outline-offset: -1px;
           & > img {
-            border-radius: 0.5rem;
+            border-radius: inherit;
             width: 100%;
             object-fit: cover;
             height: 100%;
           }
-          &:hover {
-            background: color-mix(
-              in srgb,
-              var(--primary-container) 92%,
-              var(--on-primary-container) 8%
-            );
-          }
-          &:active {
-            background: color-mix(
-              in srgb,
-              var(--primary-container) 88%,
-              var(--on-primary-container) 12%
-            );
-          }
-        }
-        & > .image_selector {
-          display: flex;
-          width: 100%;
-          border-radius: 100rem;
-          background: var(--primary-container);
-          box-shadow: none;
-          transition: background 0.2s var(--transition);
-          & > label {
-            user-select: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.75rem 0;
-            text-wrap: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            outline: none;
-            color: var(--on-primary-container);
-            flex-shrink: 0;
-            border-radius: inherit;
+          & > div {
             width: 100%;
-            & > span {
-              font-size: 1.125rem;
+            height: 100%;
+            border-radius: inherit;
+            & > div {
+              width: 100%;
+              height: 100%;
             }
           }
-          & > input {
-            display: none;
-          }
-          &:hover {
-            background: color-mix(
-              in srgb,
-              var(--primary-container) 92%,
-              var(--on-primary-container) 8%
-            );
-          }
-          &:active {
-            background: color-mix(
-              in srgb,
-              var(--primary-container) 88%,
-              var(--on-primary-container) 12%
-            );
-          }
+          // &:hover {
+          //   border: 1px solid var(--on-surface);
+          // }
+          // &:active {
+          //   outline: 2px solid var(--primary);
+          // }
         }
       }
       & > .settings {

@@ -71,6 +71,15 @@
         background: var(--surface-container-highest);
         width: 6px;
       }
+      & > p {
+        display: flex;
+        flex: 1;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: var(--on-surface-variant);
+      }
     }
     & > footer {
       display: flex;

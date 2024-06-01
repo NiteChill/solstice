@@ -27,6 +27,7 @@ export default function CreateSidesheet({
       privacy: 'public',
       enable_comments: true,
     }),
+    [file, setFile] = useState(''),
     [sortedTags, setSortTags] = useState(tags),
     [isOpenTags, setIsOpenTags] = useState(true),
     [isOpenPrivacy, setIsOpenPrivacy] = useState(true),
@@ -81,6 +82,7 @@ export default function CreateSidesheet({
       privacy: article.privacy ?? 'public',
       enable_comments: article.enable_comments ?? true,
     });
+    setFile('');
   }, [article, isOpen]);
   return (
     <>
@@ -106,35 +108,36 @@ export default function CreateSidesheet({
           </header>
           <main>
             <div className={styles.image_title}>
-              {content?.thumbnail && (
-                <label htmlFor='file' className={styles.thumbnail}>
+              <label htmlFor='file' className={styles.thumbnail}>
+                {content?.thumbnail ? (
                   <img src={content?.thumbnail} alt='thumbnail' />
-                </label>
-              )}
-              <div className={styles.image_selector}>
-                <label htmlFor='file' className='label-large'>
-                  <span className='material-symbols-outlined'>
-                    add_photo_alternate
-                  </span>
-                  {content?.thumbnail ? 'Change thumbnail' : 'Add thumbnail'}
-                </label>
-                <input
-                  id='file'
-                  type='file'
-                  accept='image/*'
-                  onInput={(event) => {
-                    if (!event.target.files[0]) return;
-                    const reader = new FileReader();
-                    reader.addEventListener('load', (e) => {
-                      setContent({
-                        ...content,
-                        thumbnail: e.target.result,
-                      });
+                ) : (
+                  <Button
+                    style='text-primary'
+                    icon='add_photo_alternate'
+                    label='Add thumbnail'
+                  />
+                )}
+              </label>
+              <input
+                hidden
+                id='file'
+                type='file'
+                accept='image/*'
+                value={file}
+                onInput={(event) => {
+                  setFile(event.target.value);
+                  if (!event.target.files[0]) return;
+                  const reader = new FileReader();
+                  reader.addEventListener('load', (e) => {
+                    setContent({
+                      ...content,
+                      thumbnail: e.target.result,
                     });
-                    reader.readAsDataURL(event.target.files[0]);
-                  }}
-                />
-              </div>
+                  });
+                  reader.readAsDataURL(event.target.files[0]);
+                }}
+              />
               <input
                 type='text'
                 placeholder='Title'
@@ -250,6 +253,7 @@ export default function CreateSidesheet({
           </main>
           <footer>
             <Button
+              icon='done'
               label={article ? 'Save' : 'Create'}
               disabled={
                 !content.title?.replace(/\s+/g, '') || !content.thumbnail
@@ -273,11 +277,11 @@ export default function CreateSidesheet({
                 }
               }}
             />
-            <Button
+            {/* <Button
               label='Cancel'
               style='outlined_primary'
               onClick={() => setIsOpen(false)}
-            />
+            /> */}
           </footer>
         </div>
       </div>

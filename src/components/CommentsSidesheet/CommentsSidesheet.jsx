@@ -34,7 +34,6 @@ export default function CommentsSidesheet({
         setComment('');
         setLoadingComment(false);
         setComments([...comments, response.data?.comment]);
-        console.log(response.data?.comment);
       }
     };
   useEffect(() => {
@@ -63,6 +62,8 @@ export default function CommentsSidesheet({
       ? setSidesheetState(true)
       : setTimeout(() => setSidesheetState(false), 300);
   }, [isOpen]);
+
+useEffect(() => setComments(null), [article])
   return (
     <>
       <div
@@ -87,10 +88,12 @@ export default function CommentsSidesheet({
             {loading && <LinearProgressIndicator />}
           </header>
           <main>
-            {comments &&
+            {comments && comments.length ?
               comments?.map((comment) => (
                 <Comment comment={comment} key={comment?._id} />
-              ))}
+              )) : (
+                <p className='body-large'>No comments yet <br /> Be the first one!</p>
+              )}
           </main>
           {user?.id && (
             <footer>
