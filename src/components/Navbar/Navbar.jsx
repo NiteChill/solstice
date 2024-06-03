@@ -203,12 +203,7 @@ export default function Navbar({
             >
               <IconButton icon='more_vert' />
               <div className={styles.menu}>
-                <div
-                  onClick={() => editor.commands.toggleCodeBlock().run()}
-                  className={
-                    editor?.isActive('codeBlock') ? styles.active : undefined
-                  }
-                >
+                <div onClick={() => ''}>
                   <span className='material-symbols-outlined'>person_edit</span>
                   <p className='body-large'>Edit account</p>
                 </div>
