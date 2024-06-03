@@ -99,7 +99,9 @@ export default function ArticleHeader({
               </div>
             )}
           </div>
-          <h3 className='body-large'>{name}</h3>
+          <h3 className='body-large' style={{ color: id === article?.id && 'var(--primary)'}}>
+            {id === article?.id ? name : 'You'}
+          </h3>
         </div>
         <div className={styles.container}>
           <IconButton
@@ -113,12 +115,10 @@ export default function ArticleHeader({
             }
             loading={loadingLike}
           />
-          {!isOpenCommentsSidesheet && (
+          {!isOpenCommentsSidesheet && article?.enable_comments && (
             <IconButton
               icon='comment'
-              onClick={() =>
-                setIsOpenCommentsSidesheet(true)
-              }
+              onClick={() => setIsOpenCommentsSidesheet(true)}
             />
           )}
           <IconButton
