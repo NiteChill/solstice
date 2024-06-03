@@ -3,7 +3,7 @@ import IconButton from '../IconButton/IconButton';
 import styles from './Comment.module.scss';
 import { useEffect, useState } from 'react';
 
-export default function Comment({ comment }) {
+export default function Comment({ comment, userId }) {
   const [author, setAuthor] = useState([]),
     [loading, setLoading] = useState(false),
     month = [
@@ -65,7 +65,9 @@ export default function Comment({ comment }) {
                 <div></div>
               </div>
             ) : (
-              <h2 className='title-medium'>{author?.username}</h2>
+              <h2 className='title-medium' style={{ color: userId === comment?.authorId && 'var(--primary)' }}>
+                {userId === comment?.authorId ? 'You' : author?.username}
+              </h2>
             )}
             <p className='body-medium'>{dateTxt}</p>
           </div>

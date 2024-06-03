@@ -64,7 +64,6 @@ export default function Article() {
       else if (response.data?.article) {
         setArticle(response.data.article);
         setLoading(false);
-        console.log(response.data?.article);
       }
     })();
   }, []);

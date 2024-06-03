@@ -18,7 +18,6 @@ export default function CommentsSidesheet({
     [comment, setComment] = useState(''),
     handleComment = async () => {
       setLoadingComment(true);
-      console.log(user?.id, comment, article?._id);
       const response = await axios.post(
         'http://localhost:3000/api/create_comment',
         { id: user?.id, content: comment, articleId: article?._id },
@@ -90,7 +89,7 @@ useEffect(() => setComments(null), [article])
           <main>
             {comments && comments.length ?
               comments?.map((comment) => (
-                <Comment comment={comment} key={comment?._id} />
+                <Comment comment={comment} key={comment?._id} userId={user?.id} />
               )) : (
                 <p className='body-large'>No comments yet <br /> Be the first one!</p>
               )}

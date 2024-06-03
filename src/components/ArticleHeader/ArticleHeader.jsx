@@ -99,8 +99,8 @@ export default function ArticleHeader({
               </div>
             )}
           </div>
-          <h3 className='body-large' style={{ color: id === article?.id && 'var(--primary)'}}>
-            {id === article?.id ? name : 'You'}
+          <h3 className='body-large' style={{ color: id === article?.authorId && 'var(--primary)'}}>
+            {id === article?.authorId ? 'You' : name}
           </h3>
         </div>
         <div className={styles.container}>

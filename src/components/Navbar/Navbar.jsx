@@ -188,6 +188,37 @@ export default function Navbar({
                 <Button label='Log in' onClick={() => navigate('/login')} />
               </div>
             )}
+          {location === '/account' && (
+            <div
+              className={styles.dropdown}
+              onClick={(e) => {
+                if (e.currentTarget === document.activeElement)
+                  e.currentTarget.removeAttribute('tabindex');
+                else {
+                  e.currentTarget.setAttribute('tabindex', -1);
+                  e.currentTarget.focus();
+                }
+              }}
+              onBlur={(e) => e.currentTarget.removeAttribute('tabindex')}
+            >
+              <IconButton icon='more_vert' />
+              <div className={styles.menu}>
+                <div
+                  onClick={() => editor.commands.toggleCodeBlock().run()}
+                  className={
+                    editor?.isActive('codeBlock') ? styles.active : undefined
+                  }
+                >
+                  <span className='material-symbols-outlined'>person_edit</span>
+                  <p className='body-large'>Edit account</p>
+                </div>
+                <div onClick={() => ''}>
+                  <span className='material-symbols-outlined'>logout</span>
+                  <p className='body-large'>Sign out</p>
+                </div>
+              </div>
+            </div>
+          )}
           {location === '/search' && (
             <>
               <input
