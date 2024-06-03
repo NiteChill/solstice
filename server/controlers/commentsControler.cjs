@@ -40,7 +40,7 @@ const createComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
   try {
-    commentModel.findByIdAndDelete(req.body.id);
+    await commentModel.deleteOne({_id: req.body?.id});
     res.send({
       state: 'ok',
     });
@@ -51,7 +51,7 @@ const deleteComment = async (req, res) => {
 
 const updateComment = async (req, res) => {
   try {
-    commentModel.findByIdAndUpdate(req.body.id, {
+    await commentModel.findByIdAndUpdate(req.body.id, {
       content: req.body.content,
     });
     res.send({

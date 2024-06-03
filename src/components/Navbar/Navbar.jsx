@@ -16,6 +16,7 @@ export default function Navbar({
   editor,
   article,
   user,
+  setUser,
   setIsOpenLink,
   setIsOpenImage,
   loading,
@@ -46,6 +47,20 @@ export default function Navbar({
         if (response.data.state === 'ok') {
           setLoading(false);
         } else return; // setLoading(false);
+      }
+    },
+    handleSignOut = async () => {
+      const response = await axios.get('http://localhost:3000/api/sign_out', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+      if (response.data?.error) {
+        console.log(response.error);
+      } else {
+        navigate('/');
+        setUser(null);
       }
     };
   return (
@@ -207,7 +222,7 @@ export default function Navbar({
                   <span className='material-symbols-outlined'>person_edit</span>
                   <p className='body-large'>Edit account</p>
                 </div>
-                <div onClick={() => ''}>
+                <div onClick={handleSignOut}>
                   <span className='material-symbols-outlined'>logout</span>
                   <p className='body-large'>Sign out</p>
                 </div>

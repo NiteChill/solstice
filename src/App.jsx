@@ -139,6 +139,7 @@ export default function App() {
               editor={editor}
               article={article}
               user={user}
+              setUser={setUser}
               setIsOpenLink={setIsOpenLink}
               setIsOpenImage={setIsOpenImage}
               loading={loading}

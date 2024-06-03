@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './CommentsSidesheet.module.scss';
 import IconButton from '../IconButton/IconButton';
 import LinearProgressIndicator from '../LinearProgressIndicator/LinearProgressIndicator';
@@ -12,10 +12,12 @@ export default function CommentsSidesheet({
   article,
 }) {
   const [sidesheetState, setSidesheetState] = useState(false),
+    [editComment, setEditComment] = useState(false),
     [loading, setLoading] = useState(false),
     [loadingComment, setLoadingComment] = useState(false),
     [comments, setComments] = useState(null),
     [comment, setComment] = useState(''),
+    commentInputRef = useRef(null),
     handleComment = async () => {
       setLoadingComment(true);
       const response = await axios.post(
@@ -28,15 +30,41 @@ export default function CommentsSidesheet({
           withCredentials: true,
         }
       );
-      if (response.data?.error) setLoading(false);
+      if (response.data?.error) setLoadingComment(false);
       else if (response.data?.comment) {
         setComment('');
         setLoadingComment(false);
         setComments([...comments, response.data?.comment]);
       }
+    },
+    handleEdit = async () => {
+      if (editComment?.authorId !== user?.id) return;
+      setLoadingComment(true);
+      const response = await axios.post(
+        'http://localhost:3000/api/update_comment',
+        { id: editComment?._id, content: comment },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(response);
+      if (response.data?.error) setLoadingComment(false);
+      else {
+        setComment('');
+        setLoadingComment(false);
+        setComments([...comments.filter((el) => el._id !== editComment?._id), {
+          ...editComment,
+          content: comment,
+        }]);
+        setEditComment(false);
+      }
     };
   useEffect(() => {
-    comments === null && isOpen &&
+    comments === null &&
+      isOpen &&
       (async function getComments() {
         setLoading(true);
         const response = await axios.post(
@@ -55,6 +83,7 @@ export default function CommentsSidesheet({
           setLoading(false);
         }
       })();
+    setEditComment(false);
   }, [isOpen, article]);
   useEffect(() => {
     isOpen
@@ -62,7 +91,12 @@ export default function CommentsSidesheet({
       : setTimeout(() => setSidesheetState(false), 300);
   }, [isOpen]);
 
-useEffect(() => setComments(null), [article])
+  useEffect(() => setComments(null), [article]);
+
+  useEffect(() => {
+    setComment(editComment ? editComment?.content : '');
+    editComment && isOpen && commentInputRef.current.focus();
+  }, [editComment]);
   return (
     <>
       <div
@@ -87,31 +121,55 @@ useEffect(() => setComments(null), [article])
             {loading && <LinearProgressIndicator />}
           </header>
           <main>
-            {comments && comments.length ?
+            {comments && comments.length ? (
               comments?.map((comment) => (
-                <Comment comment={comment} key={comment?._id} userId={user?.id} />
-              )) : (
-                <p className='body-large'>No comments yet <br /> Be the first one!</p>
-              )}
+                <Comment
+                  key={comment?._id}
+                  comment={comment}
+                  userId={user?.id}
+                  comments={comments}
+                  setComments={setComments}
+                  edit={editComment}
+                  setEdit={setEditComment}
+                />
+              ))
+            ) : (
+              <p className='body-large'>
+                No comments yet <br /> Be the first one!
+              </p>
+            )}
           </main>
           {user?.id && (
             <footer>
               <div>
                 <input
+                  ref={commentInputRef}
                   type='text'
                   placeholder='Share your thoughts'
                   className='body-large'
                   value={comment}
-                  onChange={(e) => setComment(e.target.value)}
+                  onInput={(e) => setComment(e.target.value)}
                 />
-                <IconButton
-                  icon='send'
-                  iconColor='var(--primary)'
-                  stateLayer='primary'
-                  onClick={() => comment?.replace(/\s+/g, '') && handleComment()}
-                  loading={loadingComment}
-                  disabled={!comment?.replace(/\s+/g, '')}
-                />
+                {editComment ? (
+                  <IconButton
+                    icon='done'
+                    iconColor='var(--primary)'
+                    stateLayer='primary'
+                    onClick={handleEdit}
+                    loading={loadingComment}
+                  />
+                ) : (
+                  <IconButton
+                    icon='send'
+                    iconColor='var(--primary)'
+                    stateLayer='primary'
+                    onClick={() =>
+                      comment?.replace(/\s+/g, '') && handleComment()
+                    }
+                    loading={loadingComment}
+                    disabled={!comment?.replace(/\s+/g, '')}
+                  />
+                )}
               </div>
             </footer>
           )}

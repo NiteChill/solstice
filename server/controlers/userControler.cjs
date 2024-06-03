@@ -132,10 +132,20 @@ const updateProfilePicture = async (req, res) => {
   }
 }
 
+const signOut = async (req, res) => {
+  try {
+    req.session.destroy();
+    res.send({ status: 'ok' });
+  } catch (error) {
+    res.send({ error: error });
+  }
+}
+
 module.exports = {
   getUser,
   loginUser,
   signUp,
   getUsernameById,
-  updateProfilePicture
+  updateProfilePicture,
+  signOut
 };
