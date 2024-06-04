@@ -4,6 +4,7 @@ import IconButton from '../IconButton/IconButton';
 import LinearProgressIndicator from '../LinearProgressIndicator/LinearProgressIndicator';
 import axios from 'axios';
 import Comment from '../Comment/Comment';
+import DeleteModal from '../DeleteModale/DeleteModal';
 
 export default function CommentsSidesheet({
   isOpen,
@@ -17,7 +18,31 @@ export default function CommentsSidesheet({
     [loadingComment, setLoadingComment] = useState(false),
     [comments, setComments] = useState(null),
     [comment, setComment] = useState(''),
+    [isOpenDelete, setIsOpenDelete] = useState(false),
+    [toDeleteComment, setToDeleteComment] = useState(null),
     commentInputRef = useRef(null),
+    handleDelete = async () => {
+      if (toDeleteComment?.authorId !== user?.id) return;
+      const response = await axios.post(
+        'http://localhost:3000/api/delete_comment',
+        { id: toDeleteComment?._id },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.data?.error) {
+        console.log(response.data.error);
+        setToDeleteComment(null);
+        setIsOpenDelete(false);
+      } else {
+        setComments(comments?.filter((el) => el?._id !== toDeleteComment?._id));
+        setToDeleteComment(null);
+        setIsOpenDelete(false);
+      }
+    },
     handleComment = async () => {
       setLoadingComment(true);
       const response = await axios.post(
@@ -131,6 +156,8 @@ export default function CommentsSidesheet({
                   setComments={setComments}
                   edit={editComment}
                   setEdit={setEditComment}
+                  setIsOpenDelete={setIsOpenDelete}
+                  setToDeleteComment={setToDeleteComment}
                 />
               ))
             ) : (
@@ -175,6 +202,11 @@ export default function CommentsSidesheet({
           )}
         </div>
       </div>
+      <DeleteModal
+        isOpen={isOpenDelete}
+        setIsOpen={setIsOpenDelete}
+        onSubmit={handleDelete}
+      />
     </>
   );
 }

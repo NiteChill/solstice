@@ -11,6 +11,8 @@ export default function Comment({
   setComments,
   edit,
   setEdit,
+  setIsOpenDelete,
+  setToDeleteComment,
 }) {
   const [author, setAuthor] = useState([]),
     [loading, setLoading] = useState(false),
@@ -27,25 +29,25 @@ export default function Comment({
       'OCT',
       'NOV',
       'DEC',
-    ],
-    handleDelete = async () => {
-      if (comment?.authorId !== userId) return;
-      const response = await axios.post(
-        'http://localhost:3000/api/delete_comment',
-        { id: comment?._id },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        }
-      );
-      if (response.data?.error) {
-        console.log(response.data.error);
-      } else {
-        setComments(comments?.filter((el) => el?._id !== comment?._id));
-      }
-    };
+    ];
+    // handleDelete = async () => {
+    //   if (comment?.authorId !== userId) return;
+    //   const response = await axios.post(
+    //     'http://localhost:3000/api/delete_comment',
+    //     { id: comment?._id },
+    //     {
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       withCredentials: true,
+    //     }
+    //   );
+    //   if (response.data?.error) {
+    //     console.log(response.data.error);
+    //   } else {
+    //     setComments(comments?.filter((el) => el?._id !== comment?._id));
+    //   }
+    // };
   useEffect(() => {
     (async function getCommentAuthor() {
       setLoading(true);
@@ -130,7 +132,13 @@ export default function Comment({
                   <span className='material-symbols-outlined'>edit</span>
                   <p className='body-large'>Edit</p>
                 </div>
-                <div onClick={handleDelete}>
+                <div
+                // onClick={handleDelete}
+                onClick={() => {
+                  setToDeleteComment(comment);
+                  setIsOpenDelete('comment')
+                }}
+                >
                   <span className='material-symbols-outlined'>delete</span>
                   <p className='body-large'>Delete</p>
                 </div>

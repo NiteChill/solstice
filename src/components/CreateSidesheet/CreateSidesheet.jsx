@@ -245,7 +245,7 @@ export default function CreateSidesheet({
                     style='text-error'
                     icon='delete'
                     label='Delete article'
-                    onClick={() => setIsOpenDelete(true)}
+                    onClick={() => setIsOpenDelete('article')}
                   />
                 </div>
               )}

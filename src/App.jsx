@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './default.scss';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import axios from 'axios';
 import LoadingElement from './components/LoadingElement/LoadingElement';
@@ -29,6 +29,7 @@ export default function App() {
     [error, setError] = useState(null),
     [selectedTags, setSelectedTags] = useState([]),
     [searchQuery, setSearchQuery] = useState(''),
+    navigate = useNavigate(),
     tags = [
       { icon: 'newspaper', label: 'News' },
       { icon: 'sports_baseball', label: 'Sports' },
@@ -50,7 +51,32 @@ export default function App() {
       { icon: 'people', label: 'Relationships' },
       { icon: 'child_care', label: 'Parenting' },
       { icon: 'local_taxi', label: 'Cars' },
-    ];
+    ],
+    handleDelete = () => {
+      setLoading(true);
+      setIsOpenDelete(false);
+      setIsOpenCreateSidesheet(false);
+      if (article.authorId !== user.id) {
+        setLoading(false);
+        console.log('hihi');
+        return;
+      }
+      (async () => {
+        const response = await axios.post(
+          'http://localhost:3000/api/delete_article',
+          { id: article._id },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        if (response.error) return;
+        setLoading(false);
+        navigate('/');
+      })();
+    };
 
   useEffect(() => {
     window.addEventListener('resize', () => {
@@ -210,10 +236,7 @@ export default function App() {
           <DeleteModal
             isOpen={isOpenDelete}
             setIsOpen={setIsOpenDelete}
-            article={article}
-            setLoading={setLoading}
-            setIsOpenCreateSidesheet={setIsOpenCreateSidesheet}
-            user={user}
+            onSubmit={handleDelete}
           />
         </>
       )}
