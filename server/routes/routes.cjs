@@ -10,6 +10,7 @@ router.post('/sign_up', userRoutes.signUp);
 router.post('/get_username_by_id', userRoutes.getUsernameById);
 router.post('/update_profile_picture', userRoutes.updateProfilePicture);
 router.get('/sign_out', userRoutes.signOut);
+router.post('/get_account', userRoutes.getAccount);
 
 router.post('/create_article', articleRoutes.createArticle);
 router.post('/get_single_article', articleRoutes.getSingleArticle);

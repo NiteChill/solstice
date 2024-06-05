@@ -97,6 +97,7 @@ export default function Article() {
             location={location}
             isOpenCommentsSidesheet={isOpenCommentsSidesheet}
             setIsOpenCommentsSidesheet={setIsOpenCommentsSidesheet}
+            navigate={navigate}
           />
         )}
         <EditorContent

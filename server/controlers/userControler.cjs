@@ -108,8 +108,7 @@ const signUp = async (req, res) => {
 };
 
 const getUsernameById = async (req, res) => {
-  if (req.session.user?.id === req.body.id)
-    res.send({ self: true });
+  if (req.session.user?.id === req.body.id) res.send({ self: true });
   else {
     try {
       const response = await userModel.findById(req.body.id);
@@ -130,7 +129,7 @@ const updateProfilePicture = async (req, res) => {
   } catch (error) {
     res.send({ error: error });
   }
-}
+};
 
 const signOut = async (req, res) => {
   try {
@@ -139,7 +138,16 @@ const signOut = async (req, res) => {
   } catch (error) {
     res.send({ error: error });
   }
-}
+};
+
+const getAccount = async (req, res) => {
+  try {
+    const response = await userModel.findById(req.body.id);
+    res.send({ user: response });
+  } catch (error) {
+    res.send({ error: error });
+  }
+};
 
 module.exports = {
   getUser,
@@ -147,5 +155,6 @@ module.exports = {
   signUp,
   getUsernameById,
   updateProfilePicture,
-  signOut
+  signOut,
+  getAccount,
 };

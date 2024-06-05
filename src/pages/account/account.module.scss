@@ -30,12 +30,12 @@
       width: fit-content;
       & > img,
       & > .profile_picture {
+        object-fit: cover;
         position: relative;
         display: flex;
         justify-content: center;
         width: 7.5rem;
         height: 7.5rem;
-        cursor: pointer;
         background: var(--primary-container);
         mask: url(../../assets/img/shape.svg);
         -webkit-mask: url(../../assets/img/shape.svg);
@@ -72,6 +72,27 @@
       }
       & > p {
         color: var(--on-surface-variant);
+      }
+      & > div {
+        width: 8rem;
+        height: 1.5rem;
+        border-radius: 0.25rem;
+        overflow: hidden;
+        & > div {
+          animation: loading 1s linear infinite;
+          width: 200%;
+          height: inherit;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            color-mix(in srgb, var(--primary) 12%, transparent),
+            transparent
+          );
+        }
+      }
+      & > div:first-child {
+        height: 2.25rem;
+        width: 12rem;
       }
     }
     & > nav {
@@ -152,13 +173,22 @@
   }
 }
 
+@keyframes loading {
+  0% {
+    margin-left: -200%;
+  }
+  100% {
+    margin-left: 200%;
+  }
+}
+
 @media screen and (min-width: 650px) {
   .articles {
     grid-template-columns: repeat(2, calc(50% - 0.5rem)) !important;
   }
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1000px) {
   .open {
     grid-template-columns: repeat(1, 100%) !important;
   }

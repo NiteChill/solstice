@@ -2,7 +2,7 @@ import axios from 'axios';
 import IconButton from '../IconButton/IconButton';
 import styles from './Comment.module.scss';
 import { useEffect, useState } from 'react';
-import Button from '../Button/Button';
+import { useNavigate } from 'react-router-dom';
 
 export default function Comment({
   comment,
@@ -16,6 +16,7 @@ export default function Comment({
 }) {
   const [author, setAuthor] = useState([]),
     [loading, setLoading] = useState(false),
+    navigate = useNavigate(),
     month = [
       'JAN',
       'FEB',
@@ -30,24 +31,24 @@ export default function Comment({
       'NOV',
       'DEC',
     ];
-    // handleDelete = async () => {
-    //   if (comment?.authorId !== userId) return;
-    //   const response = await axios.post(
-    //     'http://localhost:3000/api/delete_comment',
-    //     { id: comment?._id },
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       withCredentials: true,
-    //     }
-    //   );
-    //   if (response.data?.error) {
-    //     console.log(response.data.error);
-    //   } else {
-    //     setComments(comments?.filter((el) => el?._id !== comment?._id));
-    //   }
-    // };
+  // handleDelete = async () => {
+  //   if (comment?.authorId !== userId) return;
+  //   const response = await axios.post(
+  //     'http://localhost:3000/api/delete_comment',
+  //     { id: comment?._id },
+  //     {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       withCredentials: true,
+  //     }
+  //   );
+  //   if (response.data?.error) {
+  //     console.log(response.data.error);
+  //   } else {
+  //     setComments(comments?.filter((el) => el?._id !== comment?._id));
+  //   }
+  // };
   useEffect(() => {
     (async function getCommentAuthor() {
       setLoading(true);
@@ -83,7 +84,7 @@ export default function Comment({
       }`}
     >
       <div>
-        <div>
+        <div onClick={() => navigate(`/account/${comment?.authorId}`)}>
           {author?.profile_picture ? (
             <img src={author?.profile_picture} alt='avatar' />
           ) : (
@@ -111,9 +112,9 @@ export default function Comment({
         </div>
         {userId === comment?.authorId &&
           (comment === edit ? (
-          <IconButton icon='edit_off' onClick={() => setEdit(false)} />
-          // <Button icon='close' label='Discard' onClick={() => setEdit(false)} />
+            <IconButton icon='edit_off' onClick={() => setEdit(false)} />
           ) : (
+            // <Button icon='close' label='Discard' onClick={() => setEdit(false)} />
             <div
               className={styles.dropdown}
               onClick={(e) => {
@@ -133,11 +134,11 @@ export default function Comment({
                   <p className='body-large'>Edit</p>
                 </div>
                 <div
-                // onClick={handleDelete}
-                onClick={() => {
-                  setToDeleteComment(comment);
-                  setIsOpenDelete('comment')
-                }}
+                  // onClick={handleDelete}
+                  onClick={() => {
+                    setToDeleteComment(comment);
+                    setIsOpenDelete('comment');
+                  }}
                 >
                   <span className='material-symbols-outlined'>delete</span>
                   <p className='body-large'>Delete</p>

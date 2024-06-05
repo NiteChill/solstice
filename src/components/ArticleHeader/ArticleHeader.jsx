@@ -16,6 +16,7 @@ export default function ArticleHeader({
   location,
   isOpenCommentsSidesheet,
   setIsOpenCommentsSidesheet,
+  navigate,
 }) {
   const month = [
       'JAN',
@@ -89,7 +90,7 @@ export default function ArticleHeader({
       </h1>
       <p className='body-large'>{dateTxt}</p>
       <footer>
-        <div className={styles.user}>
+        <div className={styles.user} onClick={() => navigate(`/account/${article?.authorId}`)}>
           <div className={styles.profile_picture}>
             {avatar ? (
               <img src={avatar} alt='Profile' />
@@ -99,7 +100,10 @@ export default function ArticleHeader({
               </div>
             )}
           </div>
-          <h3 className='body-large' style={{ color: id === article?.authorId && 'var(--primary)'}}>
+          <h3
+            className='body-large'
+            style={{ color: id === article?.authorId && 'var(--primary)' }}
+          >
             {id === article?.authorId ? 'You' : name}
           </h3>
         </div>

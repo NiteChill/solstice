@@ -1,7 +1,7 @@
 import IconButton from '../IconButton/IconButton';
 import styles from './Navbar.module.scss';
 import Button from '../Button/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Toolbar from '../Toolbar/Toolbar';
 import LinearProgressIndicator from '../LinearProgressIndicator/LinearProgressIndicator';
@@ -30,6 +30,7 @@ export default function Navbar({
   setSearchQuery,
 }) {
   const navigate = useNavigate(),
+    { link } = useParams(),
     handleSubmit = async () => {
       setEdit(false);
       setLoading(true);
@@ -203,7 +204,7 @@ export default function Navbar({
                 <Button label='Log in' onClick={() => navigate('/login')} />
               </div>
             )}
-          {location === '/account' && (
+          {location.slice(0, 8) === '/account' && link === user?.id && (
             <div
               className={styles.dropdown}
               onClick={(e) => {
