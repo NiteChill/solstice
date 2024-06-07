@@ -111,13 +111,19 @@ export default function Account() {
         }
       })();
     }
-  }, []);
+  }, [user]);
   return (
     <div className={styles.account}>
       <main>
-        <label htmlFor='profile_picture' style={{ cursor: link === user?.id && 'pointer'}}>
-          {!account?.profile_picture ? (
-            <img src={account?.profile_picture} alt='profile_picture ' />
+        <label
+          htmlFor='profile_picture'
+          style={{ cursor: link === user?.id && 'pointer' }}
+        >
+          {account?.profile_picture ? (
+            <img
+              src={account?.profile_picture}
+              alt='profile_picture '
+            />
           ) : (
             <div className={styles.profile_picture}>
               <span className='material-symbols-outlined'>person</span>
@@ -180,10 +186,16 @@ export default function Account() {
         >
           {page === 'articles'
             ? myArticles.map((article) => (
-                <ArticlePreview key={article.title} article={article} />
+                <ArticlePreview
+                  key={article.title}
+                  article={article}
+                />
               ))
             : likedArticles?.map((article) => (
-                <ArticlePreview key={article.title} article={article} />
+                <ArticlePreview
+                  key={article.title}
+                  article={article}
+                />
               ))}
         </div>
       </main>

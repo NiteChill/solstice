@@ -9,6 +9,7 @@ router.post('/login', userRoutes.loginUser);
 router.post('/sign_up', userRoutes.signUp);
 router.post('/get_username_by_id', userRoutes.getUsernameById);
 router.post('/update_profile_picture', userRoutes.updateProfilePicture);
+router.post('/update_account_data', userRoutes.updateAccountData);
 router.get('/sign_out', userRoutes.signOut);
 router.post('/get_account', userRoutes.getAccount);
 

@@ -243,6 +243,16 @@ export default function App() {
             isOpen={isOpenAccountEdit}
             setIsOpen={setIsOpenAccountEdit}
             setIsOpenDelete={setIsOpenDelete}
+            user={user}
+            setUser={setUser}
+            setLoading={setLoading}
+          />
+          <NavigationMenu
+            location={location}
+            theme={theme}
+            setTheme={setTheme}
+            isOpen={isOpenMenu}
+            user={user}
           />
           <DeleteModal
             isOpen={isOpenDelete}

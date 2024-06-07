@@ -131,6 +131,27 @@ const updateProfilePicture = async (req, res) => {
   }
 };
 
+const updateAccountData = async (req, res) => {
+  if (req.body?.id === req.session?.user?.id) {
+    try {
+      const response = await userModel.findByIdAndUpdate(req.body.id, {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        username: req.body.username,
+        age: req.body.age,
+      });
+      if (response) {
+        res.json({ state: 'ok' });
+        req.session.user = req.body;
+        console.log('account');
+        console.log(req.session.user);
+      } else res.json({ state: 'failed' });
+    } catch (error) {
+      res.json({ state: 'failed' });
+    }
+  } else res.json({ state: 'failed' });
+};
+
 const signOut = async (req, res) => {
   try {
     req.session.destroy();
@@ -155,6 +176,7 @@ module.exports = {
   signUp,
   getUsernameById,
   updateProfilePicture,
+  updateAccountData,
   signOut,
   getAccount,
 };

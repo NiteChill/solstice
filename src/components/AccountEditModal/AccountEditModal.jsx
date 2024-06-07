@@ -5,9 +5,55 @@ import axios from 'axios';
 import IconButton from '../IconButton/IconButton';
 import defaultAvatar from '../../assets/img/default_avatar.png';
 
-export default function AccountEditModal({ isOpen, setIsOpen, onSubmit, setIsOpenDelete }) {
-  const [modaleState, setModaleState] = useState(false);
+export default function AccountEditModal({
+  isOpen,
+  setIsOpen,
+  setIsOpenDelete,
+  user,
+  setUser,
+  setLoading,
+}) {
+  const [modaleState, setModaleState] = useState(false),
+    [editedUser, setEditUser] = useState({
+      first_name: '',
+      last_name: '',
+      username: '',
+      age: '',
+    }),
+    handleSave = async () => {
+      if (
+        !editedUser.first_name ||
+        !editedUser.last_name ||
+        !editedUser.username
+      )
+        return;
+      setLoading(true);
+      setIsOpen(false);
+      (async () => {
+        const response = await axios.post(
+          'http://localhost:3000/api/update_account_data',
+          { ...editedUser },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        if (response?.error) return console.log(response.error);
+        if (response?.state === 'failed') return setLoading(false);
+        setLoading(false);
+        console.log(editedUser);
+        setUser({ ...editedUser });
+        setIsOpen(false);
+      })();
+    },
+    inputControler = (e) => {
+      setEditUser({ ...editedUser, [e.target.name]: e.target.value });
+    };
+  useEffect(() => console.log(editedUser), [editedUser]);
   useEffect(() => {
+    setEditUser(user);
     isOpen
       ? setModaleState(true)
       : setTimeout(() => setModaleState(false), 300);
@@ -20,16 +66,34 @@ export default function AccountEditModal({ isOpen, setIsOpen, onSubmit, setIsOpe
         width: modaleState ? '100vw' : '0',
       }}
     >
-      <div className={styles.backdrop} onClick={() => setIsOpen(false)}></div>
+      <div
+        className={styles.backdrop}
+        onClick={() => setIsOpen(false)}
+      ></div>
       <div className={styles.container}>
         <nav>
-          <IconButton icon='close' onClick={() => setIsOpen(false)} />
+          <IconButton
+            icon='close'
+            onClick={() => setIsOpen(false)}
+          />
           <h1 className='title-large'>Edit account</h1>
-          <Button style='text' label='Save' />
+          <Button
+            style='text'
+            label='Save'
+            onClick={handleSave}
+            disabled={
+              !editedUser?.first_name ||
+              !editedUser?.last_name ||
+              !editedUser?.username
+            }
+          />
         </nav>
         <main>
           <header>
-            <img src={defaultAvatar} alt='profile_picture' />
+            <img
+              src={defaultAvatar}
+              alt='profile_picture'
+            />
           </header>
           <section>
             <span className='material-symbols-outlined'>person</span>
@@ -38,23 +102,39 @@ export default function AccountEditModal({ isOpen, setIsOpen, onSubmit, setIsOpe
                 type='text'
                 className='body-large'
                 placeholder='First name'
+                name='first_name'
+                value={editedUser?.first_name}
+                onInput={inputControler}
               />
               <input
                 type='text'
                 className='body-large'
                 placeholder='Last name'
+                name='last_name'
+                value={editedUser?.last_name}
+                onInput={inputControler}
               />
               <input
                 type='text'
                 className='body-large'
                 placeholder='Username'
+                name='username'
+                value={editedUser?.username}
+                onInput={inputControler}
               />
             </div>
           </section>
           <section>
             <span className='material-symbols-outlined'>cake</span>
             <div>
-              <input type='number' className='body-large' placeholder='Age' />
+              <input
+                type='number'
+                className='body-large'
+                placeholder='Age'
+                name='age'
+                value={editedUser?.age}
+                onInput={inputControler}
+              />
             </div>
           </section>
           <Button
