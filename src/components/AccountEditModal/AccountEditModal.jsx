@@ -64,7 +64,7 @@ export default function AccountEditModal({
     <div
       className={`${styles.modal} ${isOpen ? styles.is_open : undefined}`}
       style={{
-        height: modaleState ? '100dvh' : '0',
+        height: modaleState || appWidth < 500 ? '100dvh' : '0',
         width: modaleState ? '100vw' : '0',
       }}
     >
