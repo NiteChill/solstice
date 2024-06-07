@@ -34,20 +34,22 @@
         position: relative;
         display: flex;
         justify-content: center;
-        width: 7.5rem;
-        height: 7.5rem;
+        width: 9rem;
+        height: 9rem;
         background: var(--primary-container);
         mask: url(../../assets/img/shape.svg);
         -webkit-mask: url(../../assets/img/shape.svg);
         mask-image: url(../../assets/img/shape.svg);
         -webkit-mask-image: url(../../assets/img/shape.svg);
+        mask-size: 9rem;
+        -webkit-mask-size: 9rem;
         overflow: hidden;
         right: 0;
         bottom: 0;
         & > span {
           font-variation-settings: 'FILL' 1;
           color: var(--secondary);
-          font-size: 10rem;
+          font-size: 12rem;
         }
       }
       & > input {

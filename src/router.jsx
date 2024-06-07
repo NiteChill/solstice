@@ -4,7 +4,6 @@ import Account from './pages/account/account';
 import Article from './pages/article/article';
 import Explore from './pages/explore/explore';
 import Login from './pages/login/Login';
-import MyArticles from './pages/my_articles/MyArticles';
 import Search from './pages/search/search';
 import SignUp from './pages/sign_up/SignUp';
 import ErrorElement from './components/ErrorElement/ErrorElement';

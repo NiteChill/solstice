@@ -11,6 +11,7 @@ import ErrorElement from './components/ErrorElement/ErrorElement';
 import FilterSidesheet from './components/FilterSidesheet/FilterSidesheet';
 import DeleteModal from './components/DeleteModale/DeleteModal';
 import CommentsSidesheet from './components/CommentsSidesheet/CommentsSidesheet';
+import AccountEditModal from './components/AccountEditModal/AccountEditModal';
 
 export default function App() {
   const [theme, setTheme] = useState('light'),
@@ -21,6 +22,7 @@ export default function App() {
     [isOpenLink, setIsOpenLink] = useState(false),
     [isOpenImage, setIsOpenImage] = useState(false),
     [isOpenDelete, setIsOpenDelete] = useState(false),
+    [isOpenAccountEdit, setIsOpenAccountEdit] = useState(false),
     [loading, setLoading] = useState(false),
     [isOpenCreateSidesheet, setIsOpenCreateSidesheet] = useState(false),
     [isOpenMenu, setIsOpenMenu] = useState(true),
@@ -56,26 +58,29 @@ export default function App() {
       setLoading(true);
       setIsOpenDelete(false);
       setIsOpenCreateSidesheet(false);
-      if (article.authorId !== user.id) {
-        setLoading(false);
-        console.log('hihi');
-        return;
+      setIsOpenAccountEdit(false);
+      if (isOpenDelete === 'article') {
+        if (article.authorId !== user.id) {
+          setLoading(false);
+          console.log('hihi');
+          return;
+        }
+        (async () => {
+          const response = await axios.post(
+            'http://localhost:3000/api/delete_article',
+            { id: article._id },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              withCredentials: true,
+            }
+          );
+          if (response.error) return;
+          setLoading(false);
+          navigate('/');
+        })();
       }
-      (async () => {
-        const response = await axios.post(
-          'http://localhost:3000/api/delete_article',
-          { id: article._id },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-          }
-        );
-        if (response.error) return;
-        setLoading(false);
-        navigate('/');
-      })();
     };
 
   useEffect(() => {
@@ -177,6 +182,7 @@ export default function App() {
               setTheme={setTheme}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
+              setIsOpenAccountEdit={setIsOpenAccountEdit}
             />
 
             <Outlet
@@ -232,6 +238,11 @@ export default function App() {
             setIsOpen={setIsOpenCommentsSidesheet}
             user={user}
             article={article}
+          />
+          <AccountEditModal
+            isOpen={isOpenAccountEdit}
+            setIsOpen={setIsOpenAccountEdit}
+            setIsOpenDelete={setIsOpenDelete}
           />
           <DeleteModal
             isOpen={isOpenDelete}

@@ -31,24 +31,6 @@ export default function Comment({
       'NOV',
       'DEC',
     ];
-  // handleDelete = async () => {
-  //   if (comment?.authorId !== userId) return;
-  //   const response = await axios.post(
-  //     'http://localhost:3000/api/delete_comment',
-  //     { id: comment?._id },
-  //     {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       withCredentials: true,
-  //     }
-  //   );
-  //   if (response.data?.error) {
-  //     console.log(response.data.error);
-  //   } else {
-  //     setComments(comments?.filter((el) => el?._id !== comment?._id));
-  //   }
-  // };
   useEffect(() => {
     (async function getCommentAuthor() {
       setLoading(true);

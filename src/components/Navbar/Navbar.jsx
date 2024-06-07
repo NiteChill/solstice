@@ -28,6 +28,7 @@ export default function Navbar({
   setTheme,
   searchQuery,
   setSearchQuery,
+  setIsOpenAccountEdit,
 }) {
   const navigate = useNavigate(),
     { link } = useParams(),
@@ -219,7 +220,7 @@ export default function Navbar({
             >
               <IconButton icon='more_vert' />
               <div className={styles.menu}>
-                <div onClick={() => ''}>
+                <div onClick={() => setIsOpenAccountEdit(true)}>
                   <span className='material-symbols-outlined'>person_edit</span>
                   <p className='body-large'>Edit account</p>
                 </div>

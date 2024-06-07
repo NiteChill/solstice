@@ -116,7 +116,7 @@ export default function Account() {
     <div className={styles.account}>
       <main>
         <label htmlFor='profile_picture' style={{ cursor: link === user?.id && 'pointer'}}>
-          {account?.profile_picture ? (
+          {!account?.profile_picture ? (
             <img src={account?.profile_picture} alt='profile_picture ' />
           ) : (
             <div className={styles.profile_picture}>
