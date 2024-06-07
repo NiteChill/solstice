@@ -246,6 +246,7 @@ export default function App() {
             user={user}
             setUser={setUser}
             setLoading={setLoading}
+            appWidth={appWidth}
           />
           <NavigationMenu
             location={location}

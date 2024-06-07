@@ -1,14 +1,14 @@
 .modal {
   z-index: 1000000;
-  left: 0;
+  right: 0;
   position: absolute;
   display: flex;
   align-items: center;
-  justify-content: center;
   width: 0;
-  height: 0;
+  height: 100vh !important;
   padding: 1.5rem 0;
   // z-index: 100000;
+  transition: width .3s var(--transition);
   overflow: hidden;
   & > .backdrop {
     position: absolute;
@@ -23,13 +23,11 @@
     display: flex;
     flex-direction: column;
     background: var(--surface-container-low);
+    height: 100vh;
+    width: 100vw;
+    flex-shrink: 0;
     z-index: 10;
-    width: 30rem;
-    opacity: 0;
-    scale: 0.6;
-    transition: opacity 0.3s var(--transition), scale 0.3s var(--transition), border-radius 0.3s var(--transition);
-    border-radius: 1.75rem;
-    height: clamp(0px, 100%, 600px);
+    transition: width 0.3s var(--transition);
     & > nav {
       position: relative;
       display: flex;
@@ -108,26 +106,33 @@
 }
 
 .is_open {
-  & > .backdrop {
-    opacity: 0.5;
-  }
   & > .container {
-    opacity: 1;
-    scale: 1;
+    width: 100vw;
   }
 }
 
-@media screen and (max-width: 500px) {
-  .container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw !important;
-    height: 100vh !important;
+@media screen and (min-width: 500px) {
+  .modal {
+    height: 0;
+    justify-content: center;
+    transition: none;
+    .container {
+    width: 30rem;
+    opacity: 0;
+    scale: 0.6;
+    transition: opacity 0.3s var(--transition), scale 0.3s var(--transition),
+      border-radius 0.3s var(--transition);
+    border-radius: 1.75rem;
+    height: clamp(0px, 100%, 600px);
+  }
   }
   .is_open {
+    & > .backdrop {
+      opacity: 0.5;
+    }
     & > .container {
-      border-radius: 0;
+      opacity: 1;
+      scale: 1;
     }
   }
 }

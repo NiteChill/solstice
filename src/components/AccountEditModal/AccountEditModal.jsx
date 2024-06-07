@@ -3,7 +3,6 @@ import styles from './AccountEditModal.module.scss';
 import Button from '../Button/Button';
 import axios from 'axios';
 import IconButton from '../IconButton/IconButton';
-import defaultAvatar from '../../assets/img/default_avatar.png';
 
 export default function AccountEditModal({
   isOpen,
@@ -12,6 +11,7 @@ export default function AccountEditModal({
   user,
   setUser,
   setLoading,
+  appWidth,
 }) {
   const [modaleState, setModaleState] = useState(false),
     [editedUser, setEditUser] = useState({
@@ -56,7 +56,9 @@ export default function AccountEditModal({
     setEditUser(user);
     isOpen
       ? setModaleState(true)
-      : setTimeout(() => setModaleState(false), 300);
+      : appWidth > 500
+      ? setTimeout(() => setModaleState(false), 300)
+      : setModaleState(false);
   }, [isOpen]);
   return (
     <div
@@ -73,7 +75,7 @@ export default function AccountEditModal({
       <div className={styles.container}>
         <nav>
           <IconButton
-            icon='close'
+            icon={appWidth < 500 ? 'arrow_back' : 'close'}
             onClick={() => setIsOpen(false)}
           />
           <h1 className='title-large'>Edit account</h1>
@@ -89,12 +91,14 @@ export default function AccountEditModal({
           />
         </nav>
         <main>
-          <header>
-            <img
-              src={defaultAvatar}
-              alt='profile_picture'
-            />
-          </header>
+          {editedUser.profile_picture && (
+            <header>
+              <img
+                src={editedUser.profile_picture}
+                alt='profile_picture'
+              />
+            </header>
+          )}
           <section>
             <span className='material-symbols-outlined'>person</span>
             <div>
