@@ -91,7 +91,7 @@ export default function AccountEditModal({
           />
         </nav>
         <main>
-          {editedUser.profile_picture && (
+          {editedUser?.profile_picture && (
             <header>
               <img
                 src={editedUser.profile_picture}
