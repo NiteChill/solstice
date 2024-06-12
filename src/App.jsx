@@ -9,7 +9,7 @@ import CreateSidesheet from './components/CreateSidesheet/CreateSidesheet';
 import NavigationMenu from './components/NavigationMenu/NavigationMenu';
 import ErrorElement from './components/ErrorElement/ErrorElement';
 import FilterSidesheet from './components/FilterSidesheet/FilterSidesheet';
-import DeleteModal from './components/DeleteModale/DeleteModal';
+import DeleteModal from './components/DeleteModal/DeleteModal';
 import CommentsSidesheet from './components/CommentsSidesheet/CommentsSidesheet';
 import AccountEditModal from './components/AccountEditModal/AccountEditModal';
 
@@ -78,6 +78,23 @@ export default function App() {
           );
           if (response.error) return;
           setLoading(false);
+          navigate('/');
+        })();
+      } else if (isOpenDelete === 'account') {
+        (async () => {
+          const response = await axios.post(
+            'http://localhost:3000/api/delete_account',
+            { id: user.id },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              withCredentials: true,
+            }
+          );
+          if (response.error) return;
+          setLoading(false);
+          setUser(null);
           navigate('/');
         })();
       }

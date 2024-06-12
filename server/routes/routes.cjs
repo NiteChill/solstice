@@ -12,6 +12,7 @@ router.post('/update_profile_picture', userRoutes.updateProfilePicture);
 router.post('/update_account_data', userRoutes.updateAccountData);
 router.get('/sign_out', userRoutes.signOut);
 router.post('/get_account', userRoutes.getAccount);
+router.post('/delete_account', userRoutes.deleteAccount);
 
 router.post('/create_article', articleRoutes.createArticle);
 router.post('/get_single_article', articleRoutes.getSingleArticle);

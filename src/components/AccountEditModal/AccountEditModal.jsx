@@ -107,7 +107,7 @@ export default function AccountEditModal({
                 className='body-large'
                 placeholder='First name'
                 name='first_name'
-                value={editedUser?.first_name}
+                value={editedUser?.first_name ? editedUser.first_name : ''}
                 onInput={inputControler}
               />
               <input
@@ -115,7 +115,7 @@ export default function AccountEditModal({
                 className='body-large'
                 placeholder='Last name'
                 name='last_name'
-                value={editedUser?.last_name}
+                value={editedUser?.last_name ? editedUser.last_name : ''}
                 onInput={inputControler}
               />
               <input
@@ -123,7 +123,7 @@ export default function AccountEditModal({
                 className='body-large'
                 placeholder='Username'
                 name='username'
-                value={editedUser?.username}
+                value={editedUser?.username ? editedUser.username : ''}
                 onInput={inputControler}
               />
             </div>
@@ -136,7 +136,7 @@ export default function AccountEditModal({
                 className='body-large'
                 placeholder='Age'
                 name='age'
-                value={editedUser?.age}
+                value={editedUser?.age ? editedUser.age : ''}
                 onInput={inputControler}
               />
             </div>

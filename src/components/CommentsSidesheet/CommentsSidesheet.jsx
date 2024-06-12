@@ -4,7 +4,7 @@ import IconButton from '../IconButton/IconButton';
 import LinearProgressIndicator from '../LinearProgressIndicator/LinearProgressIndicator';
 import axios from 'axios';
 import Comment from '../Comment/Comment';
-import DeleteModal from '../DeleteModale/DeleteModal';
+import DeleteModal from '../DeleteModal/DeleteModal';
 
 export default function CommentsSidesheet({
   isOpen,
@@ -80,10 +80,13 @@ export default function CommentsSidesheet({
       else {
         setComment('');
         setLoadingComment(false);
-        setComments([...comments.filter((el) => el._id !== editComment?._id), {
-          ...editComment,
-          content: comment,
-        }]);
+        setComments([
+          ...comments.filter((el) => el._id !== editComment?._id),
+          {
+            ...editComment,
+            content: comment,
+          },
+        ]);
         setEditComment(false);
       }
     };
@@ -142,7 +145,10 @@ export default function CommentsSidesheet({
         <div className={styles.sidesheet}>
           <header>
             <h1 className='title-large'>Comments</h1>
-            <IconButton icon='close' onClick={() => setIsOpen(false)} />
+            <IconButton
+              icon='close'
+              onClick={() => setIsOpen(false)}
+            />
             {loading && <LinearProgressIndicator />}
           </header>
           <main>

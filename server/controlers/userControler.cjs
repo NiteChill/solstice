@@ -77,7 +77,6 @@ const signUp = async (req, res) => {
       resolve(hash);
     });
   });
-  console.log(hashPassword + 'hi');
   const newUser = new userModel({
     first_name: first_name,
     last_name: last_name,
@@ -86,24 +85,27 @@ const signUp = async (req, res) => {
     email: email,
     password: hashPassword,
   });
-  newUser.save();
-  const dbUser = await userModel.findOne({ email: email });
-  let userData;
-  if (dbUser) {
-    userData = {
-      id: dbUser._id,
-      first_name: dbUser?.first_name,
-      last_name: dbUser?.last_name,
-      username: dbUser?.username,
-      age: dbUser?.age,
-      email: dbUser?.email,
-      createdAt: dbUser?.createdAt,
-      profile_picture: dbUser?.profile_picture,
-    };
-  }
-  if (userData) {
-    req.session.user = userData;
-    res.send({ user: userData });
+  try {
+    await newUser.save();
+    const dbUser = await userModel.findOne({ email: email });
+
+    if (dbUser) {
+      const userData = {
+        id: dbUser?._id,
+        first_name: dbUser?.first_name,
+        last_name: dbUser?.last_name,
+        username: dbUser?.username,
+        age: dbUser?.age,
+        email: dbUser?.email,
+        createdAt: dbUser?.createdAt,
+        profile_picture: dbUser?.profile_picture,
+      };
+      console.log(userData);
+      req.session.user = userData;
+      res.send({ user: userData });
+    }
+  } catch (error) {
+    res.send({ errors: [error] });
   }
 };
 
@@ -170,6 +172,18 @@ const getAccount = async (req, res) => {
   }
 };
 
+const deleteAccount = async (req, res) => {
+  try {
+    if (req.body.id !== req.session.user.id)
+      return res.send({ error: 'unauthorized' });
+    await userModel.findByIdAndDelete(req.body.id);
+    req.session.destroy();
+    res.send({ state: 'ok' });
+  } catch (error) {
+    res.send({ error: error });
+  }
+};
+
 module.exports = {
   getUser,
   loginUser,
@@ -179,4 +193,5 @@ module.exports = {
   updateAccountData,
   signOut,
   getAccount,
+  deleteAccount,
 };

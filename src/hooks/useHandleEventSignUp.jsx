@@ -122,7 +122,7 @@ export function useHandleEventSignUp() {
       setErrors(errors);
       return false;
     }
-    if (body.password === body.password_confirm) {
+    if (body?.password === body?.password_confirm) {
       const response = await axios.post(
         'http://localhost:3000/api/sign_up',
         body,
@@ -133,9 +133,10 @@ export function useHandleEventSignUp() {
           withCredentials: true,
         }
       );
-      response.data.user && setUser(response.data.user);
-      response.data.errors && setErrors(response.data.errors);
-      if (response.data.errors?.find((el) => el === 'EMAIL_ALREADY_USED') && step !== 2)
+      // console.log(response.data);
+      response.data?.user && setUser(response.data.user);
+      response.data?.errors && setErrors(response.data.errors);
+      if (response.data?.errors?.find((el) => el === 'EMAIL_ALREADY_USED') && step !== 2)
         setStep(2);
     } else setErrors(['UNMATCHING_PASSWORD']);
   }
