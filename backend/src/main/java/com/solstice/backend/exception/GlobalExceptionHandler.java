@@ -14,6 +14,16 @@ public class GlobalExceptionHandler {
 		ProblemDetail problemDetail = ProblemDetail
 				.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
 		problemDetail.setTitle("Account Creation Failed");
+		problemDetail.setProperty("timestamp", Instant.now());
+		return problemDetail;
+	}
+
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ProblemDetail handleInvalidCredentials(InvalidCredentialsException ex) {
+		ProblemDetail problemDetail = ProblemDetail
+				.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+		problemDetail.setTitle("Authentication Failed");
+		problemDetail.setProperty("timestamp", Instant.now());
 		return problemDetail;
 	}
 
