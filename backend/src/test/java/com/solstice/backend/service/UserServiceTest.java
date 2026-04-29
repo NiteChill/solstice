@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
+import com.solstice.backend.dto.AuthenticationResponse;
 import com.solstice.backend.dto.LoginRequest;
 import com.solstice.backend.dto.RegisterRequest;
-import com.solstice.backend.dto.UserResponse;
 import com.solstice.backend.entity.Role;
 import com.solstice.backend.entity.User;
 import com.solstice.backend.exception.EmailAlreadyTakenException;
@@ -33,6 +33,9 @@ class UserServiceTest {
 	@Mock
 	private PasswordEncoder passwordEncoder;
 
+	@Mock
+	private JwtService jwtService;
+
 	@InjectMocks
 	private UserService userService;
 
@@ -51,13 +54,16 @@ class UserServiceTest {
 		User savedEntity = User.builder().id(fakeId).email(request.email())
 				.password("hashed_password").role(Role.USER).build();
 		Mockito.when(userRepository.save(any(User.class))).thenReturn(savedEntity);
+		Mockito.when(jwtService.generateToken(any(User.class))).thenReturn("mock-token");
 
-		UserResponse response = userService.registerUser(request);
+		AuthenticationResponse response = userService.registerUser(request);
 
 		assertNotNull(response);
-		assertEquals(fakeId, response.id());
-		assertEquals(request.email(), response.email());
-		assertEquals("USER", response.role());
+		assertNotNull(response.token());
+		assertEquals("mock-token", response.token());
+		assertEquals(fakeId, response.user().id());
+		assertEquals(request.email(), response.user().email());
+		assertEquals("USER", response.user().role());
 
 		Mockito.verify(userRepository, Mockito.times(1)).save(any(User.class));
 	}
@@ -94,11 +100,14 @@ class UserServiceTest {
 				.thenReturn(Optional.of(dummyUser));
 		Mockito.when(passwordEncoder.matches(request.password(), dummyUser.getPassword()))
 				.thenReturn(true);
+		Mockito.when(jwtService.generateToken(any(User.class))).thenReturn("mock-token");
 
-		UserResponse response = userService.loginUser(request);
+		AuthenticationResponse response = userService.loginUser(request);
 
 		assertNotNull(response);
-		assertEquals("achille@solstice.com", response.email());
+		assertNotNull(response.token());
+		assertEquals("mock-token", response.token());
+		assertEquals("achille@solstice.com", response.user().email());
 	}
 
 	@Test
