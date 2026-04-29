@@ -1,5 +1,6 @@
 package com.solstice.backend.service;
 
+import com.solstice.backend.dto.AuthenticationResponse;
 import com.solstice.backend.dto.LoginRequest;
 import com.solstice.backend.dto.RegisterRequest;
 import com.solstice.backend.dto.UserResponse;
@@ -19,9 +20,10 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final JwtService jwtService;
 
 	@Transactional
-	public UserResponse registerUser(RegisterRequest request) {
+	public AuthenticationResponse registerUser(RegisterRequest request) {
 		if (userRepository.findByEmail(request.email()).isPresent()) {
 			throw new EmailAlreadyTakenException(
 					"Email is already registered: " + request.email());
@@ -33,11 +35,13 @@ public class UserService {
 
 		User savedUser = userRepository.save(user);
 
-		return UserResponse.fromEntity(savedUser);
+		String token = jwtService.generateToken(savedUser);
+
+		return new AuthenticationResponse(token, UserResponse.fromEntity(savedUser));
 	}
 
 	@Transactional(readOnly = true)
-	public UserResponse loginUser(LoginRequest request) {
+	public AuthenticationResponse loginUser(LoginRequest request) {
 		User user = userRepository.findByEmail(request.email()).orElseThrow(
 				() -> new InvalidCredentialsException("Invalid email or password"));
 
@@ -45,6 +49,9 @@ public class UserService {
 			throw new InvalidCredentialsException("Invalid email or password");
 		}
 
-		return UserResponse.fromEntity(user);
+		String token = jwtService.generateToken(user);
+
+		return new AuthenticationResponse(token, UserResponse.fromEntity(user));
 	}
+
 }
