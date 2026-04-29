@@ -36,19 +36,6 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/auth/**")
-						.permitAll().requestMatchers(HttpMethod.GET, "/api/v1/posts")
-						.permitAll().requestMatchers(HttpMethod.GET, "/api/v1/posts/{id}")
-						.permitAll().anyRequest().authenticated())
-				.sessionManagement(session -> session
-						.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-		return http.build();
-	}
-
-	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
