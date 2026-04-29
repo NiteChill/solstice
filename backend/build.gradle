@@ -48,7 +48,11 @@ dependencies {
 }
 
 tasks.named('test') {
-  useJUnitPlatform()
+  useJUnitPlatform {
+    if (project.hasProperty('excludeTests')) {
+      excludeTags project.property('excludeTests')
+    }
+  }
 }
 
 checkstyle {

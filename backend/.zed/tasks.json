@@ -11,7 +11,7 @@
   },
   {
     "label": "Run Check",
-    "command": "./gradlew check",
+    "command": "./gradlew check -PexcludeTests=integration",
     "use_new_terminal": false,
   },
   {
