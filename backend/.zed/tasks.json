@@ -1,0 +1,22 @@
+[
+  {
+    "label": "Run Spring",
+    "command": "./gradlew bootRun",
+    "use_new_terminal": false,
+  },
+  {
+    "label": "Run Docker",
+    "command": "docker compose up -d",
+    "use_new_terminal": false,
+  },
+  {
+    "label": "Run Check",
+    "command": "./gradlew check",
+    "use_new_terminal": false,
+  },
+  {
+    "label": "Run Format",
+    "command": "./gradlew spotlessApply",
+    "use_new_terminal": false,
+  },
+]
