@@ -2,21 +2,21 @@
   {
     "label": "Run Dev",
     "command": "npm run dev",
-    "use_new_terminal": false,
+    "use_new_terminal": false
   },
   {
     "label": "Run Lint",
     "command": "npm run lint",
-    "use_new_terminal": false,
+    "use_new_terminal": false
   },
   {
     "label": "Run Test",
     "command": "npm run test",
-    "use_new_terminal": false,
+    "use_new_terminal": false
   },
   {
     "label": "Run Check",
     "command": "npm run check",
-    "use_new_terminal": false,
-  },
+    "use_new_terminal": false
+  }
 ]
