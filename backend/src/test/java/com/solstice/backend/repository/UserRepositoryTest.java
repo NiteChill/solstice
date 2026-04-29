@@ -23,9 +23,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 class UserRepositoryTest {
 
-  @Container
-  @ServiceConnection
-  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
+	@Container
+	@ServiceConnection
+	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
+			"postgres:16-alpine");
 
 	@Autowired
 	private UserRepository userRepository;
