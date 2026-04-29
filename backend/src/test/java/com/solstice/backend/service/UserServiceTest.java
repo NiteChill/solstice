@@ -6,11 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
+import com.solstice.backend.dto.LoginRequest;
 import com.solstice.backend.dto.RegisterRequest;
 import com.solstice.backend.dto.UserResponse;
 import com.solstice.backend.entity.Role;
 import com.solstice.backend.entity.User;
 import com.solstice.backend.exception.EmailAlreadyTakenException;
+import com.solstice.backend.exception.InvalidCredentialsException;
 import com.solstice.backend.repository.UserRepository;
 import java.util.Optional;
 import java.util.UUID;
@@ -79,5 +81,48 @@ class UserServiceTest {
 
 		Mockito.verify(userRepository, Mockito.never()).save(any(User.class));
 		Mockito.verify(passwordEncoder, Mockito.never()).encode(anyString());
+	}
+
+	@Test
+	void loginUserShouldReturnResponseWhenCredentialsAreValid() {
+		LoginRequest request = new LoginRequest("achille@solstice.com", "password123");
+		User dummyUser = User.builder().id(UUID.randomUUID())
+				.email("achille@solstice.com").password("hashed_password").role(Role.USER)
+				.build();
+
+		Mockito.when(userRepository.findByEmail(request.email()))
+				.thenReturn(Optional.of(dummyUser));
+		Mockito.when(passwordEncoder.matches(request.password(), dummyUser.getPassword()))
+				.thenReturn(true);
+
+		UserResponse response = userService.loginUser(request);
+
+		assertNotNull(response);
+		assertEquals("achille@solstice.com", response.email());
+	}
+
+	@Test
+	void loginUserShouldThrowExceptionWhenEmailNotFound() {
+		LoginRequest request = new LoginRequest("ghost@solstice.com", "password123");
+		Mockito.when(userRepository.findByEmail(request.email()))
+				.thenReturn(Optional.empty());
+
+		assertThrows(InvalidCredentialsException.class,
+				() -> userService.loginUser(request));
+	}
+
+	@Test
+	void loginUserShouldThrowExceptionWhenPasswordIsWrong() {
+		LoginRequest request = new LoginRequest("achille@solstice.com", "wrongpassword");
+		User dummyUser = User.builder().email("achille@solstice.com")
+				.password("hashed_password").build();
+
+		Mockito.when(userRepository.findByEmail(request.email()))
+				.thenReturn(Optional.of(dummyUser));
+		Mockito.when(passwordEncoder.matches(request.password(), dummyUser.getPassword()))
+				.thenReturn(false);
+
+		assertThrows(InvalidCredentialsException.class,
+				() -> userService.loginUser(request));
 	}
 }
