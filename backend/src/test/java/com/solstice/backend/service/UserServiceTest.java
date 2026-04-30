@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 
 import com.solstice.backend.dto.AuthenticationResponse;
@@ -56,11 +57,12 @@ class UserServiceTest {
       .build();
 
     Mockito.when(userRepository.save(any(User.class))).thenReturn(savedEntity);
-    Mockito.when(jwtService.generateToken(any(User.class))).thenReturn("mock-access-token");
 
-    RefreshToken mockRefreshToken = RefreshToken.builder().token("mock-refresh-token").build();
+    RefreshToken mockRefreshToken = RefreshToken.builder().id(1L).token("mock-refresh-token").build();
     Mockito.when(refreshTokenService.createRefreshToken(anyString(), anyString(), anyString()))
       .thenReturn(mockRefreshToken);
+
+    Mockito.when(jwtService.generateToken(anyMap(), any(User.class))).thenReturn("mock-access-token");
 
     AuthenticationResponse response = userService.registerUser(request, userAgent, ipAddress);
 
@@ -96,11 +98,13 @@ class UserServiceTest {
 
     Mockito.when(userRepository.findByEmail(request.email())).thenReturn(Optional.of(dummyUser));
     Mockito.when(passwordEncoder.matches(request.password(), dummyUser.getPassword())).thenReturn(true);
-    Mockito.when(jwtService.generateToken(any(User.class))).thenReturn("mock-access-token");
 
-    RefreshToken mockRefreshToken = RefreshToken.builder().token("mock-refresh-token").build();
+    RefreshToken mockRefreshToken = RefreshToken.builder().id(1L).token("mock-refresh-token").build();
+
     Mockito.when(refreshTokenService.createRefreshToken(anyString(), anyString(), anyString()))
       .thenReturn(mockRefreshToken);
+
+    Mockito.when(jwtService.generateToken(anyMap(), any(User.class))).thenReturn("mock-access-token");
 
     AuthenticationResponse response = userService.loginUser(request, userAgent, ipAddress);
 
