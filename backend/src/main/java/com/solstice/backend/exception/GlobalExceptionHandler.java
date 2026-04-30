@@ -1,8 +1,11 @@
 package com.solstice.backend.exception;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,11 +28,50 @@ public class GlobalExceptionHandler {
     return problemDetail;
   }
 
+  @ExceptionHandler(AccessTokenExpiredException.class)
+  public ProblemDetail handleAccessTokenExpired(AccessTokenExpiredException ex) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    problemDetail.setTitle("Access Token Expired");
+    problemDetail.setProperty("code", "TOKEN_EXPIRED");
+    problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
+
+  @ExceptionHandler(SessionDeadException.class)
+  public ProblemDetail handleSessionDead(SessionDeadException ex) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
+    problemDetail.setTitle("Session Terminated");
+    problemDetail.setProperty("code", "SESSION_DEAD");
+    problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ProblemDetail handleValidationErrors(MethodArgumentNotValidException ex) {
+    Map<String, String> errors = new HashMap<>();
+    ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
+    problemDetail.setTitle("Invalid Request Content");
+    problemDetail.setProperty("errors", errors);
+    problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ProblemDetail handleNotFound(ResourceNotFoundException ex) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    problemDetail.setTitle("Resource Not Found");
+    problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
+
   @ExceptionHandler(Exception.class)
-  public ProblemDetail handleGenericException(Exception ex) {
-    System.out.println("ERROR: " + ex);
+  public ProblemDetail handleGeneralException(Exception ex) {
+    System.out.println("[Critical Error]: " + ex.getMessage());
+
     ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
-                                                                   "An unexpected server error occurred.");
+                                                                   "An unexpected error occurred on our end.");
     problemDetail.setTitle("Internal Server Error");
     problemDetail.setProperty("timestamp", Instant.now());
     return problemDetail;
