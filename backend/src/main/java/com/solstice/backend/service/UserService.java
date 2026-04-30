@@ -10,6 +10,8 @@ import com.solstice.backend.entity.User;
 import com.solstice.backend.exception.EmailAlreadyTakenException;
 import com.solstice.backend.exception.InvalidCredentialsException;
 import com.solstice.backend.repository.UserRepository;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,8 +37,12 @@ public class UserService {
 
     User savedUser = userRepository.save(user);
 
-    String accessToken = jwtService.generateToken(savedUser);
     RefreshToken refreshToken = refreshTokenService.createRefreshToken(savedUser.getEmail(), userAgent, ipAddress);
+
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("sid", refreshToken.getId());
+
+    String accessToken = jwtService.generateToken(claims, user);
 
     return new AuthenticationResponse(accessToken, refreshToken.getToken(), UserResponse.fromEntity(savedUser));
   }
@@ -50,8 +56,12 @@ public class UserService {
       throw new InvalidCredentialsException("Invalid email or password");
     }
 
-    String accessToken = jwtService.generateToken(user);
     RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getEmail(), userAgent, ipAddress);
+
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("sid", refreshToken.getId());
+
+    String accessToken = jwtService.generateToken(claims, user);
 
     return new AuthenticationResponse(accessToken, refreshToken.getToken(), UserResponse.fromEntity(user));
   }
