@@ -11,11 +11,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-	private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-	@Bean
-	public UserDetailsService userDetailsService() {
-		return username -> userRepository.findByEmail(username)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-	}
+  @Bean
+  public UserDetailsService userDetailsService() {
+    return username -> userRepository.findByEmail(username)
+      .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+  }
 }

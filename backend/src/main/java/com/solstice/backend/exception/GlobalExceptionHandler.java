@@ -9,31 +9,29 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(EmailAlreadyTakenException.class)
-	public ProblemDetail handleEmailAlreadyTaken(EmailAlreadyTakenException ex) {
-		ProblemDetail problemDetail = ProblemDetail
-				.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
-		problemDetail.setTitle("Account Creation Failed");
-		problemDetail.setProperty("timestamp", Instant.now());
-		return problemDetail;
-	}
+  @ExceptionHandler(EmailAlreadyTakenException.class)
+  public ProblemDetail handleEmailAlreadyTaken(EmailAlreadyTakenException ex) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+    problemDetail.setTitle("Account Creation Failed");
+    problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
 
-	@ExceptionHandler(InvalidCredentialsException.class)
-	public ProblemDetail handleInvalidCredentials(InvalidCredentialsException ex) {
-		ProblemDetail problemDetail = ProblemDetail
-				.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
-		problemDetail.setTitle("Authentication Failed");
-		problemDetail.setProperty("timestamp", Instant.now());
-		return problemDetail;
-	}
+  @ExceptionHandler(InvalidCredentialsException.class)
+  public ProblemDetail handleInvalidCredentials(InvalidCredentialsException ex) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    problemDetail.setTitle("Authentication Failed");
+    problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
 
-	@ExceptionHandler(Exception.class)
-	public ProblemDetail handleGenericException(Exception ex) {
-		System.out.println("ERROR: " + ex);
-		ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-				HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected server error occurred.");
-		problemDetail.setTitle("Internal Server Error");
-		problemDetail.setProperty("timestamp", Instant.now());
-		return problemDetail;
-	}
+  @ExceptionHandler(Exception.class)
+  public ProblemDetail handleGenericException(Exception ex) {
+    System.out.println("ERROR: " + ex);
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
+                                                                   "An unexpected server error occurred.");
+    problemDetail.setTitle("Internal Server Error");
+    problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
 }

@@ -13,28 +13,28 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 class JwtServiceTest {
 
-	private JwtService jwtService;
-	private UserDetails dummyUser;
+  private JwtService jwtService;
+  private UserDetails dummyUser;
 
-	@BeforeEach
-	void setUp() {
-		jwtService = new JwtService();
+  @BeforeEach
+  void setUp() {
+    jwtService = new JwtService();
 
-		ReflectionTestUtils.setField(jwtService, "secretKey",
-				"404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970");
-		ReflectionTestUtils.setField(jwtService, "jwtExpiration", 86400000L);
+    ReflectionTestUtils.setField(jwtService, "secretKey",
+                                 "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970");
+    ReflectionTestUtils.setField(jwtService, "jwtExpiration", 86400000L);
 
-		dummyUser = new User("achille@solstice.com", "password", Collections.emptyList());
-	}
+    dummyUser = new User("achille@solstice.com", "password", Collections.emptyList());
+  }
 
-	@Test
-	void shouldGenerateAndValidateToken() {
-		String token = jwtService.generateToken(dummyUser);
-		assertNotNull(token);
+  @Test
+  void shouldGenerateAndValidateToken() {
+    String token = jwtService.generateToken(dummyUser);
+    assertNotNull(token);
 
-		String extractedUsername = jwtService.extractUsername(token);
-		assertEquals("achille@solstice.com", extractedUsername);
+    String extractedUsername = jwtService.extractUsername(token);
+    assertEquals("achille@solstice.com", extractedUsername);
 
-		assertTrue(jwtService.isTokenValid(token, dummyUser));
-	}
+    assertTrue(jwtService.isTokenValid(token, dummyUser));
+  }
 }
