@@ -57,7 +57,7 @@ public class AuthController {
 
   @PostMapping("/logout")
   public ResponseEntity<?> logout(@AuthenticationPrincipal User currentUser, @RequestBody RefreshTokenRequest request) {
-    refreshTokenService.revokeToken(request.refreshToken(), currentUser);
+    refreshTokenService.revokeCurrentToken(request.refreshToken(), currentUser);
     return ResponseEntity.ok().build();
   }
 
@@ -68,8 +68,10 @@ public class AuthController {
   }
 
   @PostMapping("/refresh")
-  public AuthenticationResponse refresh(@RequestBody RefreshTokenRequest request) {
-    return refreshTokenService.rotateToken(request.refreshToken());
+  public AuthenticationResponse refresh(@RequestBody RefreshTokenRequest request, HttpServletRequest servletRequest) {
+    String userAgent = servletRequest.getHeader("User-Agent");
+    String ipAddress = servletRequest.getRemoteAddr();
+    return refreshTokenService.rotateToken(request.refreshToken(), userAgent, ipAddress);
   }
 
   @GetMapping("/sessions")
@@ -86,7 +88,7 @@ public class AuthController {
 
   @DeleteMapping("/sessions/{id}")
   public ResponseEntity<?> revokeSession(@AuthenticationPrincipal User currentUser, @PathVariable Long id) {
-    refreshTokenService.revokeById(id, currentUser);
+    refreshTokenService.revokeTokenById(id, currentUser);
     return ResponseEntity.noContent().build();
   }
 }
