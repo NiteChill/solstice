@@ -1,5 +1,8 @@
 package com.solstice.backend.exception;
 
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import java.security.SignatureException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +66,19 @@ public class GlobalExceptionHandler {
     ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     problemDetail.setTitle("Resource Not Found");
     problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
+
+  @ExceptionHandler({MalformedJwtException.class, SignatureException.class, JwtException.class})
+  public ProblemDetail handleMalformedJwtException(Exception ex) {
+    System.err.println("[JWT Security Error]: " + ex.getMessage());
+
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED,
+                                                                   "The provided token is malformed or invalid.");
+    problemDetail.setTitle("Invalid Token Format");
+    problemDetail.setProperty("code", "INVALID_TOKEN");
+    problemDetail.setProperty("timestamp", Instant.now());
+
     return problemDetail;
   }
 
