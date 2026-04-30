@@ -1,15 +1,19 @@
 package com.solstice.backend.service;
 
 import com.solstice.backend.dto.AuthenticationResponse;
+import com.solstice.backend.dto.SessionResponse;
 import com.solstice.backend.dto.UserResponse;
 import com.solstice.backend.entity.RefreshToken;
 import com.solstice.backend.entity.User;
 import com.solstice.backend.repository.RefreshTokenRepository;
 import com.solstice.backend.repository.UserRepository;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import nl.basjes.parse.useragent.UserAgent;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,7 @@ public class RefreshTokenService {
   private final RefreshTokenRepository refreshTokenRepository;
   private final UserRepository userRepository;
   private final JwtService jwtService;
+  private final UserAgentAnalyzer uaa;
 
   public RefreshToken createRefreshToken(String email, String userAgent, String ipAddress) {
     User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
@@ -84,7 +89,28 @@ public class RefreshTokenService {
   }
 
   @Transactional
-  public void revokeAllToken(User user) {
-    refreshTokenRepository.deleteByUser(user);
+  public void revokeById(Long sessionId, User currentUser) {
+    RefreshToken token = refreshTokenRepository.findById(sessionId)
+      .orElseThrow(() -> new RuntimeException("Session not found"));
+
+    if (!token.getUser().getId().equals(currentUser.getId())) {
+      throw new RuntimeException("Unauthorized: You do not own this session");
+    }
+
+    refreshTokenRepository.delete(token);
+  }
+
+  @Transactional
+  public void revokeAll(User user) {
+    refreshTokenRepository.deleteAllByUser(user);
+  }
+
+  public List<SessionResponse> getSessions(User user, Long currentSessionId) {
+    return refreshTokenRepository.findAllByUser(user).stream().map(rt -> {
+      UserAgent agent = uaa.parse(rt.getUserAgent());
+      return new SessionResponse(rt.getId(), agent.getValue("DeviceName"), agent.getValue("AgentNameVersion"),
+                                 rt.getIpAddress(), rt.getExpiryDate().minusMillis(refreshExpiration),
+                                 rt.getId().equals(currentSessionId));
+    }).toList();
   }
 }
