@@ -1,6 +1,4 @@
 package com.solstice.backend.dto;
 
-public record AuthenticationResponse(
-  String token,
-  UserResponse user
-) {}
+public record AuthenticationResponse(String accessToken, String refreshToken, UserResponse user) {
+}
