@@ -4,16 +4,21 @@ import com.solstice.backend.dto.AuthenticationResponse;
 import com.solstice.backend.dto.LoginRequest;
 import com.solstice.backend.dto.RefreshTokenRequest;
 import com.solstice.backend.dto.RegisterRequest;
+import com.solstice.backend.dto.SessionResponse;
 import com.solstice.backend.dto.UserResponse;
 import com.solstice.backend.entity.User;
+import com.solstice.backend.service.JwtService;
 import com.solstice.backend.service.RefreshTokenService;
 import com.solstice.backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +32,7 @@ public class AuthController {
 
   private final UserService userService;
   private final RefreshTokenService refreshTokenService;
+  private final JwtService jwtService;
 
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
@@ -57,12 +63,30 @@ public class AuthController {
 
   @PostMapping("/logout-all")
   public ResponseEntity<?> logoutAll(@AuthenticationPrincipal User currentUser) {
-    refreshTokenService.revokeAllToken(currentUser);
+    refreshTokenService.revokeAll(currentUser);
     return ResponseEntity.ok().build();
   }
 
   @PostMapping("/refresh")
   public AuthenticationResponse refresh(@RequestBody RefreshTokenRequest request) {
     return refreshTokenService.rotateToken(request.refreshToken());
+  }
+
+  @GetMapping("/sessions")
+  public List<SessionResponse> getSessions(@AuthenticationPrincipal User currentUser,
+                                           HttpServletRequest servletRequest) {
+    String authHeader = servletRequest.getHeader("Authorization");
+    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+      throw new RuntimeException("Missing or invalid Authorization header");
+    }
+    String token = authHeader.substring(7);
+    Long currentSessionId = jwtService.extractClaim(token, claims -> claims.get("sid", Long.class));
+    return refreshTokenService.getSessions(currentUser, currentSessionId);
+  }
+
+  @DeleteMapping("/sessions/{id}")
+  public ResponseEntity<?> revokeSession(@AuthenticationPrincipal User currentUser, @PathVariable Long id) {
+    refreshTokenService.revokeById(id, currentUser);
+    return ResponseEntity.noContent().build();
   }
 }
