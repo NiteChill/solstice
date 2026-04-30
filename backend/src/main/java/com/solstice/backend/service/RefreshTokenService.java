@@ -5,6 +5,8 @@ import com.solstice.backend.dto.SessionResponse;
 import com.solstice.backend.dto.UserResponse;
 import com.solstice.backend.entity.RefreshToken;
 import com.solstice.backend.entity.User;
+import com.solstice.backend.exception.ResourceNotFoundException;
+import com.solstice.backend.exception.SessionDeadException;
 import com.solstice.backend.repository.RefreshTokenRepository;
 import com.solstice.backend.repository.UserRepository;
 import java.time.Instant;
@@ -31,7 +33,8 @@ public class RefreshTokenService {
   private final UserAgentAnalyzer uaa;
 
   public RefreshToken createRefreshToken(String email, String userAgent, String ipAddress) {
-    User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    User user = userRepository.findByEmail(email)
+      .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
 
     Optional<RefreshToken> existingToken = refreshTokenRepository.findByUserAndUserAgentAndIpAddress(user, userAgent,
                                                                                                      ipAddress);
@@ -53,48 +56,57 @@ public class RefreshTokenService {
   }
 
   @Transactional
-  public AuthenticationResponse rotateToken(String oldTokenString) {
+  public AuthenticationResponse rotateToken(String oldTokenString, String currentUserAgent, String currentIp) {
     RefreshToken oldToken = refreshTokenRepository.findByToken(oldTokenString)
-      .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+      .orElseThrow(() -> new SessionDeadException("Session not found. Please log in again."));
+
+    if (!oldToken.getUserAgent().equals(currentUserAgent) || !oldToken.getIpAddress().equals(currentIp)) {
+      refreshTokenRepository.deleteAllByUser(oldToken.getUser());
+      throw new SessionDeadException("Security Alert: Device or location mismatch. All sessions revoked.");
+    }
 
     verifyExpiration(oldToken);
 
     User user = oldToken.getUser();
-    String userAgent = oldToken.getUserAgent();
-    String ipAddress = oldToken.getIpAddress();
 
     refreshTokenRepository.delete(oldToken);
-    RefreshToken newToken = createRefreshToken(user.getEmail(), userAgent, ipAddress);
 
-    return new AuthenticationResponse(jwtService.generateToken(user), newToken.getToken(),
+    RefreshToken newToken = createRefreshToken(user.getEmail(), currentUserAgent, currentIp);
+
+    java.util.Map<String, Object> claims = new java.util.HashMap<>();
+    claims.put("sid", newToken.getId());
+
+    return new AuthenticationResponse(jwtService.generateToken(claims, user), newToken.getToken(),
                                       UserResponse.fromEntity(user));
   }
 
   public RefreshToken verifyExpiration(RefreshToken token) {
     if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
       refreshTokenRepository.delete(token);
-      throw new RuntimeException("Refresh token was expired. Please sign in again.");
+      throw new SessionDeadException("Refresh token was expired. Please sign in again.");
     }
     return token;
   }
 
   @Transactional
-  public void revokeToken(String tokenString, User user) {
+  public void revokeCurrentToken(String tokenString, User user) {
     RefreshToken token = refreshTokenRepository.findByToken(tokenString)
-      .orElseThrow(() -> new RuntimeException("Token not found"));
-    if (!token.getUser().getId().equals(user.getId())) {
-      throw new RuntimeException("Unauthorized: You do not own this session");
-    }
-    refreshTokenRepository.delete(token);
+      .orElseThrow(() -> new ResourceNotFoundException("Session not found."));
+
+    revokeToken(token, user);
   }
 
   @Transactional
-  public void revokeById(Long sessionId, User currentUser) {
+  public void revokeTokenById(Long sessionId, User user) {
     RefreshToken token = refreshTokenRepository.findById(sessionId)
-      .orElseThrow(() -> new RuntimeException("Session not found"));
+      .orElseThrow(() -> new ResourceNotFoundException("Session not found."));
 
-    if (!token.getUser().getId().equals(currentUser.getId())) {
-      throw new RuntimeException("Unauthorized: You do not own this session");
+    revokeToken(token, user);
+  }
+
+  private void revokeToken(RefreshToken token, User user) {
+    if (!token.getUser().getId().equals(user.getId())) {
+      throw new SessionDeadException("Unauthorized: You do not own this session.");
     }
 
     refreshTokenRepository.delete(token);
