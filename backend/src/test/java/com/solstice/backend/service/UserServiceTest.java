@@ -9,7 +9,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import com.solstice.backend.dto.AuthenticationResponse;
 import com.solstice.backend.dto.LoginRequest;
 import com.solstice.backend.dto.RegisterRequest;
-import com.solstice.backend.entity.RefreshToken;
+éimport com.solstice.backend.entity.RefreshToken;
 import com.solstice.backend.entity.Role;
 import com.solstice.backend.entity.User;
 import com.solstice.backend.exception.EmailAlreadyTakenException;
