@@ -9,6 +9,7 @@ import { ThemeProvider } from 'next-themes';
 import { router } from './router';
 
 import './globals.css';
+import { AuthProvider } from './contexts/auth-context';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,11 +25,13 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <LucideProvider strokeWidth={2.25} size={16}>
-        <ThemeProvider attribute="class" defaultTheme="system">
-          <RouterProvider router={router} />
-        </ThemeProvider>
-      </LucideProvider>
+      <AuthProvider>
+        <LucideProvider strokeWidth={2.25} size={16}>
+          <ThemeProvider attribute="class" defaultTheme="system">
+            <RouterProvider router={router} />
+          </ThemeProvider>
+        </LucideProvider>
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,
 );
