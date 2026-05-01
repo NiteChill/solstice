@@ -36,18 +36,23 @@ export default defineConfig([
       ...tseslint.configs.recommended[0].rules,
       ...tseslint.configs.strict[0].rules,
       ...reactHooks.configs.recommended.rules,
+      ...jsxA11y.flatConfigs.recommended.rules,
+      ...configPrettier.rules,
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      ...jsxA11y.flatConfigs.recommended.rules,
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'warn',
-        { argsIgnorePattern: '^_' },
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
       ],
       'react/jsx-no-target-blank': 'error',
       'prettier/prettier': 'error',
-      ...configPrettier.rules,
     },
     settings: {
       react: {

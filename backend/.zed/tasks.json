@@ -19,4 +19,14 @@
     "command": "./gradlew spotlessApply",
     "use_new_terminal": false,
   },
+  {
+    "label": "Run Test",
+    "command": "./gradlew test -PexcludeTests=integration",
+    "use_new_terminal": false, 
+  },
+  {
+    "label": "Reload Eclipse",
+    "command": "./gradlew eclipse",
+    "use_new_terminal": false, 
+  }
 ]
