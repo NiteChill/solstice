@@ -4,8 +4,8 @@ import React, {
   useCallback,
   type ReactNode,
 } from 'react';
-import { api } from '../api/axios';
-import { setTokens, clearTokens } from '../utils/token-service';
+import { api } from '../../../api/axios';
+import { setTokens, clearTokens } from '../../../utils/token-service';
 
 export interface User {
   id: string;

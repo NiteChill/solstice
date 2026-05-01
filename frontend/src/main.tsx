@@ -9,7 +9,7 @@ import { ThemeProvider } from 'next-themes';
 import { router } from './router';
 
 import './globals.css';
-import { AuthProvider } from './contexts/auth-context';
+import { AuthProvider } from './features/auth/contexts/auth-context';
 
 const queryClient = new QueryClient({
   defaultOptions: {

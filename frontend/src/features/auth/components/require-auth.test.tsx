@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { RequireAuth } from './require-auth';
-import * as tokenService from '../utils/token-service';
+import * as tokenService from '../../../utils/token-service';
 
-vi.mock('../utils/token-service');
+vi.mock('../../../utils/token-service');
 
 describe('RequireAuth Component', () => {
   beforeEach(() => {
