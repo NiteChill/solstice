@@ -70,7 +70,6 @@ describe('PersistLogin Component', () => {
     expect(screen.getByText(/Loading session/i)).toBeInTheDocument();
 
     await waitFor(() => {
-      // Verify the API calls were made
       expect(api.post).toHaveBeenCalledWith('/auth/refresh', {
         refreshToken: 'valid-refresh',
       });
