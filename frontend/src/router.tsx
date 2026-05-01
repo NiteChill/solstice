@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { App } from './App';
-import { PersistLogin } from './components/persist-login';
-import { RequireAuth } from './components/require-auth';
+import { PersistLogin } from './features/auth/components/persist-login';
+import { RequireAuth } from './features/auth/components/require-auth';
 
 export const router = createBrowserRouter([
   {

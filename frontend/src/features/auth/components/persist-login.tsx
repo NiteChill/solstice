@@ -5,8 +5,8 @@ import {
   getRefreshToken,
   setTokens,
   clearTokens,
-} from '../utils/token-service';
-import { api } from '../api/axios';
+} from '../../../utils/token-service';
+import { api } from '../../../api/axios';
 import { useAuth } from '../hooks/use-auth';
 
 interface RefreshTokenResponse {

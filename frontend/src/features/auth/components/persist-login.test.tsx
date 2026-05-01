@@ -2,12 +2,12 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { PersistLogin } from './persist-login';
-import { api } from '../api/axios';
-import * as tokenService from '../utils/token-service';
+import { api } from '../../../api/axios';
+import * as tokenService from '../../../utils/token-service';
 import * as useAuthHook from '../hooks/use-auth';
 
-vi.mock('../api/axios');
-vi.mock('../utils/token-service');
+vi.mock('../../../api/axios');
+vi.mock('../../../utils/token-service');
 vi.mock('../hooks/use-auth');
 
 describe('PersistLogin Component', () => {

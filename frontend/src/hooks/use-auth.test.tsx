@@ -1,7 +1,7 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { AuthProvider } from '../contexts/auth-context';
-import { useAuth } from './use-auth';
+import { AuthProvider } from '../features/auth/contexts/auth-context';
+import { useAuth } from '../features/auth/hooks/use-auth';
 import { api } from '../api/axios';
 import * as tokenService from '../utils/token-service';
 import React from 'react';

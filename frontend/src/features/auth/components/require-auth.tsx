@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { getAccessToken } from '../utils/token-service';
+import { getAccessToken } from '../../../utils/token-service';
 
 export const RequireAuth: React.FC = () => {
   const location = useLocation();
