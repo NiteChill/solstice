@@ -7,6 +7,7 @@ import {
   clearTokens,
 } from '../utils/token-service';
 import { api } from '../api/axios';
+import { useAuth } from '../hooks/use-auth';
 
 interface RefreshTokenResponse {
   accessToken: string;
@@ -14,22 +15,32 @@ interface RefreshTokenResponse {
 }
 
 export const PersistLogin: React.FC = () => {
+  const { fetchUser, user } = useAuth();
   const needsRefresh = !getAccessToken() && !!getRefreshToken();
 
-  const [isLoading, setIsLoading] = useState<boolean>(needsRefresh);
+  const [isLoading, setIsLoading] = useState<boolean>(
+    needsRefresh || (!user && !!getAccessToken()),
+  );
 
   useEffect(() => {
     const verifyRefreshToken = async (): Promise<void> => {
       try {
-        const currentRefreshToken = getRefreshToken();
-        const response = await api.post<RefreshTokenResponse>('/auth/refresh', {
-          refreshToken: currentRefreshToken,
-        });
+        if (needsRefresh) {
+          const currentRefreshToken = getRefreshToken();
+          const response = await api.post<RefreshTokenResponse>(
+            '/auth/refresh',
+            {
+              refreshToken: currentRefreshToken,
+            },
+          );
 
-        setTokens({
-          access: response.data.accessToken,
-          refresh: response.data.refreshToken,
-        });
+          setTokens({
+            access: response.data.accessToken,
+            refresh: response.data.refreshToken,
+          });
+        }
+
+        await fetchUser();
       } catch (error) {
         console.error('Failed to persist login:', error);
         clearTokens();
@@ -39,7 +50,7 @@ export const PersistLogin: React.FC = () => {
     };
 
     if (needsRefresh) verifyRefreshToken();
-  }, [needsRefresh]);
+  }, [needsRefresh, user, fetchUser]);
 
   if (isLoading)
     return <div className="full-screen-spinner">Loading session...</div>;
