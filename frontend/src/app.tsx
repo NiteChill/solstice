@@ -1,5 +1,5 @@
 import { useNavigate, useHref, Outlet } from 'react-router-dom';
-import { RouterProvider } from '@heroui/react';
+import { RouterProvider, Toast } from '@heroui/react';
 import { ThemeSwitcher } from './components/theme-switcher';
 
 export const App = () => {
@@ -8,6 +8,7 @@ export const App = () => {
     <RouterProvider navigate={navigate} useHref={useHref}>
       <Outlet />
       <ThemeSwitcher />
+      <Toast.Provider />
     </RouterProvider>
   );
 };
