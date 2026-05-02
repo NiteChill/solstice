@@ -1,32 +1,46 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { App } from './App';
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import { App } from './app';
 import { PersistLogin } from './features/auth/components/persist-login';
 import { RequireAuth } from './features/auth/components/require-auth';
+import { AuthLayout } from './layouts/auth-layout';
+import { LoginPage } from './pages/auth/login-page';
+import { RequireGuest } from './features/auth/components/require-guest';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
-      // Public
-      {
-        path: 'auth',
-        children: [
-          {
-            path: 'login',
-            element: 'login',
-          },
-          {
-            path: 'register',
-            element: 'register',
-          },
-        ],
-      },
-
-      // Protected
       {
         element: <PersistLogin />,
         children: [
+          // Public
+          {
+            element: <RequireGuest />,
+            children: [
+              {
+                path: 'auth',
+                element: <AuthLayout />,
+                children: [
+                  {
+                    index: true,
+                    element: <Navigate to="login" replace />,
+                  },
+                  {
+                    path: 'login',
+                    element: <LoginPage />,
+                  },
+                  {
+                    path: 'register',
+                    element: 'register',
+                  },
+                ],
+              },
+            ],
+          },
+
+          // Protected
+
           {
             element: <RequireAuth />,
             children: [
@@ -34,7 +48,7 @@ export const router = createBrowserRouter([
 
               {
                 path: 'settings',
-                element: 'sidebar',
+                element: <Outlet />,
                 children: [
                   {
                     index: true,
@@ -47,9 +61,9 @@ export const router = createBrowserRouter([
               },
             ],
           },
+          { path: '*', element: 'not found' },
         ],
       },
-      { path: '*', element: 'not found' },
     ],
   },
 ]);
