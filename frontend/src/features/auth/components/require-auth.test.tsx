@@ -2,17 +2,22 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { RequireAuth } from './require-auth';
-import * as tokenService from '../../../utils/token-service';
+import * as useAuthHook from '../hooks/use-auth';
 
-vi.mock('../../../utils/token-service');
+vi.mock('../hooks/use-auth');
 
 describe('RequireAuth Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should render the Outlet (Protected Content) if access token exists', () => {
-    vi.spyOn(tokenService, 'getAccessToken').mockReturnValue('valid-token');
+  it('should render the Outlet (Protected Content) if user exists', () => {
+    vi.spyOn(useAuthHook, 'useAuth').mockReturnValue({
+      user: { id: '1', email: 'test@test.com', role: 'USER' },
+      setUser: vi.fn(),
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
 
     render(
       <MemoryRouter initialEntries={['/protected']}>
@@ -30,8 +35,13 @@ describe('RequireAuth Component', () => {
     expect(screen.getByTestId('protected-content')).toBeInTheDocument();
   });
 
-  it('should redirect to /auth/login if NO access token exists', () => {
-    vi.spyOn(tokenService, 'getAccessToken').mockReturnValue(null);
+  it('should redirect to /auth/login if user is null', () => {
+    vi.spyOn(useAuthHook, 'useAuth').mockReturnValue({
+      user: null,
+      setUser: vi.fn(),
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
 
     render(
       <MemoryRouter initialEntries={['/protected']}>
