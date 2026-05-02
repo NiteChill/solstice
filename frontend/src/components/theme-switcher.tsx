@@ -20,7 +20,7 @@ export function ThemeSwitcher() {
     };
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted.current) return null;
 
   return (
     <Tabs
