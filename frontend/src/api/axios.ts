@@ -9,6 +9,8 @@ import {
   setTokens,
   clearTokens,
 } from '../utils/token-service';
+import type { AuthenticationResponse } from '../types/auth';
+import type { ProblemDetail } from '../types/api';
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -19,20 +21,10 @@ interface FailedQueueItem {
   reject: (error: Error | AxiosError) => void;
 }
 
-interface BackendErrorResponse {
-  title?: string;
-  detail?: string;
-  code?: string;
-  timestamp?: string;
-}
-
-interface RefreshTokenResponse {
-  accessToken: string;
-  refreshToken: string;
-}
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1';
 
 export const api = axios.create({
-  baseURL: 'http://localhost:8080/api/v1',
+  baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -66,7 +58,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
-  async (error: AxiosError<BackendErrorResponse>) => {
+  async (error: AxiosError<ProblemDetail>) => {
     const originalRequest = error.config as
       | CustomAxiosRequestConfig
       | undefined;
@@ -112,8 +104,8 @@ api.interceptors.response.use(
       }
 
       try {
-        const response = await axios.post<RefreshTokenResponse>(
-          'http://localhost:8080/api/v1/auth/refresh',
+        const response = await axios.post<AuthenticationResponse>(
+          `${BASE_URL}/auth/refresh`,
           { refreshToken: currentRefreshToken },
         );
 

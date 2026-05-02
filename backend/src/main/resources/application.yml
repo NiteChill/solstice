@@ -3,9 +3,9 @@ spring:
     name: solstice
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/solstice_db
-    username: solstice_user
-    password: solstice_password
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:solstice_db}
+    username: ${DB_USERNAME:solstice_user}
+    password: ${DB_PASSWORD:solstice_password}
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,18 +13,23 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://localhost:27017/solstice_db
+      uri: mongodb://${MONGO_HOST:localhost}:${MONGO_PORT:27017}/${MONGO_DB:solstice_db}
 
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
 
 server.forward-headers-strategy: native
 
-# Temporary token - TO DELETE
-jwt.secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-jwt.expiration: 900000
-jwt.refresh-expiration: 604800000
+jwt:
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+  expiration: ${JWT_EXPIRATION:900000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+

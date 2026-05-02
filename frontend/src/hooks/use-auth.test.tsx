@@ -1,4 +1,4 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthProvider } from '../features/auth/contexts/auth-context';
 import { useAuth } from '../features/auth/hooks/use-auth';
@@ -12,11 +12,6 @@ vi.mock('../utils/token-service');
 describe('AuthContext & useAuth Hook', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-
-    Object.defineProperty(window, 'location', {
-      writable: true,
-      value: { href: '' },
-    });
   });
 
   it('should throw an error if used outside AuthProvider', () => {
@@ -29,14 +24,17 @@ describe('AuthContext & useAuth Hook', () => {
     consoleSpy.mockRestore();
   });
 
-  it('should successfully login, save tokens, and fetch user', async () => {
-    const mockTokens = {
-      data: { accessToken: 'access-123', refreshToken: 'refresh-456' },
+  it('should successfully login, save tokens, and set user from response', async () => {
+    const mockUser = { id: '1', email: 'test@test.com', role: 'USER' };
+    const mockResponse = {
+      data: {
+        accessToken: 'access-123',
+        refreshToken: 'refresh-456',
+        user: mockUser,
+      },
     };
-    const mockUser = { data: { id: '1', email: 'test@test.com' } };
 
-    (api.post as any).mockResolvedValueOnce(mockTokens);
-    (api.get as any).mockResolvedValueOnce(mockUser);
+    (api.post as any).mockResolvedValueOnce(mockResponse);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <AuthProvider>{children}</AuthProvider>
@@ -58,14 +56,11 @@ describe('AuthContext & useAuth Hook', () => {
       access: 'access-123',
       refresh: 'refresh-456',
     });
-    expect(api.get).toHaveBeenCalledWith('/auth/me');
-
-    await waitFor(() => {
-      expect(result.current.user).toEqual(mockUser.data);
-    });
+    expect(result.current.user).toEqual(mockUser);
   });
 
-  it('should clear tokens and redirect on logout', () => {
+  it('should send refresh token, clear tokens, and reset user on logout', () => {
+    vi.spyOn(tokenService, 'getRefreshToken').mockReturnValue('rt-123');
     (api.post as any).mockResolvedValueOnce({ data: {} });
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -77,7 +72,10 @@ describe('AuthContext & useAuth Hook', () => {
       result.current.logout();
     });
 
+    expect(api.post).toHaveBeenCalledWith('/auth/logout', {
+      refreshToken: 'rt-123',
+    });
     expect(tokenService.clearTokens).toHaveBeenCalled();
-    expect(window.location.href).toBe('/auth/login');
+    expect(result.current.user).toBeNull();
   });
 });

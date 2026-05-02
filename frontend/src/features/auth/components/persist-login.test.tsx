@@ -11,13 +11,13 @@ vi.mock('../../../utils/token-service');
 vi.mock('../hooks/use-auth');
 
 describe('PersistLogin Component', () => {
-  const mockFetchUser = vi.fn();
+  const mockSetUser = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(useAuthHook, 'useAuth').mockReturnValue({
       user: null,
-      fetchUser: mockFetchUser,
+      setUser: mockSetUser,
       login: vi.fn(),
       logout: vi.fn(),
     });
@@ -29,7 +29,7 @@ describe('PersistLogin Component', () => {
 
     vi.spyOn(useAuthHook, 'useAuth').mockReturnValue({
       user: { id: '1', email: 'test@test.com', role: 'USER' },
-      fetchUser: mockFetchUser,
+      setUser: mockSetUser,
       login: vi.fn(),
       logout: vi.fn(),
     });
@@ -46,15 +46,19 @@ describe('PersistLogin Component', () => {
 
     expect(screen.queryByText(/Loading session/i)).not.toBeInTheDocument();
     expect(screen.getByTestId('child')).toBeInTheDocument();
-    expect(mockFetchUser).not.toHaveBeenCalled();
   });
 
-  it('should call /refresh and fetchUser if missing access token but has refresh token', async () => {
+  it('should call /refresh and set user from response if missing access token but has refresh token', async () => {
     vi.spyOn(tokenService, 'getAccessToken').mockReturnValue(null);
     vi.spyOn(tokenService, 'getRefreshToken').mockReturnValue('valid-refresh');
 
+    const mockUser = { id: '1', email: 'test@test.com', role: 'USER' };
     (api.post as any).mockResolvedValueOnce({
-      data: { accessToken: 'new-access', refreshToken: 'new-refresh' },
+      data: {
+        accessToken: 'new-access',
+        refreshToken: 'new-refresh',
+        user: mockUser,
+      },
     });
 
     render(
@@ -77,7 +81,7 @@ describe('PersistLogin Component', () => {
         access: 'new-access',
         refresh: 'new-refresh',
       });
-      expect(mockFetchUser).toHaveBeenCalled();
+      expect(mockSetUser).toHaveBeenCalledWith(mockUser);
 
       expect(screen.getByTestId('child')).toBeInTheDocument();
     });
@@ -103,7 +107,7 @@ describe('PersistLogin Component', () => {
 
     await waitFor(() => {
       expect(tokenService.clearTokens).toHaveBeenCalled();
-      expect(mockFetchUser).not.toHaveBeenCalled();
+      expect(mockSetUser).not.toHaveBeenCalled();
       expect(screen.getByTestId('child')).toBeInTheDocument();
     });
 

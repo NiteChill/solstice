@@ -1,7 +1,6 @@
 import { useTheme } from 'next-themes';
 import { Tabs } from '@heroui/react';
 import { Sun, Moon, Monitor } from 'lucide-react';
-import { useEffect, useRef } from 'react';
 
 const themes = [
   { key: 'light', icon: <Sun /> },
@@ -11,16 +10,6 @@ const themes = [
 
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
-  const mounted = useRef(false);
-
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
-
-  if (!mounted) return null;
 
   return (
     <Tabs
