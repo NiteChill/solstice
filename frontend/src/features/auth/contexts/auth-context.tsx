@@ -1,60 +1,56 @@
 import React, {
   createContext,
   useState,
-  useCallback,
   type ReactNode,
+  type Dispatch,
+  type SetStateAction,
 } from 'react';
 import { api } from '../../../api/axios';
-import { setTokens, clearTokens } from '../../../utils/token-service';
-
-export interface User {
-  id: string;
-  email: string;
-  role: string;
-}
+import {
+  setTokens,
+  clearTokens,
+  getRefreshToken,
+} from '../../../utils/token-service';
+import type {
+  UserResponse,
+  LoginRequest,
+  AuthenticationResponse,
+} from '../../../types/auth';
 
 export interface AuthContextType {
-  user: User | null;
-  login: (credentials: Record<string, any>) => Promise<void>;
+  user: UserResponse | null;
+  setUser: Dispatch<SetStateAction<UserResponse | null>>;
+  login: (credentials: LoginRequest) => Promise<void>;
   logout: () => void;
-  fetchUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserResponse | null>(null);
 
-  const fetchUser = useCallback(async (): Promise<void> => {
-    try {
-      const response = await api.get<User>('/auth/me');
-      setUser(response.data);
-    } catch (error) {
-      console.error('Failed to fetch user profile', error);
-      setUser(null);
-    }
-  }, []);
-
-  const login = async (credentials: Record<string, any>): Promise<void> => {
-    const response = await api.post('/auth/login', credentials);
-    const { accessToken, refreshToken } = response.data;
+  const login = async (credentials: LoginRequest): Promise<void> => {
+    const response = await api.post<AuthenticationResponse>(
+      '/auth/login',
+      credentials,
+    );
+    const { accessToken, refreshToken, user } = response.data;
 
     setTokens({ access: accessToken, refresh: refreshToken });
 
-    await fetchUser();
+    setUser(user);
   };
 
-  // Handle Logout
   const logout = (): void => {
-    api.post('/auth/logout').catch(console.error);
+    const rt = getRefreshToken();
+    if (rt) api.post('/auth/logout', { refreshToken: rt }).catch(console.error);
 
     clearTokens();
     setUser(null);
-    window.location.href = '/auth/login';
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, fetchUser }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
