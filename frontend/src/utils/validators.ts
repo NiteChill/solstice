@@ -1,13 +1,21 @@
-export const validateEmail = (value: string) => {
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value))
-    return 'Please enter a valid email address';
-  return null;
-};
+export const validateEmail = () => ({
+  required: 'Email is required',
+  pattern: {
+    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+    message: 'Please enter a valid email address',
+  },
+});
 
-export const validatePassword = (value: string) => {
-  if (value.length < 8) return 'Password must be at least 8 characters';
-  if (!/[A-Z]/.test(value))
-    return 'Password must contain at least one uppercase letter';
-  if (!/[0-9]/.test(value)) return 'Password must contain at least one number';
-  return null;
-};
+export const validatePassword = () => ({
+  required: 'Password is required',
+  minLength: {
+    value: 8,
+    message: 'Password must be at least 8 characters',
+  },
+});
+
+export const validateDisplayName = () => ({ required: 'Username is required' });
+
+export const validateUsername = () => ({
+  required: 'Username or email is required',
+});

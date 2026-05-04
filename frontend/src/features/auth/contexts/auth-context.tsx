@@ -6,21 +6,21 @@ import React, {
   type SetStateAction,
 } from 'react';
 import { api } from '../../../api/axios';
-import {
-  setTokens,
-  clearTokens,
-  getRefreshToken,
-} from '../../../utils/token-service';
+import { setTokens, clearTokens } from '../../../utils/token-service';
 import type {
   UserResponse,
   LoginRequest,
   AuthenticationResponse,
+  RegisterRequest,
 } from '../../../types/auth';
+import { toast } from '@heroui/react';
+import { UserCheck, UserPlus } from 'lucide-react';
 
 export interface AuthContextType {
   user: UserResponse | null;
   setUser: Dispatch<SetStateAction<UserResponse | null>>;
   login: (credentials: LoginRequest) => Promise<void>;
+  register: (credentials: RegisterRequest) => Promise<void>;
   logout: () => void;
 }
 
@@ -34,23 +34,45 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       '/auth/login',
       credentials,
     );
-    const { accessToken, refreshToken, user } = response.data;
+    const { accessToken, user } = response.data;
 
-    setTokens({ access: accessToken, refresh: refreshToken });
+    setTokens({ access: accessToken });
 
     setUser(user);
+
+    toast(`Welcome back ${user?.displayName} !`, {
+      indicator: <UserCheck />,
+    });
+  };
+
+  const register = async (credentials: RegisterRequest): Promise<void> => {
+    const response = await api.post<AuthenticationResponse>(
+      '/auth/register',
+      credentials,
+    );
+
+    const { accessToken, user } = response.data;
+
+    setTokens({ access: accessToken });
+
+    setUser(user);
+
+    toast(`Welcome to Solstice, ${user?.displayName} !`, {
+      indicator: <UserPlus />,
+    });
   };
 
   const logout = (): void => {
-    const rt = getRefreshToken();
-    if (rt) api.post('/auth/logout', { refreshToken: rt }).catch(console.error);
+    api
+      .post('/auth/logout', {}, { withCredentials: true })
+      .catch(console.error);
 
     clearTokens();
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

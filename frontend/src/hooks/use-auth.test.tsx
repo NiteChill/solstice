@@ -25,11 +25,16 @@ describe('AuthContext & useAuth Hook', () => {
   });
 
   it('should successfully login, save tokens, and set user from response', async () => {
-    const mockUser = { id: '1', email: 'test@test.com', role: 'USER' };
+    const mockUser = {
+      id: '1',
+      displayName: 'Test User',
+      username: 'testuser',
+      email: 'test@test.com',
+      role: 'USER',
+    };
     const mockResponse = {
       data: {
         accessToken: 'access-123',
-        refreshToken: 'refresh-456',
         user: mockUser,
       },
     };
@@ -43,24 +48,22 @@ describe('AuthContext & useAuth Hook', () => {
 
     await act(async () => {
       await result.current.login({
-        email: 'test@test.com',
+        username: 'test@test.com',
         password: 'password',
       });
     });
 
     expect(api.post).toHaveBeenCalledWith('/auth/login', {
-      email: 'test@test.com',
+      username: 'test@test.com',
       password: 'password',
     });
     expect(tokenService.setTokens).toHaveBeenCalledWith({
       access: 'access-123',
-      refresh: 'refresh-456',
     });
     expect(result.current.user).toEqual(mockUser);
   });
 
   it('should send refresh token, clear tokens, and reset user on logout', () => {
-    vi.spyOn(tokenService, 'getRefreshToken').mockReturnValue('rt-123');
     (api.post as any).mockResolvedValueOnce({ data: {} });
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -72,9 +75,11 @@ describe('AuthContext & useAuth Hook', () => {
       result.current.logout();
     });
 
-    expect(api.post).toHaveBeenCalledWith('/auth/logout', {
-      refreshToken: 'rt-123',
-    });
+    expect(api.post).toHaveBeenCalledWith(
+      '/auth/logout',
+      {},
+      { withCredentials: true },
+    );
     expect(tokenService.clearTokens).toHaveBeenCalled();
     expect(result.current.user).toBeNull();
   });

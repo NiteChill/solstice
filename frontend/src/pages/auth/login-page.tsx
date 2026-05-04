@@ -4,72 +4,85 @@ import {
   FieldError,
   Form,
   Input,
+  InputGroup,
   Label,
   Link,
   Spinner,
   TextField,
-  toast,
 } from '@heroui/react';
 import { Logo } from '../../components/logo';
-import { useAuth } from '../../features/auth/hooks/use-auth';
 import { useForm } from 'react-hook-form';
-import { isAxiosError } from 'axios';
 import type { LoginRequest } from '../../types/auth';
-import { validateEmail, validatePassword } from '../../utils/validators';
+import { useLogin } from '../../features/auth/hooks/use-login';
+import { validatePassword, validateUsername } from '../../utils/validators';
+import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
 
 export const LoginPage = () => {
-  const { login } = useAuth();
   const {
+    setError,
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { errors },
   } = useForm<LoginRequest>();
-  const onSubmit = async (data: LoginRequest) => {
-    try {
-      await login(data);
-      toast.clear();
-    } catch (error) {
-      const is401 = isAxiosError(error) && error.response?.status === 401;
-      toast.danger(
-        is401
-          ? 'Invalid email or password. Please try again'
-          : 'Something went wrong connecting to the server',
-      );
-    }
-  };
+  const { mutate, isPending } = useLogin(setError);
+
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   return (
     <Form
       className="flex flex-col w-full max-w-84 gap-2 items-center"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit((data: LoginRequest) => mutate(data))}
     >
       <Logo className="mb-1.5 size-12" />
       <h1 className="text-2xl text-center mb-3.5">Log in to Solstice</h1>
-      <TextField isRequired fullWidth validate={validateEmail} type="email">
-        <Label>Email</Label>
-        <Input {...register('email')} placeholder="john@example.com" />
-        <FieldError />
+      <TextField fullWidth type="text" isInvalid={!!errors.username}>
+        <Label>Username or email</Label>
+        <Input
+          {...register('username', validateUsername())}
+          placeholder="Enter your username or email"
+        />
+        <FieldError>{errors.username?.message}</FieldError>
       </TextField>
       <TextField
-        isRequired
         fullWidth
-        validate={validatePassword}
-        type="password"
+        type={isVisible ? 'text' : 'password'}
+        isInvalid={!!errors.password}
       >
         <Label>Password</Label>
-        <Input {...register('password')} placeholder="Enter your password" />
+        <InputGroup className="group">
+          <InputGroup.Input
+            {...register('password', validatePassword())}
+            placeholder="Enter your password"
+          />
+          <InputGroup.Suffix className="pr-0.5 hidden group-hover:block group-focus-within:block">
+            <Button
+              isIconOnly
+              aria-label={isVisible ? 'Hide password' : 'Show password'}
+              size="sm"
+              variant="ghost"
+              onPress={() => setIsVisible(!isVisible)}
+            >
+              {isVisible ? (
+                <EyeOff className="size-4" />
+              ) : (
+                <Eye className="size-4" />
+              )}
+            </Button>
+          </InputGroup.Suffix>
+        </InputGroup>
         <Description>
           Must be at least 8 characters with 1 uppercase and 1 number
         </Description>
-        <FieldError />
+        <FieldError>{errors.password?.message}</FieldError>
       </TextField>
-      <Button type="submit" fullWidth isPending={isSubmitting}>
-        {isSubmitting ? (
+      <Button type="submit" fullWidth isPending={isPending}>
+        {isPending ? (
           <>
             <Spinner color="current" size="sm" />
             Logging in...
           </>
         ) : (
-          'Log In'
+          'Log in'
         )}
       </Button>
       <p className="text-sm text-muted text-center">

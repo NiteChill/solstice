@@ -33,7 +33,8 @@ class UserRepositoryTest {
   @Test
   void shouldSaveAndFindUserByEmail() {
     String testEmail = "test.integration@solstice.com";
-    User user = User.builder().email(testEmail).password("dummy_hashed_password").role(Role.USER).build();
+    User user = User.builder().email(testEmail).displayName("Test User").handle("test_user_handle")
+      .password("dummy_hashed_password").role(Role.USER).build();
 
     userRepository.save(user);
     Optional<User> foundUser = userRepository.findByEmail(testEmail);

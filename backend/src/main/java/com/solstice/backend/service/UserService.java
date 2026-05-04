@@ -1,17 +1,18 @@
 package com.solstice.backend.service;
 
+import com.solstice.backend.dto.AuthResult;
 import com.solstice.backend.dto.AuthenticationResponse;
 import com.solstice.backend.dto.LoginRequest;
 import com.solstice.backend.dto.RegisterRequest;
 import com.solstice.backend.dto.UserResponse;
 import com.solstice.backend.entity.RefreshToken;
-import com.solstice.backend.entity.Role;
 import com.solstice.backend.entity.User;
 import com.solstice.backend.exception.EmailAlreadyTakenException;
 import com.solstice.backend.exception.InvalidCredentialsException;
 import com.solstice.backend.repository.UserRepository;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,13 +28,15 @@ public class UserService {
   private final RefreshTokenService refreshTokenService;
 
   @Transactional
-  public AuthenticationResponse registerUser(RegisterRequest request, String userAgent, String ipAddress) {
-    if (userRepository.findByEmail(request.email()).isPresent()) {
+  public AuthResult registerUser(RegisterRequest request, String userAgent, String ipAddress) {
+    if (userRepository.existsByEmail(request.email())) {
       throw new EmailAlreadyTakenException("Email is already registered: " + request.email());
     }
 
-    User user = User.builder().email(request.email()).password(passwordEncoder.encode(request.password()))
-      .role(Role.USER).build();
+    String uniqueHandle = generateUniqueHandle(request.displayName());
+
+    User user = User.builder().displayName(request.displayName()).handle(uniqueHandle).email(request.email())
+      .password(passwordEncoder.encode(request.password())).build();
 
     User savedUser = userRepository.save(user);
 
@@ -44,16 +47,17 @@ public class UserService {
 
     String accessToken = jwtService.generateToken(claims, user);
 
-    return new AuthenticationResponse(accessToken, refreshToken.getToken(), UserResponse.fromEntity(savedUser));
+    return new AuthResult(new AuthenticationResponse(accessToken, UserResponse.fromEntity(savedUser)),
+                          refreshToken.getToken());
   }
 
   @Transactional
-  public AuthenticationResponse loginUser(LoginRequest request, String userAgent, String ipAddress) {
-    User user = userRepository.findByEmail(request.email())
-      .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
+  public AuthResult loginUser(LoginRequest request, String userAgent, String ipAddress) {
+    User user = userRepository.findByUsername(request.username())
+      .orElseThrow(() -> new InvalidCredentialsException("Invalid credentials"));
 
     if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-      throw new InvalidCredentialsException("Invalid email or password");
+      throw new InvalidCredentialsException("Invalid credentials");
     }
 
     RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getEmail(), userAgent, ipAddress);
@@ -63,6 +67,33 @@ public class UserService {
 
     String accessToken = jwtService.generateToken(claims, user);
 
-    return new AuthenticationResponse(accessToken, refreshToken.getToken(), UserResponse.fromEntity(user));
+    return new AuthResult(new AuthenticationResponse(accessToken, UserResponse.fromEntity(user)),
+                          refreshToken.getToken());
+  }
+
+  private String generateUniqueHandle(String displayName) {
+    String baseName = displayName.trim().toLowerCase().replaceAll("\\s+", "_");
+
+    baseName = baseName.replaceAll("[^a-z0-9_]", "");
+
+    if (baseName.isEmpty()) {
+      baseName = "user";
+    }
+
+    if (baseName.length() > 15) {
+      baseName = baseName.substring(0, 15);
+    }
+
+    if (!userRepository.existsByHandle(baseName)) {
+      return baseName;
+    }
+
+    String randomSuffix = UUID.randomUUID().toString().replace("-", "").substring(0, 5);
+
+    if (baseName.endsWith("_")) {
+      return baseName + randomSuffix;
+    } else {
+      return baseName + "_" + randomSuffix;
+    }
   }
 }

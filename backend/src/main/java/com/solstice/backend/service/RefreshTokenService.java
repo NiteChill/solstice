@@ -1,5 +1,6 @@
 package com.solstice.backend.service;
 
+import com.solstice.backend.dto.AuthResult;
 import com.solstice.backend.dto.AuthenticationResponse;
 import com.solstice.backend.dto.SessionResponse;
 import com.solstice.backend.dto.UserResponse;
@@ -56,7 +57,7 @@ public class RefreshTokenService {
   }
 
   @Transactional
-  public AuthenticationResponse rotateToken(String oldTokenString, String currentUserAgent, String currentIp) {
+  public AuthResult rotateToken(String oldTokenString, String currentUserAgent, String currentIp) {
     RefreshToken oldToken = refreshTokenRepository.findByToken(oldTokenString)
       .orElseThrow(() -> new SessionDeadException("Session not found. Please log in again."));
 
@@ -76,8 +77,9 @@ public class RefreshTokenService {
     java.util.Map<String, Object> claims = new java.util.HashMap<>();
     claims.put("sid", newToken.getId());
 
-    return new AuthenticationResponse(jwtService.generateToken(claims, user), newToken.getToken(),
-                                      UserResponse.fromEntity(user));
+    return new AuthResult(new AuthenticationResponse(jwtService.generateToken(claims, user),
+                                                     UserResponse.fromEntity(user)),
+                          newToken.getToken());
   }
 
   public RefreshToken verifyExpiration(RefreshToken token) {

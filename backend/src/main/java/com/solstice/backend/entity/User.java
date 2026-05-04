@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -23,7 +24,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = {@Index(name = "idx_user_handle", columnList = "handle", unique = true),
+    @Index(name = "idx_user_email", columnList = "email", unique = true),
+    @Index(name = "idx_user_display_name", columnList = "displayName"),})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,6 +37,12 @@ public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
+
+  @Column(nullable = false)
+  private String displayName;
+
+  @Column(nullable = false, unique = true)
+  private String handle;
 
   @Column(nullable = false, unique = true)
   private String email;
