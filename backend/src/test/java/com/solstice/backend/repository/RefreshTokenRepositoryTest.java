@@ -41,7 +41,7 @@ class RefreshTokenRepositoryTest {
 
   @BeforeEach
   void setUp() {
-    testUser = User.builder().email("session.test@solstice.com").password("hashed_pass").role(Role.USER).build();
+    testUser = User.builder().email("session.test@solstice.com").displayName("Session User").handle("session_handle").password("hashed_pass").role(Role.USER).build();
     userRepository.save(testUser);
   }
 
@@ -80,7 +80,7 @@ class RefreshTokenRepositoryTest {
     refreshTokenRepository.save(RefreshToken.builder().token("t1").user(testUser).expiryDate(Instant.now()).build());
     refreshTokenRepository.save(RefreshToken.builder().token("t2").user(testUser).expiryDate(Instant.now()).build());
 
-    User otherUser = User.builder().email("other@solstice.com").password("pass").role(Role.USER).build();
+    User otherUser = User.builder().email("other@solstice.com").displayName("Other User").handle("other_handle").password("pass").role(Role.USER).build();
     userRepository.save(otherUser);
     refreshTokenRepository.save(RefreshToken.builder().token("t3").user(otherUser).expiryDate(Instant.now()).build());
 
