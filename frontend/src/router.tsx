@@ -5,6 +5,7 @@ import { RequireAuth } from './features/auth/components/require-auth';
 import { AuthLayout } from './layouts/auth-layout';
 import { LoginPage } from './pages/auth/login-page';
 import { RequireGuest } from './features/auth/components/require-guest';
+import { RegisterPage } from './pages/auth/register-page';
 
 export const router = createBrowserRouter([
   {
@@ -32,7 +33,7 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: 'register',
-                    element: 'register',
+                    element: <RegisterPage />,
                   },
                 ],
               },
