@@ -13,9 +13,6 @@ describe('Axios Auth Interceptor', () => {
     globalAxiosMock = new MockAdapter(axios);
 
     vi.spyOn(tokenService, 'getAccessToken').mockReturnValue('expired-token');
-    vi.spyOn(tokenService, 'getRefreshToken').mockReturnValue(
-      'valid-refresh-token',
-    );
     vi.spyOn(tokenService, 'setTokens').mockImplementation(() => {});
     vi.spyOn(tokenService, 'clearTokens').mockImplementation(() => {});
 
@@ -41,10 +38,7 @@ describe('Axios Auth Interceptor', () => {
       .reply(() => {
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve([
-              200,
-              { accessToken: 'new-access', refreshToken: 'new-refresh' },
-            ]);
+            resolve([200, { accessToken: 'new-access' }]);
           }, 50);
         });
       });
@@ -68,7 +62,6 @@ describe('Axios Auth Interceptor', () => {
 
     expect(tokenService.setTokens).toHaveBeenCalledWith({
       access: 'new-access',
-      refresh: 'new-refresh',
     });
   });
 

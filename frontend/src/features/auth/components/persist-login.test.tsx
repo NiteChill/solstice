@@ -19,18 +19,25 @@ describe('PersistLogin Component', () => {
       user: null,
       setUser: mockSetUser,
       login: vi.fn(),
+      register: vi.fn(),
       logout: vi.fn(),
     });
   });
 
   it('should render Outlet immediately if token and user already exist', () => {
     vi.spyOn(tokenService, 'getAccessToken').mockReturnValue('valid-access');
-    vi.spyOn(tokenService, 'getRefreshToken').mockReturnValue('valid-refresh');
 
     vi.spyOn(useAuthHook, 'useAuth').mockReturnValue({
-      user: { id: '1', email: 'test@test.com', role: 'USER' },
+      user: {
+        id: '1',
+        displayName: 'Test User',
+        username: 'testuser',
+        email: 'test@test.com',
+        role: 'USER',
+      },
       setUser: mockSetUser,
       login: vi.fn(),
+      register: vi.fn(),
       logout: vi.fn(),
     });
 
@@ -50,13 +57,18 @@ describe('PersistLogin Component', () => {
 
   it('should call /refresh and set user from response if missing access token but has refresh token', async () => {
     vi.spyOn(tokenService, 'getAccessToken').mockReturnValue(null);
-    vi.spyOn(tokenService, 'getRefreshToken').mockReturnValue('valid-refresh');
+    vi.spyOn(tokenService, 'hasSessionCookie').mockReturnValue(true);
 
-    const mockUser = { id: '1', email: 'test@test.com', role: 'USER' };
+    const mockUser = {
+      id: '1',
+      displayName: 'Test User',
+      username: 'testuser',
+      email: 'test@test.com',
+      role: 'USER',
+    };
     (api.post as any).mockResolvedValueOnce({
       data: {
         accessToken: 'new-access',
-        refreshToken: 'new-refresh',
         user: mockUser,
       },
     });
@@ -74,12 +86,13 @@ describe('PersistLogin Component', () => {
     expect(screen.getByText(/Loading session/i)).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(api.post).toHaveBeenCalledWith('/auth/refresh', {
-        refreshToken: 'valid-refresh',
-      });
+      expect(api.post).toHaveBeenCalledWith(
+        '/auth/refresh',
+        {},
+        { withCredentials: true },
+      );
       expect(tokenService.setTokens).toHaveBeenCalledWith({
         access: 'new-access',
-        refresh: 'new-refresh',
       });
       expect(mockSetUser).toHaveBeenCalledWith(mockUser);
 
@@ -89,7 +102,7 @@ describe('PersistLogin Component', () => {
 
   it('should clear tokens if the refresh call fails', async () => {
     vi.spyOn(tokenService, 'getAccessToken').mockReturnValue(null);
-    vi.spyOn(tokenService, 'getRefreshToken').mockReturnValue('bad-refresh');
+    vi.spyOn(tokenService, 'hasSessionCookie').mockReturnValue(true);
 
     (api.post as any).mockRejectedValueOnce(new Error('Refresh failed'));
 
@@ -106,11 +119,30 @@ describe('PersistLogin Component', () => {
     );
 
     await waitFor(() => {
-      expect(tokenService.clearTokens).toHaveBeenCalled();
-      expect(mockSetUser).not.toHaveBeenCalled();
       expect(screen.getByTestId('child')).toBeInTheDocument();
+      expect(tokenService.clearTokens).toHaveBeenCalled();
+      expect(consoleSpy).toHaveBeenCalled();
     });
 
     consoleSpy.mockRestore();
+  });
+
+  it('should render Outlet immediately if no session cookie is present', () => {
+    vi.spyOn(tokenService, 'getAccessToken').mockReturnValue(null);
+    vi.spyOn(tokenService, 'hasSessionCookie').mockReturnValue(false);
+
+    render(
+      <MemoryRouter>
+        <Routes>
+          <Route element={<PersistLogin />}>
+            <Route path="/" element={<div data-testid="child">Loaded</div>} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.queryByText(/Loading session/i)).not.toBeInTheDocument();
+    expect(screen.getByTestId('child')).toBeInTheDocument();
+    expect(api.post).not.toHaveBeenCalled();
   });
 });

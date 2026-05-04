@@ -9,7 +9,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 
-import com.solstice.backend.dto.AuthenticationResponse;
+import com.solstice.backend.dto.AuthResult;
 import com.solstice.backend.dto.SessionResponse;
 import com.solstice.backend.entity.RefreshToken;
 import com.solstice.backend.entity.User;
@@ -96,10 +96,10 @@ class RefreshTokenServiceTest {
     Mockito.when(refreshTokenRepository.save(any(RefreshToken.class))).thenAnswer(i -> i.getArguments()[0]);
     Mockito.when(jwtService.generateToken(anyMap(), Mockito.eq(testUser))).thenReturn("new-access-token");
 
-    AuthenticationResponse response = refreshTokenService.rotateToken(oldTokenStr, chromeUa, ipAddress);
+    AuthResult response = refreshTokenService.rotateToken(oldTokenStr, chromeUa, ipAddress);
 
     assertNotNull(response.refreshToken());
-    assertEquals("new-access-token", response.accessToken());
+    assertEquals("new-access-token", response.response().accessToken());
     Mockito.verify(refreshTokenRepository).delete(oldToken);
     Mockito.verify(refreshTokenRepository).save(any(RefreshToken.class));
   }

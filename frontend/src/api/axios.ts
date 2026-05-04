@@ -3,12 +3,7 @@ import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from 'axios';
-import {
-  getAccessToken,
-  getRefreshToken,
-  setTokens,
-  clearTokens,
-} from '../utils/token-service';
+import { getAccessToken, setTokens, clearTokens } from '../utils/token-service';
 import type { AuthenticationResponse } from '../types/auth';
 import type { ProblemDetail } from '../types/api';
 
@@ -26,6 +21,7 @@ const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1';
 export const api = axios.create({
   baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 
 let isRefreshing = false;
@@ -93,26 +89,16 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       isRefreshing = true;
 
-      const currentRefreshToken = getRefreshToken();
-
-      if (!currentRefreshToken) {
-        const noTokenError = new Error('No refresh token available');
-        processQueue(noTokenError, null);
-        clearTokens();
-        window.location.href = '/auth/login';
-        return Promise.reject(error);
-      }
-
       try {
         const response = await axios.post<AuthenticationResponse>(
           `${BASE_URL}/auth/refresh`,
-          { refreshToken: currentRefreshToken },
+          {},
+          { withCredentials: true },
         );
 
-        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
-          response.data;
+        const newAccessToken = response.data.accessToken;
 
-        setTokens({ access: newAccessToken, refresh: newRefreshToken });
+        setTokens({ access: newAccessToken });
         originalRequest.headers.set(
           'Authorization',
           `Bearer ${newAccessToken}`,

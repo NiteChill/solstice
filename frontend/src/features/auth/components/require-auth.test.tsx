@@ -13,9 +13,16 @@ describe('RequireAuth Component', () => {
 
   it('should render the Outlet (Protected Content) if user exists', () => {
     vi.spyOn(useAuthHook, 'useAuth').mockReturnValue({
-      user: { id: '1', email: 'test@test.com', role: 'USER' },
+      user: {
+        id: '1',
+        displayName: 'Test User',
+        username: 'testuser',
+        email: 'test@test.com',
+        role: 'USER',
+      },
       setUser: vi.fn(),
       login: vi.fn(),
+      register: vi.fn(),
       logout: vi.fn(),
     });
 
@@ -40,6 +47,7 @@ describe('RequireAuth Component', () => {
       user: null,
       setUser: vi.fn(),
       login: vi.fn(),
+      register: vi.fn(),
       logout: vi.fn(),
     });
 

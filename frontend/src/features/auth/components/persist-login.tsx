@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Outlet } from 'react-router-dom';
 import {
   getAccessToken,
-  getRefreshToken,
+  hasSessionCookie,
   setTokens,
   clearTokens,
 } from '../../../utils/token-service';
@@ -12,7 +12,7 @@ import type { AuthenticationResponse } from '../../../types/auth';
 
 export const PersistLogin: React.FC = () => {
   const { setUser } = useAuth();
-  const needsRefresh = !getAccessToken() && !!getRefreshToken();
+  const needsRefresh = !getAccessToken() && hasSessionCookie();
 
   const [isLoading, setIsLoading] = useState<boolean>(needsRefresh);
 
@@ -24,17 +24,14 @@ export const PersistLogin: React.FC = () => {
     const verifyRefreshToken = async (): Promise<void> => {
       try {
         if (needsRefresh) {
-          const currentRefreshToken = getRefreshToken();
           const response = await api.post<AuthenticationResponse>(
             '/auth/refresh',
-            {
-              refreshToken: currentRefreshToken,
-            },
+            {},
+            { withCredentials: true },
           );
 
           setTokens({
             access: response.data.accessToken,
-            refresh: response.data.refreshToken,
           });
           setUser(response.data.user);
         }
