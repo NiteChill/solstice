@@ -1,13 +1,19 @@
-import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { App } from './app';
 import { PersistLogin } from './features/auth/components/persist-login';
 import { RequireAuth } from './features/auth/components/require-auth';
-import { AuthLayout } from './layouts/auth-layout';
+import { AuthLayout } from './layouts/auth/auth-layout';
 import { LoginPage } from './pages/auth/login-page';
 import { RequireGuest } from './features/auth/components/require-guest';
 import { RegisterPage } from './pages/auth/register-page';
+import { MainLayout } from './layouts/main/main-layout';
+import { ProfilePage } from './pages/profile-page';
 
 export const router = createBrowserRouter([
+  {
+    index: true,
+    element: <Navigate to="home" replace />,
+  },
   {
     path: '/',
     element: <App />,
@@ -43,23 +49,17 @@ export const router = createBrowserRouter([
           // Protected
 
           {
-            element: <RequireAuth />,
+            element: <MainLayout />,
             children: [
-              { path: 'dashboard', element: 'dashboard' },
-
               {
-                path: 'settings',
-                element: <Outlet />,
+                element: <RequireAuth />,
                 children: [
-                  {
-                    index: true,
-                    element: <Navigate to="profile" replace />,
-                  },
-                  { path: 'profile', element: 'profile' },
-                  { path: 'security', element: 'security' },
-                  { path: 'sessions', element: 'sessions' },
+                  { path: 'messages', element: 'Messages' },
+                  { path: 'search', element: 'Search' },
+                  { path: 'profile', element: <ProfilePage /> },
                 ],
               },
+              { path: 'home', element: 'Home' },
             ],
           },
           { path: '*', element: 'not found' },
