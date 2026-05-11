@@ -6,7 +6,7 @@ export const RequireGuest = () => {
   const location = useLocation();
 
   if (user) {
-    const from = location.state?.from?.pathname || '/settings'; // Replace redirect later
+    const from = location.state?.from?.pathname || '/home';
     return <Navigate to={from} replace />;
   }
   return <Outlet />;

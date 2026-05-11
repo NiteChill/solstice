@@ -3,9 +3,10 @@ export type Role = 'USER' | 'ADMIN';
 export interface UserResponse {
   id: string;
   displayName: string;
-  username: string;
+  handle: string;
   email: string;
   role: Role;
+  profilePicture?: string;
 }
 
 export interface LoginRequest {

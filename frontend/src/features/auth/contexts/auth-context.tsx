@@ -21,13 +21,16 @@ export interface AuthContextType {
   setUser: Dispatch<SetStateAction<UserResponse | null>>;
   login: (credentials: LoginRequest) => Promise<void>;
   register: (credentials: RegisterRequest) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
+  isAuthModalOpen: boolean;
+  setIsAuthModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserResponse | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
   const login = async (credentials: LoginRequest): Promise<void> => {
     const response = await api.post<AuthenticationResponse>(
@@ -62,17 +65,37 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     });
   };
 
-  const logout = (): void => {
-    api
-      .post('/auth/logout', {}, { withCredentials: true })
-      .catch(console.error);
+  const logout = async (): Promise<void> => {
+    const name = user!.displayName;
 
-    clearTokens();
-    setUser(null);
+    const toastId = toast('Logging out...', { isLoading: true });
+
+    try {
+      await api.post('/auth/logout', {}, { withCredentials: true });
+    } catch (_error) {
+      console.error('Backend logout failed, proceeding with local logout');
+    } finally {
+      toast.close(toastId);
+      clearTokens();
+      setUser(null);
+      setTimeout(() => {
+        toast.success(`See you later, ${name} !`);
+      }, 50);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, register, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        login,
+        register,
+        logout,
+        isAuthModalOpen,
+        setIsAuthModalOpen,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

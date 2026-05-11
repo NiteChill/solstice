@@ -93,6 +93,7 @@ public class AuthController {
     ResponseCookie deleteCookie = ResponseCookie.from("solstice_rt", "").httpOnly(true)
       .secure("prod".equalsIgnoreCase(env)).sameSite("prod".equalsIgnoreCase(env) ? "Strict" : "Lax")
       .path("/api/v1/auth").maxAge(0).build();
+
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
       .header(HttpHeaders.SET_COOKIE, generateSessionCookie(0).toString()).build();
   }
@@ -125,7 +126,7 @@ public class AuthController {
       throw new RuntimeException("Missing or invalid Authorization header");
     }
     String token = authHeader.substring(7);
-    Long currentSessionId = jwtService.extractClaim(token, claims -> claims.get("sid", Long.class));
+    Long currentSessionId = jwtService.extractClaim(token, (claims) -> claims.get("sid", Long.class));
     return refreshTokenService.getSessions(currentUser, currentSessionId);
   }
 

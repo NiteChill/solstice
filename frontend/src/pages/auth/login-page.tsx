@@ -30,7 +30,7 @@ export const LoginPage = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   return (
     <Form
-      className="flex flex-col w-full max-w-84 gap-2 items-center"
+      className="flex flex-col w-full max-w-90 gap-2 items-center"
       onSubmit={handleSubmit((data: LoginRequest) => mutate(data))}
     >
       <Logo className="mb-1.5 size-12" />
@@ -54,7 +54,7 @@ export const LoginPage = () => {
             {...register('password', validatePassword())}
             placeholder="Enter your password"
           />
-          <InputGroup.Suffix className="pr-0.5 hidden group-hover:block group-focus-within:block">
+          <InputGroup.Suffix className="p-0.5 hidden group-hover:block group-focus-within:block">
             <Button
               isIconOnly
               aria-label={isVisible ? 'Hide password' : 'Show password'}
