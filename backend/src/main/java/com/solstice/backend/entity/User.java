@@ -24,9 +24,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "users", indexes = {@Index(name = "idx_user_handle", columnList = "handle", unique = true),
+@Table(
+  name = "users",
+  indexes = {
+    @Index(name = "idx_user_handle", columnList = "handle", unique = true),
     @Index(name = "idx_user_email", columnList = "email", unique = true),
-    @Index(name = "idx_user_display_name", columnList = "displayName"),})
+    @Index(name = "idx_user_display_name", columnList = "displayName"),
+  }
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -38,10 +43,13 @@ public class User implements UserDetails {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 50)
   private String displayName;
 
-  @Column(nullable = false, unique = true)
+  @Column(length = 500)
+  private String bio;
+
+  @Column(nullable = false, unique = true, length = 20)
   private String handle;
 
   @Column(nullable = false, unique = true)

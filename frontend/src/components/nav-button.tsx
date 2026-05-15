@@ -4,19 +4,19 @@ import type { ReactNode } from 'react';
 interface SideBarButtonProps extends TabProps {
   icon: ReactNode;
   label: string;
-  displayLabel: boolean;
+  displayLabel?: boolean;
 }
 
-export const SideBarButton = ({
+export const NavButton = ({
   icon,
   label,
-  displayLabel,
+  displayLabel = true,
   ...props
 }: SideBarButtonProps) => {
   return (
     <Tabs.Tab
       {...props}
-      className={`${props.className} min-w-0 justify-start gap-3 pl-3 pr-2 h-9 hover:bg-surface opacity-100 rounded-2xl`}
+      className={`${props.className} min-w-0 justify-start gap-3 px-3 h-9 hover:bg-surface opacity-100 rounded-2xl`}
     >
       <span>{icon}</span>
       <span

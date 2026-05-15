@@ -18,5 +18,10 @@
     "label": "Run Check",
     "command": "npm run check",
     "use_new_terminal": false
+  },
+  {
+    "label": "Run Format",
+    "command": "npm run format",
+    "use_new_terminal": false
   }
 ]

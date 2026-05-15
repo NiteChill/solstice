@@ -9,16 +9,17 @@ import {
   InputGroup,
   Label,
   Link,
-  Spinner,
   TextField,
 } from '@heroui/react';
+import { AsyncButtonContent } from '../../components/async-button-content';
 import { Logo } from '../../components/logo';
 import { useRegister } from '../../features/auth/hooks/use-register';
 import {
   validateEmail,
   validatePassword,
-  validateDisplayName,
+  validateName,
 } from '../../utils/validators';
+import { trimValues } from '../../utils/form-utils';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -35,23 +36,27 @@ export const RegisterPage = () => {
   return (
     <Form
       className="flex flex-col w-full max-w-90 gap-2 items-center"
-      onSubmit={handleSubmit((data: RegisterRequest) => mutate(data))}
+      onSubmit={handleSubmit((data: RegisterRequest) =>
+        mutate(trimValues(data)),
+      )}
     >
       <Logo className="mb-1.5 size-12" />
       <h1 className="text-2xl text-center mb-3.5">Create a Solstice account</h1>
-      <TextField fullWidth type="text" isInvalid={!!errors.displayName}>
-        <Label>Username</Label>
+      <TextField fullWidth type="text" isInvalid={!!errors.name}>
+        <Label>Name</Label>
         <Input
-          {...register('displayName', validateDisplayName())}
+          {...register('name', validateName())}
           placeholder="John Doe"
+          maxLength={50}
         />
-        <FieldError>{errors.displayName?.message}</FieldError>
+        <FieldError>{errors.name?.message}</FieldError>
       </TextField>
       <TextField fullWidth type="email" isInvalid={!!errors.email}>
         <Label>Email</Label>
         <Input
           {...register('email', validateEmail())}
           placeholder="john@example.com"
+          maxLength={255}
         />
         <FieldError>{errors.email?.message}</FieldError>
       </TextField>
@@ -65,6 +70,7 @@ export const RegisterPage = () => {
           <InputGroup.Input
             {...register('password', validatePassword())}
             placeholder="Enter your password"
+            maxLength={100}
           />
           <InputGroup.Suffix className="p-0.5 hidden group-hover:block group-focus-within:block">
             <Button
@@ -88,14 +94,11 @@ export const RegisterPage = () => {
         <FieldError>{errors.password?.message}</FieldError>
       </TextField>
       <Button type="submit" fullWidth isPending={isPending}>
-        {isPending ? (
-          <>
-            <Spinner color="current" size="sm" />
-            Signing up...
-          </>
-        ) : (
-          'Sign up'
-        )}
+        <AsyncButtonContent
+          isLoading={isPending}
+          loadingText="Signing up..."
+          idleText="Sign up"
+        />
       </Button>
       <p className="text-sm text-muted text-center">
         Already have an account ?{' '}

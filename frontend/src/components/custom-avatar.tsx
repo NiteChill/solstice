@@ -4,11 +4,18 @@ import { getInitials } from '../utils/avatar-utils';
 
 interface CustomAvatarProps extends AvatarProps {
   user: UserResponse;
+  fallbackClassName?: string;
 }
 
-export const CustomAvatar = ({ user, ...props }: CustomAvatarProps) => (
+export const CustomAvatar = ({
+  user,
+  fallbackClassName,
+  ...props
+}: CustomAvatarProps) => (
   <Avatar variant="soft" color="accent" {...props}>
     <Avatar.Image src={user.profilePicture} alt="Profile" />
-    <Avatar.Fallback>{getInitials(user.displayName)}</Avatar.Fallback>
+    <Avatar.Fallback className={fallbackClassName}>
+      {getInitials(user.name)}
+    </Avatar.Fallback>
   </Avatar>
 );

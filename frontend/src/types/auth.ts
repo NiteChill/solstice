@@ -2,20 +2,21 @@ export type Role = 'USER' | 'ADMIN';
 
 export interface UserResponse {
   id: string;
-  displayName: string;
-  handle: string;
+  name: string;
+  username: string;
   email: string;
   role: Role;
   profilePicture?: string;
+  bio?: string;
 }
 
 export interface LoginRequest {
-  username: string;
+  identifier: string;
   password: string;
 }
 
 export interface RegisterRequest {
-  displayName: string;
+  name: string;
   email: string;
   password: string;
 }

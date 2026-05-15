@@ -22,7 +22,7 @@ export const ProfilePage = () => {
             <Button isIconOnly variant="ghost" size="lg">
               <Menu className="size-5" />
             </Button>
-            <AuthActionPopover excludeProfile />
+            <AuthActionPopover />
           </Dropdown>
         }
       />

@@ -2,7 +2,7 @@ import { buttonVariants, Card, Link, Tabs } from '@heroui/react';
 import { getOptions, getSelectedKey } from '../../utils/navigation-utils';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../features/auth/hooks/use-auth';
-import { SideBarButton } from './components/side-bar-button';
+import { NavButton } from '../../components/nav-button';
 import { useState } from 'react';
 import { SideBarHeaderOpen } from './components/side-bar-header-open';
 import { SideBarHeaderClose } from './components/side-bar-header-close';
@@ -35,7 +35,7 @@ export const SideBar = () => {
       >
         <Tabs.List className="bg-transparent w-full gap-0.5 p-0">
           {getOptions({ user, iconSize: 4 }).map((opt) => (
-            <SideBarButton
+            <NavButton
               icon={opt.icon}
               label={opt.label}
               displayLabel={isOpen}

@@ -5,7 +5,6 @@
     name="Solstice Industry Standard"
     version="12"
   >
-<!-- Main Bracing Fixes (Egyptian Style) -->
 <setting
       id="org.eclipse.jdt.core.formatter.insert_new_line_before_else_in_if_statement"
       value="do not insert"
@@ -22,17 +21,11 @@
       id="org.eclipse.jdt.core.formatter.insert_new_line_before_while_in_do_statement"
       value="do not insert"
     />
-
-<!-- Indentation: 4 Spaces (Standard) -->
 <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space" />
 <setting id="org.eclipse.jdt.core.formatter.tabulation.size" value="2" />
 <setting id="org.eclipse.jdt.core.formatter.indentation.size" value="2" />
-
-<!-- Modern Line Width -->
-<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120" />
-<setting id="org.eclipse.jdt.core.formatter.comment.line_length" value="120" />
-
-<!-- Readability: Blank Lines -->
+<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="80" />
+<setting id="org.eclipse.jdt.core.formatter.comment.line_length" value="80" />
 <setting
       id="org.eclipse.jdt.core.formatter.blank_lines_before_method"
       value="1"
@@ -53,8 +46,10 @@
       id="org.eclipse.jdt.core.formatter.blank_lines_between_type_declarations"
       value="1"
     />
-
-<!-- Readability: Whitespace -->
+<setting
+      id="org.eclipse.jdt.core.formatter.blank_lines_before_first_class_body_declaration"
+      value="1"
+    />
 <setting
       id="org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_block"
       value="insert"
@@ -99,8 +94,6 @@
       id="org.eclipse.jdt.core.formatter.insert_space_after_comma_in_method_invocation_arguments"
       value="insert"
     />
-
-<!-- Comment Formatting -->
 <setting
       id="org.eclipse.jdt.core.formatter.comment.format_javadoc_comments"
       value="true"
@@ -121,9 +114,7 @@
       id="org.eclipse.jdt.core.formatter.comment.new_lines_at_javadoc_boundaries"
       value="true"
     />
-
-<!-- Preservation -->
-<setting id="org.eclipse.jdt.core.formatter.join_wrapped_lines" value="true" />
+<setting id="org.eclipse.jdt.core.formatter.join_wrapped_lines" value="false" />
 <setting
       id="org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve"
       value="1"
@@ -137,36 +128,38 @@
       id="org.eclipse.jdt.core.formatter.enabling_tag"
       value="@formatter:on"
     />
-
-    <!-- Method Declarations (Definitions) -->
     <setting
       id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_method_declaration"
-      value="18"
+      value="2"
     />
     <setting
       id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_constructor_declaration"
-      value="18"
+      value="2"
+    />
+    <setting
+      id="org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_method_declaration"
+      value="2"
     />
     <setting
       id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_parameter"
       value="insert"
     />
-
-    <!-- Method Invocations (Calling the method) -->
     <setting
       id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation"
-      value="18"
+      value="2"
     />
     <setting
       id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression"
-      value="18"
+      value="2"
     />
     <setting
       id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call"
-      value="18"
+      value="2"
     />
-
-    <!-- Indentation for wrapped lines (Use 2 or 1 for "double indent") -->
+    <setting
+      id="org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation"
+      value="2"
+    />
     <setting
       id="org.eclipse.jdt.core.formatter.continuation_indentation"
       value="1"

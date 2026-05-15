@@ -5,6 +5,7 @@ import { useAuth } from './use-auth';
 import type { LoginRequest } from '../../../types/auth';
 import { toast } from '@heroui/react';
 import { applyServerErrors } from '../../../utils/form-utils';
+import { handleFallbackError } from '../../../utils/error-utils';
 
 export const useLogin = (setError: UseFormSetError<LoginRequest>) => {
   const { login } = useAuth();
@@ -24,9 +25,8 @@ export const useLogin = (setError: UseFormSetError<LoginRequest>) => {
           applyServerErrors(error.response.data.errors, setError);
           return;
         }
-
-        toast.danger('Server connection failed.');
-      } else toast.danger('An unexpected error occurred');
+        handleFallbackError(error);
+      }
     },
   });
 };

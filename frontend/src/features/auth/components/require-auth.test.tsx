@@ -16,7 +16,7 @@ describe('RequireAuth Component', () => {
       user: {
         id: '1',
         displayName: 'Test User',
-        username: 'testuser',
+        handle: 'testuser',
         email: 'test@test.com',
         role: 'USER',
       },
@@ -24,6 +24,8 @@ describe('RequireAuth Component', () => {
       login: vi.fn(),
       register: vi.fn(),
       logout: vi.fn(),
+      isAuthModalOpen: false,
+      setIsAuthModalOpen: vi.fn(),
     });
 
     render(
@@ -42,13 +44,15 @@ describe('RequireAuth Component', () => {
     expect(screen.getByTestId('protected-content')).toBeInTheDocument();
   });
 
-  it('should redirect to /home if user is null', () => {
+  it('should redirect to /auth/login if user is null', () => {
     vi.spyOn(useAuthHook, 'useAuth').mockReturnValue({
       user: null,
       setUser: vi.fn(),
       login: vi.fn(),
       register: vi.fn(),
       logout: vi.fn(),
+      isAuthModalOpen: false,
+      setIsAuthModalOpen: vi.fn(),
     });
 
     render(
@@ -58,7 +62,7 @@ describe('RequireAuth Component', () => {
             <Route path="/protected" element={<div>Secret</div>} />
           </Route>
           <Route
-            path="/home"
+            path="/auth/login"
             element={<div data-testid="login-page">Login Please</div>}
           />
         </Routes>
