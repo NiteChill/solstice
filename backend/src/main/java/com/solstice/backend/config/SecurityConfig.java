@@ -23,14 +23,33 @@ public class SecurityConfig {
   private final JwtAuthenticationFilter jwtAuthFilter;
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.cors(Customizer.withDefaults()).csrf((csrf) -> csrf.disable())
-      .authorizeHttpRequests((auth) -> auth
-        .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
-        .requestMatchers(HttpMethod.GET, "/api/v1/posts").permitAll()
-        .requestMatchers(HttpMethod.GET, "/api/v1/posts/{id}").permitAll().anyRequest().authenticated())
-      .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-      .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+  public SecurityFilterChain securityFilterChain(HttpSecurity http)
+    throws Exception {
+    http
+      .cors(Customizer.withDefaults())
+      .csrf(csrf -> csrf.disable())
+      .authorizeHttpRequests(auth ->
+        auth
+          .requestMatchers(
+            "/api/v1/auth/register",
+            "/api/v1/auth/login",
+            "/api/v1/auth/refresh"
+          )
+          .permitAll()
+          .requestMatchers(HttpMethod.GET, "/api/v1/posts")
+          .permitAll()
+          .requestMatchers(HttpMethod.GET, "/api/v1/posts/{id}")
+          .permitAll()
+          .anyRequest()
+          .authenticated()
+      )
+      .sessionManagement(session ->
+        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      )
+      .addFilterBefore(
+        jwtAuthFilter,
+        UsernamePasswordAuthenticationFilter.class
+      );
 
     return http.build();
   }

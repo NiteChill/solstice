@@ -17,3 +17,16 @@ export const applyServerErrors = <T extends FieldValues>(
     });
   });
 };
+
+/**
+ * Trims all string values in an object.
+ */
+export const trimValues = <T extends Record<string, any>>(data: T): T => {
+  const trimmed = { ...data } as any;
+  Object.keys(trimmed).forEach((key) => {
+    if (typeof trimmed[key] === 'string') {
+      trimmed[key] = trimmed[key].trim();
+    }
+  });
+  return trimmed as T;
+};

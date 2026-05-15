@@ -72,7 +72,8 @@ spotless {
     target 'src/*/java/**/*.java'
     importOrder()
     removeUnusedImports()
-    eclipse().configFile("${project.projectDir}/config/fmt/eclipse-formatter.xml")
+    prettier(['prettier': '3.8.3', 'prettier-plugin-java': '2.8.1'])
+      .config(['parser': 'java', 'tabWidth': 2, 'printWidth': 80, 'plugins': ['prettier-plugin-java']])
     formatAnnotations()
   }
 }

@@ -6,10 +6,16 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+public interface RefreshTokenRepository
+  extends JpaRepository<RefreshToken, Long>
+{
   Optional<RefreshToken> findByToken(String token);
 
-  Optional<RefreshToken> findByUserAndUserAgentAndIpAddress(User user, String userAgent, String ipAddress);
+  Optional<RefreshToken> findByUserAndUserAgentAndIpAddress(
+    User user,
+    String userAgent,
+    String ipAddress
+  );
 
   List<RefreshToken> findAllByUser(User user);
 

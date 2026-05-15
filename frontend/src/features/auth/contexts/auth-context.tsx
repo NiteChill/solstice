@@ -43,7 +43,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     setUser(user);
 
-    toast(`Welcome back ${user?.displayName} !`, {
+    toast(`Welcome back ${user?.name} !`, {
       indicator: <UserCheck />,
     });
   };
@@ -60,13 +60,13 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     setUser(user);
 
-    toast(`Welcome to Solstice, ${user?.displayName} !`, {
+    toast(`Welcome to Solstice, ${user?.name} !`, {
       indicator: <UserPlus />,
     });
   };
 
   const logout = async (): Promise<void> => {
-    const name = user!.displayName;
+    const name = user!.name;
 
     const toastId = toast('Logging out...', { isLoading: true });
 

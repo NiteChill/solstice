@@ -25,7 +25,9 @@ class UserRepositoryTest {
 
   @Container
   @ServiceConnection
-  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
+  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
+    "postgres:16-alpine"
+  );
 
   @Autowired
   private UserRepository userRepository;
@@ -33,15 +35,33 @@ class UserRepositoryTest {
   @Test
   void shouldSaveAndFindUserByEmail() {
     String testEmail = "test.integration@solstice.com";
-    User user = User.builder().email(testEmail).displayName("Test User").handle("test_user_handle")
-      .password("dummy_hashed_password").role(Role.USER).build();
+    User user = User.builder()
+      .email(testEmail)
+      .displayName("Test User")
+      .handle("test_user_handle")
+      .password("dummy_hashed_password")
+      .role(Role.USER)
+      .build();
 
     userRepository.save(user);
     Optional<User> foundUser = userRepository.findByEmail(testEmail);
 
-    assertTrue(foundUser.isPresent(), "The user should be found in the database");
-    assertEquals(testEmail, foundUser.get().getEmail(), "The emails should match");
-    assertNotNull(foundUser.get().getId(), "PostgreSQL should have generated a UUID");
-    assertNotNull(foundUser.get().getCreatedAt(), "PostgreSQL should have generated a creation timestamp");
+    assertTrue(
+      foundUser.isPresent(),
+      "The user should be found in the database"
+    );
+    assertEquals(
+      testEmail,
+      foundUser.get().getEmail(),
+      "The emails should match"
+    );
+    assertNotNull(
+      foundUser.get().getId(),
+      "PostgreSQL should have generated a UUID"
+    );
+    assertNotNull(
+      foundUser.get().getCreatedAt(),
+      "PostgreSQL should have generated a creation timestamp"
+    );
   }
 }

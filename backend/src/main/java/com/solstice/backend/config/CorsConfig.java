@@ -17,12 +17,15 @@ public class CorsConfig {
 
   @Bean
   public CorsFilter corsFilter() {
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    UrlBasedCorsConfigurationSource source =
+      new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
 
     config.setAllowedOrigins(allowedOrigins);
 
-    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    config.setAllowedMethods(
+      Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+    );
 
     config.setAllowedHeaders(List.of("*"));
 

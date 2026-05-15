@@ -23,9 +23,7 @@ export const SideBarAccountCard = ({
           className={`flex flex-1 items-center transition-opacity ease-in duration-300 ${!isOpen && 'opacity-0'}`}
         >
           <div className="flex flex-1 flex-col">
-            <h3 className="text-sm font-medium leading-tight">
-              {user.displayName}
-            </h3>
+            <h3 className="text-sm font-medium leading-tight">{user.name}</h3>
             <p className="text-xs text-muted leading-tight">{user.email}</p>
           </div>
           <ChevronsUpDown className="size-4 text-muted transform-rotate duration-300 ease-in-out group-data-pressed:rotate-180" />

@@ -33,12 +33,23 @@ public class RefreshTokenService {
   private final JwtService jwtService;
   private final UserAgentAnalyzer uaa;
 
-  public RefreshToken createRefreshToken(String email, String userAgent, String ipAddress) {
-    User user = userRepository.findByEmail(email)
-      .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+  public RefreshToken createRefreshToken(
+    String email,
+    String userAgent,
+    String ipAddress
+  ) {
+    User user = userRepository
+      .findByEmail(email)
+      .orElseThrow(() ->
+        new ResourceNotFoundException("User not found with email: " + email)
+      );
 
-    Optional<RefreshToken> existingToken = refreshTokenRepository.findByUserAndUserAgentAndIpAddress(user, userAgent,
-                                                                                                     ipAddress);
+    Optional<RefreshToken> existingToken =
+      refreshTokenRepository.findByUserAndUserAgentAndIpAddress(
+        user,
+        userAgent,
+        ipAddress
+      );
 
     RefreshToken refreshToken;
     if (existingToken.isPresent()) {
@@ -57,13 +68,25 @@ public class RefreshTokenService {
   }
 
   @Transactional
-  public AuthResult rotateToken(String oldTokenString, String currentUserAgent, String currentIp) {
-    RefreshToken oldToken = refreshTokenRepository.findByToken(oldTokenString)
-      .orElseThrow(() -> new SessionDeadException("Session not found. Please log in again."));
+  public AuthResult rotateToken(
+    String oldTokenString,
+    String currentUserAgent,
+    String currentIp
+  ) {
+    RefreshToken oldToken = refreshTokenRepository
+      .findByToken(oldTokenString)
+      .orElseThrow(() ->
+        new SessionDeadException("Session not found. Please log in again.")
+      );
 
-    if (!oldToken.getUserAgent().equals(currentUserAgent) || !oldToken.getIpAddress().equals(currentIp)) {
+    if (
+      !oldToken.getUserAgent().equals(currentUserAgent) ||
+      !oldToken.getIpAddress().equals(currentIp)
+    ) {
       refreshTokenRepository.deleteAllByUser(oldToken.getUser());
-      throw new SessionDeadException("Security Alert: Device or location mismatch. All sessions revoked.");
+      throw new SessionDeadException(
+        "Security Alert: Device or location mismatch. All sessions revoked."
+      );
     }
 
     verifyExpiration(oldToken);
@@ -72,27 +95,38 @@ public class RefreshTokenService {
 
     refreshTokenRepository.delete(oldToken);
 
-    RefreshToken newToken = createRefreshToken(user.getEmail(), currentUserAgent, currentIp);
+    RefreshToken newToken = createRefreshToken(
+      user.getEmail(),
+      currentUserAgent,
+      currentIp
+    );
 
     java.util.Map<String, Object> claims = new java.util.HashMap<>();
     claims.put("sid", newToken.getId());
 
-    return new AuthResult(new AuthenticationResponse(jwtService.generateToken(claims, user),
-                                                     UserResponse.fromEntity(user)),
-                          newToken.getToken());
+    return new AuthResult(
+      new AuthenticationResponse(
+        jwtService.generateToken(claims, user),
+        UserResponse.fromEntity(user)
+      ),
+      newToken.getToken()
+    );
   }
 
   public RefreshToken verifyExpiration(RefreshToken token) {
     if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
       refreshTokenRepository.delete(token);
-      throw new SessionDeadException("Refresh token was expired. Please sign in again.");
+      throw new SessionDeadException(
+        "Refresh token was expired. Please sign in again."
+      );
     }
     return token;
   }
 
   @Transactional
   public void revokeCurrentToken(String tokenString, User user) {
-    RefreshToken token = refreshTokenRepository.findByToken(tokenString)
+    RefreshToken token = refreshTokenRepository
+      .findByToken(tokenString)
       .orElseThrow(() -> new ResourceNotFoundException("Session not found."));
 
     revokeToken(token, user);
@@ -100,7 +134,8 @@ public class RefreshTokenService {
 
   @Transactional
   public void revokeTokenById(Long sessionId, User user) {
-    RefreshToken token = refreshTokenRepository.findById(sessionId)
+    RefreshToken token = refreshTokenRepository
+      .findById(sessionId)
       .orElseThrow(() -> new ResourceNotFoundException("Session not found."));
 
     revokeToken(token, user);
@@ -108,7 +143,9 @@ public class RefreshTokenService {
 
   private void revokeToken(RefreshToken token, User user) {
     if (!token.getUser().getId().equals(user.getId())) {
-      throw new SessionDeadException("Unauthorized: You do not own this session.");
+      throw new SessionDeadException(
+        "Unauthorized: You do not own this session."
+      );
     }
 
     refreshTokenRepository.delete(token);
@@ -120,11 +157,20 @@ public class RefreshTokenService {
   }
 
   public List<SessionResponse> getSessions(User user, Long currentSessionId) {
-    return refreshTokenRepository.findAllByUser(user).stream().map(rt -> {
-      UserAgent agent = uaa.parse(rt.getUserAgent());
-      return new SessionResponse(rt.getId(), agent.getValue("DeviceName"), agent.getValue("AgentNameVersion"),
-                                 rt.getIpAddress(), rt.getExpiryDate().minusMillis(refreshExpiration),
-                                 rt.getId().equals(currentSessionId));
-    }).toList();
+    return refreshTokenRepository
+      .findAllByUser(user)
+      .stream()
+      .map(rt -> {
+        UserAgent agent = uaa.parse(rt.getUserAgent());
+        return new SessionResponse(
+          rt.getId(),
+          agent.getValue("DeviceName"),
+          agent.getValue("AgentNameVersion"),
+          rt.getIpAddress(),
+          rt.getExpiryDate().minusMillis(refreshExpiration),
+          rt.getId().equals(currentSessionId)
+        );
+      })
+      .toList();
   }
 }

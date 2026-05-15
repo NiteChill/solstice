@@ -2,8 +2,8 @@ import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import type { UseFormSetError } from 'react-hook-form';
 import type { RegisterRequest } from '../../../types/auth';
-import { toast } from '@heroui/react';
 import { applyServerErrors } from '../../../utils/form-utils';
+import { handleFallbackError } from '../../../utils/error-utils';
 import { useAuth } from './use-auth';
 
 export const useRegister = (setError: UseFormSetError<RegisterRequest>) => {
@@ -22,13 +22,12 @@ export const useRegister = (setError: UseFormSetError<RegisterRequest>) => {
         if (error.response?.status === 409) {
           setError('email', {
             type: 'server',
-            message: 'This email is already registered. Please log in',
+            message: 'This email is already taken',
           });
           return;
         }
-
-        toast.danger('Server connection failed.');
-      } else toast.danger('An unexpected error occurred');
+        handleFallbackError(error);
+      }
     },
   });
 };

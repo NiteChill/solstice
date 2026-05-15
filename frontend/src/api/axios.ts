@@ -6,6 +6,7 @@ import axios, {
 import { getAccessToken, setTokens, clearTokens } from '../utils/token-service';
 import type { AuthenticationResponse } from '../types/auth';
 import type { ProblemDetail } from '../types/api';
+import { toast } from '@heroui/react';
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -32,11 +33,8 @@ const processQueue = (
   token: string | null = null,
 ): void => {
   failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
+    if (error) prom.reject(error);
+    else prom.resolve(token);
   });
   failedQueue = [];
 };
@@ -44,9 +42,8 @@ const processQueue = (
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = getAccessToken();
-    if (token) {
-      config.headers.set('Authorization', `Bearer ${token}`);
-    }
+    if (token) config.headers.set('Authorization', `Bearer ${token}`);
+
     return config;
   },
   (error: any) => Promise.reject(error),
@@ -55,13 +52,21 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError<ProblemDetail>) => {
+    const isServerError = error.response && error.response.status >= 500;
+    const isNetworkError = !error.response;
+
+    if (isServerError)
+      toast.danger('The server encountered an error. Please try again later.');
+    else if (isNetworkError)
+      toast.danger(
+        'Network error. Please check your connection and try again.',
+      );
+
     const originalRequest = error.config as
       | CustomAxiosRequestConfig
       | undefined;
 
-    if (!originalRequest) {
-      return Promise.reject(error);
-    }
+    if (!originalRequest) return Promise.reject(error);
 
     const errorCode = error.response?.data?.code;
 
@@ -73,18 +78,16 @@ api.interceptors.response.use(
     }
 
     if (errorCode === 'TOKEN_EXPIRED' && !originalRequest._retry) {
-      if (isRefreshing) {
+      if (isRefreshing)
         return new Promise<string | null>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
           .then((token) => {
-            if (token) {
+            if (token)
               originalRequest.headers.set('Authorization', `Bearer ${token}`);
-            }
             return api(originalRequest);
           })
           .catch((err) => Promise.reject(err));
-      }
 
       originalRequest._retry = true;
       isRefreshing = true;

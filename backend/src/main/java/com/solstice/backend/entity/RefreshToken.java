@@ -23,6 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class RefreshToken {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
