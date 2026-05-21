@@ -19,3 +19,23 @@
     display: flex;
   }
 }
+
+@layer components {
+  .modal__dialog {
+    @apply rounded-4xl;
+  }
+
+  .modal__close-trigger {
+    @apply size-7 rounded-2xl;
+  }
+
+  .modal__heading {
+    @apply leading-7;
+  }
+  .breadcrumbs
+    .breadcrumbs__link[data-focus-visible='true']:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+    --tw-ring-shadow: 0 0 #0000;
+  }
+}

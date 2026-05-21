@@ -4,9 +4,10 @@ import java.time.Instant;
 
 public record SessionResponse(
   Long id,
-  String deviceName,
+  String device,
+  String os,
   String browser,
-  String ipAddress,
+  String location,
   Instant lastActive,
   boolean isCurrent
 ) {}

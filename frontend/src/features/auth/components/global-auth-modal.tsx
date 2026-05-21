@@ -3,8 +3,7 @@ import { useAuth } from '../hooks/use-auth';
 import { User } from 'lucide-react';
 
 export const GlobalAuthModal = () => {
-  const { isAuthModalOpen, setIsAuthModalOpen } = useAuth();
-
+  const { isAuthModalOpen, setIsAuthModalOpen, from } = useAuth();
   return (
     <Modal.Backdrop isOpen={isAuthModalOpen} onOpenChange={setIsAuthModalOpen}>
       <Modal.Container size="sm">
@@ -22,6 +21,7 @@ export const GlobalAuthModal = () => {
           <ModalFooter className="flex-col w-full">
             <Link
               href="/auth/login"
+              routerOptions={{ state: { from: from } }}
               onPress={() => setIsAuthModalOpen(false)}
               className={buttonVariants({ fullWidth: true })}
             >
@@ -29,6 +29,7 @@ export const GlobalAuthModal = () => {
             </Link>
             <Link
               href="/auth/register"
+              routerOptions={{ state: { from: from } }}
               onPress={() => setIsAuthModalOpen(false)}
               className={buttonVariants({
                 fullWidth: true,

@@ -34,10 +34,10 @@ public class RefreshToken {
   @Column(nullable = false)
   private Instant expiryDate;
 
-  @Column
+  @Column(nullable = false)
   private String userAgent;
 
-  @Column
+  @Column(nullable = false)
   private String ipAddress;
 
   @ManyToOne

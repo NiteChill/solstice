@@ -2,6 +2,7 @@ import { Home, Search, Send, User } from 'lucide-react';
 import type { UserResponse } from '../types/auth';
 import { Avatar } from '@heroui/react';
 import type { Location } from 'react-router-dom';
+import { getAvatarSrc } from './avatar-utils';
 
 interface GetOptionsProps {
   user: UserResponse | null;
@@ -25,11 +26,19 @@ export const getOptions = ({ user, iconSize = 5 }: GetOptionsProps) => [
     label: 'Search',
   },
   {
-    icon: (
-      <Avatar className={`size-${iconSize} bg-transparent`}>
-        <Avatar.Image alt="Profile" src={user?.profilePicture} />
-        <User className={`size-${iconSize}`} />
+    icon: user?.profilePicture ? (
+      <Avatar
+        className={`size-${iconSize + 1} -mx-0.5 border`}
+        variant="soft"
+        color="accent"
+      >
+        <Avatar.Image
+          alt="Profile"
+          src={getAvatarSrc(user.profilePicture, true)}
+        />
       </Avatar>
+    ) : (
+      <User className={`size-${iconSize}`} />
     ),
     id: '/profile',
     label: 'Profile',

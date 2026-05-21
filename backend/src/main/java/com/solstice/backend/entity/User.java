@@ -63,6 +63,9 @@ public class User implements UserDetails {
   @Builder.Default
   private Role role = Role.USER;
 
+  @Column(length = 255)
+  private String profilePicture;
+
   @CreationTimestamp
   @Column(nullable = false)
   private LocalDateTime createdAt;

@@ -6,7 +6,7 @@ import { ThemeSwitcher } from '../../../components/theme-switcher';
 export const AuthActionPopover = () => {
   const { logout } = useAuth();
   return (
-    <Dropdown.Popover className="w-59">
+    <Dropdown.Popover>
       <Dropdown.Menu>
         <Dropdown.Item href="#settings" id="settings" textValue="Settings">
           <Settings className="size-3.5 text-muted" />

@@ -44,6 +44,9 @@ class RefreshTokenServiceTest {
   @Mock
   private JwtService jwtService;
 
+  @Mock
+  private GeoIpService geoIpService;
+
   private static UserAgentAnalyzer realUaa;
 
   private RefreshTokenService refreshTokenService;
@@ -74,7 +77,8 @@ class RefreshTokenServiceTest {
       refreshTokenRepository,
       userRepository,
       jwtService,
-      realUaa
+      realUaa,
+      geoIpService
     );
     ReflectionTestUtils.setField(
       refreshTokenService,

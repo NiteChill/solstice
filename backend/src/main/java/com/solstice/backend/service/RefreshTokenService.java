@@ -32,6 +32,7 @@ public class RefreshTokenService {
   private final UserRepository userRepository;
   private final JwtService jwtService;
   private final UserAgentAnalyzer uaa;
+  private final GeoIpService geoIpService;
 
   public RefreshToken createRefreshToken(
     String email,
@@ -76,7 +77,7 @@ public class RefreshTokenService {
     RefreshToken oldToken = refreshTokenRepository
       .findByToken(oldTokenString)
       .orElseThrow(() ->
-        new SessionDeadException("Session not found. Please log in again.")
+        new SessionDeadException("Session not found. Please log in again")
       );
 
     if (
@@ -85,7 +86,7 @@ public class RefreshTokenService {
     ) {
       refreshTokenRepository.deleteAllByUser(oldToken.getUser());
       throw new SessionDeadException(
-        "Security Alert: Device or location mismatch. All sessions revoked."
+        "Security Alert: Device or location mismatch. All sessions revoked"
       );
     }
 
@@ -117,7 +118,7 @@ public class RefreshTokenService {
     if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
       refreshTokenRepository.delete(token);
       throw new SessionDeadException(
-        "Refresh token was expired. Please sign in again."
+        "Refresh token was expired. Please sign in again"
       );
     }
     return token;
@@ -136,7 +137,7 @@ public class RefreshTokenService {
   public void revokeTokenById(Long sessionId, User user) {
     RefreshToken token = refreshTokenRepository
       .findById(sessionId)
-      .orElseThrow(() -> new ResourceNotFoundException("Session not found."));
+      .orElseThrow(() -> new ResourceNotFoundException("Session not found"));
 
     revokeToken(token, user);
   }
@@ -144,7 +145,7 @@ public class RefreshTokenService {
   private void revokeToken(RefreshToken token, User user) {
     if (!token.getUser().getId().equals(user.getId())) {
       throw new SessionDeadException(
-        "Unauthorized: You do not own this session."
+        "Unauthorized: You do not own this session"
       );
     }
 
@@ -160,13 +161,17 @@ public class RefreshTokenService {
     return refreshTokenRepository
       .findAllByUser(user)
       .stream()
+      .sorted(
+        java.util.Comparator.comparing(RefreshToken::getExpiryDate).reversed()
+      )
       .map(rt -> {
         UserAgent agent = uaa.parse(rt.getUserAgent());
         return new SessionResponse(
           rt.getId(),
-          agent.getValue("DeviceName"),
-          agent.getValue("AgentNameVersion"),
-          rt.getIpAddress(),
+          agent.getValue("DeviceClass"),
+          agent.getValue("OperatingSystemName"),
+          agent.getValue("AgentName"),
+          geoIpService.getLocation(rt.getIpAddress()),
           rt.getExpiryDate().minusMillis(refreshExpiration),
           rt.getId().equals(currentSessionId)
         );

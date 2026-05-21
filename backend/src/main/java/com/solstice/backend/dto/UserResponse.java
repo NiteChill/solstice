@@ -9,7 +9,8 @@ public record UserResponse(
   String bio,
   String username,
   String email,
-  String role
+  String role,
+  String profilePicture
 ) {
   public static UserResponse fromEntity(User user) {
     return new UserResponse(
@@ -18,7 +19,8 @@ public record UserResponse(
       user.getBio(),
       user.getHandle(),
       user.getEmail(),
-      user.getRole().name()
+      user.getRole().name(),
+      user.getProfilePicture()
     );
   }
 }

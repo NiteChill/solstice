@@ -36,12 +36,15 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
   implementation 'nl.basjes.parse.useragent:yauaa:7.28.1'
+  implementation 'com.ip2location:ip2location-java:8.11.2'
   runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
   runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
 
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
   runtimeOnly 'org.postgresql:postgresql'
+  implementation 'net.coobird:thumbnailator:0.4.20'
+  implementation 'org.sejda.imageio:webp-imageio:0.1.6'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'

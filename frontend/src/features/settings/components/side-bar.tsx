@@ -1,32 +1,31 @@
 import { Tabs, type Key } from '@heroui/react';
 import { NavButton } from '../../../components/nav-button';
-import { settingsRouter } from '../settings-router';
+import { SETTINGS_ROUTES } from '../settings-router';
 import { useGlobalSettingsModal } from '../hooks/use-global-settings-modal';
 
 export const SideBar = () => {
-  const { activePath, navigate } = useGlobalSettingsModal();
+  const { activeRoute, navigate } = useGlobalSettingsModal();
   return (
-    <div className="w-full sm:w-40 h-auto sm:h-full overflow-x-auto sm:overflow-y-auto border-t sm:border-b-0 border-default-200">
-      <Tabs
-        className="flex-1 p-2 sm:py-3 sm:pl-3 sm:pr-1 w-fit sm:w-full"
-        orientation="vertical"
-        selectedKey={activePath}
-        onSelectionChange={(key: Key) =>
-          navigate(`#settings/${key.toString()}`)
-        }
-      >
-        <Tabs.List className="bg-transparent w-full gap-2 sm:gap-0.5 p-0 flex-row sm:flex-col justify-start">
-          {settingsRouter.map(({ icon: Icon, label, path }) => (
+    <Tabs
+      className="absolute bottom-2 left-2 right-2 md:top-2 bg-surface rounded-3xl md:w-45 h-auto shrink-0 z-50 shadow-md"
+      orientation="vertical"
+      selectedKey={activeRoute.path}
+      onSelectionChange={(key: Key) => navigate(`#settings/${key.toString()}`)}
+    >
+      <Tabs.ListContainer className="w-full h-full rounded-[inherit]">
+        <Tabs.List className="bg-surface-secondary/50 rounded-[inherit] w-full h-full p-3 gap-2 md:gap-1 flex-row md:flex-col justify-between md:justify-start overflow-x-auto md:overflow-y-auto">
+          {SETTINGS_ROUTES.map(({ icon: Icon, label, path }) => (
             <NavButton
               key={path}
               id={path}
               icon={<Icon />}
               label={label}
-              className="w-fit shrink-0 sm:w-full"
+              className="w-fit shrink-0 md:w-full hover:bg-surface-secondary/60!"
+              indicatorProps={{ className: 'bg-surface-tertiary' }}
             />
           ))}
         </Tabs.List>
-      </Tabs>
-    </div>
+      </Tabs.ListContainer>
+    </Tabs>
   );
 };

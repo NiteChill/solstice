@@ -1,23 +1,24 @@
-import type { ComponentType } from 'react';
-import { ProfileSection } from './components/profile-section';
 import { SessionsSection } from './components/sessions-section';
 import { KeyRound, MonitorSmartphone, Settings2, User } from 'lucide-react';
 import { PasswordSection } from './components/password-section';
 import { PreferencesSection } from './components/preferences-section';
+import type { SettingsRoute } from '../../types/settings';
+import { UploadAvatarSection } from './components/upload-avatar-section';
+import { ProfileSection } from './components/profile-section';
 
-type SettingsRoute = {
-  path: string;
-  label: string;
-  component: ComponentType;
-  icon: ComponentType;
-};
-
-export const settingsRouter: SettingsRoute[] = [
+export const SETTINGS_ROUTES: SettingsRoute[] = [
   {
     path: 'profile',
     label: 'Profile',
     component: ProfileSection,
     icon: User,
+    children: [
+      {
+        path: 'upload-avatar',
+        label: 'Upload avatar',
+        component: UploadAvatarSection,
+      },
+    ],
   },
   {
     path: 'password',

@@ -1,14 +1,18 @@
 import { useNavigate, useHref, Outlet } from 'react-router-dom';
 import { RouterProvider, Toast } from '@heroui/react';
-// import { ThemeSwitcher } from './components/theme-switcher';
+import { GlobalAuthGuard } from './features/auth/components/global-auth-guard';
+import { PersistLogin } from './features/auth/components/persist-login';
 
 export const App = () => {
   const navigate = useNavigate();
   return (
     <RouterProvider navigate={navigate} useHref={useHref}>
-      <Outlet />
-      {/*<ThemeSwitcher />*/}
-      <Toast.Provider />
+      <PersistLogin>
+        <GlobalAuthGuard>
+          <Outlet />
+          <Toast.Provider />
+        </GlobalAuthGuard>
+      </PersistLogin>
     </RouterProvider>
   );
 };

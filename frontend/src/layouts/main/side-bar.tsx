@@ -20,7 +20,7 @@ export const SideBar = () => {
   useSaveShortcut(() => setIsOpen((prev) => !prev));
   return (
     <div
-      className={`hidden flex-col md:flex outline-1 outline-border transition-width ease-in duration-300 ${isOpen ? 'w-65' : 'w-16'}`}
+      className={`overflow-x-hidden bg-surface/50 shadow-md rounded-3xl hidden flex-col md:flex transition-width ease-in duration-300 my-3 ml-3 ${isOpen ? 'w-65' : 'w-16'}`}
     >
       {isOpen ? (
         <SideBarHeaderOpen setIsOpen={setIsOpen} />
@@ -33,7 +33,7 @@ export const SideBar = () => {
         selectedKey={getSelectedKey({ user, location })}
         onSelectionChange={handleSelectionChange}
       >
-        <Tabs.List className="bg-transparent w-full gap-0.5 p-0">
+        <Tabs.List className="bg-transparent w-full gap-1 p-0">
           {getOptions({ user, iconSize: 4 }).map((opt) => (
             <NavButton
               icon={opt.icon}
@@ -45,15 +45,13 @@ export const SideBar = () => {
           ))}
         </Tabs.List>
       </Tabs>
-      <div
-        className={`p-2.5 transition-colors border-t duration-300 ease-in ${!isOpen && 'border-transparent'}`}
-      >
+      <div className="p-2">
         {user ? (
           <SideBarAccountCard user={user} isOpen={isOpen} />
         ) : (
           <Card
             variant="transparent"
-            className={`p-2.5 gap-5 rounded-none transition-height transition-padding duration-300 ease-in justify-end ${isOpen ? 'p-2.5 h-40' : 'p-1 h-11'}`}
+            className={`gap-5 rounded-none transition-height transition-padding duration-300 ease-in justify-end ${isOpen ? 'p-2.5 h-40' : 'p-1 h-11'}`}
           >
             <div
               className={`flex flex-col transition-opacity duration-300 ease-in gap-3 ${!isOpen && 'opacity-0'}`}

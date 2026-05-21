@@ -40,6 +40,8 @@ public class SecurityConfig {
           .permitAll()
           .requestMatchers(HttpMethod.GET, "/api/v1/posts/{id}")
           .permitAll()
+          .requestMatchers(HttpMethod.GET, "/avatars/**")
+          .permitAll()
           .anyRequest()
           .authenticated()
       )

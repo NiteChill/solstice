@@ -24,6 +24,8 @@ export interface AuthContextType {
   logout: () => Promise<void>;
   isAuthModalOpen: boolean;
   setIsAuthModalOpen: Dispatch<SetStateAction<boolean>>;
+  from: string | undefined;
+  setFrom: Dispatch<SetStateAction<string | undefined>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,6 +33,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserResponse | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [from, setFrom] = useState<string | undefined>(undefined);
 
   const login = async (credentials: LoginRequest): Promise<void> => {
     const response = await api.post<AuthenticationResponse>(
@@ -94,6 +97,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         logout,
         isAuthModalOpen,
         setIsAuthModalOpen,
+        from,
+        setFrom,
       }}
     >
       {children}

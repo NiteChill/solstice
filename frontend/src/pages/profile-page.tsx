@@ -14,9 +14,7 @@ export const ProfilePage = () => {
             <Plus className="size-5" />
           </Button>
         }
-        centerSlot={
-          <h1 className="text-lg font-medium">{user!.displayName}</h1>
-        }
+        centerSlot={<h1 className="text-lg font-medium">{user!.name}</h1>}
         rightSlot={
           <Dropdown>
             <Button isIconOnly variant="ghost" size="lg">

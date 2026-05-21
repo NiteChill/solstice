@@ -28,9 +28,10 @@ export interface AuthenticationResponse {
 
 export interface SessionResponse {
   id: number;
-  deviceName: string;
+  device: string;
+  os: string;
   browser: string;
-  ipAddress: string;
+  location: string;
   lastActive: string;
   isCurrent: boolean;
 }

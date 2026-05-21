@@ -5,23 +5,35 @@ import { PersistLogin } from './persist-login';
 import { api } from '../../../api/axios';
 import * as tokenService from '../../../utils/token-service';
 import * as useAuthHook from '../hooks/use-auth';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 vi.mock('../../../api/axios');
 vi.mock('../../../utils/token-service');
 vi.mock('../hooks/use-auth');
 
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+
 describe('PersistLogin Component', () => {
   const mockSetUser = vi.fn();
+  let queryClient: QueryClient;
 
   beforeEach(() => {
     vi.clearAllMocks();
+    queryClient = createTestQueryClient();
     vi.spyOn(useAuthHook, 'useAuth').mockReturnValue({
       user: null,
       setUser: mockSetUser,
       login: vi.fn(),
       register: vi.fn(),
       logout: vi.fn(),
-    });
+    } as any);
   });
 
   it('should render Outlet immediately if token and user already exist', () => {
@@ -39,16 +51,18 @@ describe('PersistLogin Component', () => {
       login: vi.fn(),
       register: vi.fn(),
       logout: vi.fn(),
-    });
+    } as any);
 
     render(
-      <MemoryRouter>
-        <Routes>
-          <Route element={<PersistLogin />}>
-            <Route path="/" element={<div data-testid="child">Loaded</div>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>,
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <Routes>
+            <Route element={<PersistLogin />}>
+              <Route path="/" element={<div data-testid="child">Loaded</div>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     expect(screen.queryByText(/Loading session/i)).not.toBeInTheDocument();
@@ -74,13 +88,15 @@ describe('PersistLogin Component', () => {
     });
 
     render(
-      <MemoryRouter>
-        <Routes>
-          <Route element={<PersistLogin />}>
-            <Route path="/" element={<div data-testid="child">Loaded</div>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>,
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <Routes>
+            <Route element={<PersistLogin />}>
+              <Route path="/" element={<div data-testid="child">Loaded</div>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     expect(screen.getByText(/Loading session/i)).toBeInTheDocument();
@@ -109,13 +125,15 @@ describe('PersistLogin Component', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     render(
-      <MemoryRouter>
-        <Routes>
-          <Route element={<PersistLogin />}>
-            <Route path="/" element={<div data-testid="child">Loaded</div>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>,
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <Routes>
+            <Route element={<PersistLogin />}>
+              <Route path="/" element={<div data-testid="child">Loaded</div>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     await waitFor(() => {
@@ -132,13 +150,15 @@ describe('PersistLogin Component', () => {
     vi.spyOn(tokenService, 'hasSessionCookie').mockReturnValue(false);
 
     render(
-      <MemoryRouter>
-        <Routes>
-          <Route element={<PersistLogin />}>
-            <Route path="/" element={<div data-testid="child">Loaded</div>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>,
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <Routes>
+            <Route element={<PersistLogin />}>
+              <Route path="/" element={<div data-testid="child">Loaded</div>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     expect(screen.queryByText(/Loading session/i)).not.toBeInTheDocument();
